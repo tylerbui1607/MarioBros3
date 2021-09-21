@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -125,9 +125,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Animations.cpp" />
+    <ClCompile Include="Block.cpp" />
     <ClCompile Include="Brick.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Coin.cpp" />
+    <ClCompile Include="ColorBlock.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Ground.cpp" />
+    <ClCompile Include="Hud.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="Koopas.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Portal.cpp" />
+    <ClCompile Include="QuestionBlock.cpp" />
+    <ClCompile Include="SuperItem.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -141,10 +152,21 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animations.h" />
+    <ClInclude Include="Block.h" />
     <ClInclude Include="Brick.h" />
-    <ClInclude Include="collision.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Coin.h" />
+    <ClInclude Include="ColorBlock.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="GameProperties.h" />
+    <ClInclude Include="Ground.h" />
+    <ClInclude Include="Hud.h" />
+    <ClInclude Include="Item.h" />
     <ClInclude Include="Koopas.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="Portal.h" />
+    <ClInclude Include="QuestionBlock.h" />
+    <ClInclude Include="SuperItem.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
@@ -156,7 +178,17 @@
     <ClInclude Include="Sprites.h" />
     <ClInclude Include="Textures.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\Microsoft.DXSDK.D3DX.targets" Condition="Exists('..\packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\Microsoft.DXSDK.D3DX.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\Microsoft.DXSDK.D3DX.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.DXSDK.D3DX.9.29.952.8\build\native\Microsoft.DXSDK.D3DX.targets'))" />
+  </Target>
 </Project>
