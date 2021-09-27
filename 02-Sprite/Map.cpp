@@ -1,24 +1,30 @@
 #include "Map.h"
-Map::Map(int ID, LPCWSTR FilePath_data, int Map_rows, int  Map_cols, int Num_row_read, int Num_col_read, int Tile_width, int Tile_height)
+Map::Map(int ID, LPCWSTR FilePath_data, int Map_rows, int  Map_cols, int Tile_rows, int Tile_cols, int Tile_width, int Tile_height)
 {
 	this->Id = ID;
 
 	this->MapFilePath = FilePath_data;
 
+
+	// rows of Map
 	this->Num_Rows = Map_rows;
+	// cols of Map
 	this->Num_Cols = Map_cols;
 
-	this->num_row_read = Num_row_read;
-	this->num_col_read = Num_col_read;
+	// rows of tilemap
+	this->Tile_Rows = Tile_rows;
+	// cols of tilemap
+	this->Tile_Cols = Tile_cols;
 
 	this->Tile_Width = Tile_width;
 	this->Tile_Height = Tile_height;
 
-	LoadMap();
+	LoadMapSprite();
 	Load();
 }
 void Map::Load()
 {
+	// Load info map form file
 	ifstream f;
 	f.open(MapFilePath);
 	if (f.fail())
@@ -37,17 +43,19 @@ void Map::Load()
 	f.close();
 }
 
-void Map::LoadMap()
+void Map::LoadMapSprite()
 {
+	// Load sprite for map
+
 	CTextures* texture = CTextures::GetInstance();
 	LPTEXTURE texMap = texture->Get(Id);
 	int id_sprite = 1;
-	for (UINT i = 0; i < num_row_read; i++)
+	for (UINT i = 0; i < Tile_Rows; i++)
 	{
-		for (UINT j = 0; j < num_col_read; j++)
+		for (UINT j = 0; j < Tile_Cols; j++)
 		{
 			int id_Sprite = Id + id_sprite;
-			CSprites::GetInstance()->Add(id_Sprite, Tile_Width * j, Tile_Height * i, Tile_Width * (j + 1), Tile_Height * (i + 1), texMap);
+			CSprites::GetInstance()->Add(id_sprite, Tile_Width * j, Tile_Height * i, Tile_Width * (j + 1), Tile_Height * (i + 1), texMap);
 			id_sprite = id_sprite + 1;
 		}
 	}
@@ -56,14 +64,13 @@ void Map::LoadMap()
 
 void Map::Draw()
 {
-	int jay = 0;
 	for (UINT i = 0; i < Num_Rows; i++)
 	{
 		for (UINT j = 0; j < Num_Cols; j++)
 		{
 			float x = Tile_Width * j;
-			float y = floor(Tile_Height * i-240);
-			CSprites::GetInstance()->Get(tilemap[i][j] + Id)->Draw(x, y);
+			float y = Tile_Height*i;
+			CSprites::GetInstance()->Get(tilemap[i][j])->Draw(x, y -240);
 		}
 	}
 }

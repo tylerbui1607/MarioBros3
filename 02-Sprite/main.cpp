@@ -34,8 +34,8 @@
 #define WINDOW_ICON_PATH L"mario.ico"
 
 #define BACKGROUND_COLOR D3DXCOLOR(200.0f/255, 200.0f/255, 255.0f/255,0.0f)
-#define SCREEN_WIDTH 320
-#define SCREEN_HEIGHT 240
+#define SCREEN_WIDTH 400
+#define SCREEN_HEIGHT 250
 
 #define ID_TEX_MARIO 0
 #define ID_TEX_ENEMY 10
@@ -155,6 +155,7 @@ void Render()
 	ID3D10RenderTargetView* pRenderTargetView = g->GetRenderTargetView();
 	ID3DX10Sprite* spriteHandler = g->GetSpriteHandler();
 
+
 	if (pD3DDevice != NULL)
 	{
 		// clear the background 
@@ -166,7 +167,9 @@ void Render()
 		FLOAT NewBlendFactor[4] = { 0,0,0,0 };
 		pD3DDevice->OMSetBlendState(g->GetAlphaBlending(), NewBlendFactor, 0xffffffff);
 
+
 		map->Draw();
+
 		brick->Render();
 		mario->Render();
 
