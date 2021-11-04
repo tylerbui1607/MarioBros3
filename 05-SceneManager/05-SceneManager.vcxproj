@@ -189,7 +189,6 @@
     <ClInclude Include="Koopas.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Mario.h" />
-    <ClInclude Include="Item.h" />
     <ClInclude Include="Mushroom.h" />
     <ClInclude Include="NavigationBox.h" />
     <ClInclude Include="Platform.h" />
