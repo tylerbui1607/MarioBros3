@@ -19,6 +19,14 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	if (abs(vx) > abs(maxVx) && state != MARIO_STATE_IDLE) vx = maxVx;
 	
+	if (IsSlowFalling)
+	{
+		if (GetTickCount64() - SlowFallingTime >= 150)
+		{
+			IsSlowFalling = false;
+			SetState(MARIO_STATE_RELEASE_JUMP);
+		}
+	}
 	if (abs(ax) == MARIO_ACCEL_RUN_X)
 	{
 		IncreaseSpeedStack();
@@ -465,7 +473,9 @@ void CMario::SetState(int state)
 		break;
 
 	case MARIO_STATE_RELEASE_JUMP:
-		if (vy < 0) vy += MARIO_JUMP_SPEED_Y / 2;
+		//if (vy < 0) vy += MARIO_JUMP_SPEED_Y / 2;
+		if (vy < 0) vy = 0;
+		ay = MARIO_GRAVITY;
 		break;
 
 	case MARIO_STATE_SIT:
@@ -519,6 +529,12 @@ void CMario::SetState(int state)
 	case MARIO_STATE_ATTACK:
 		IsAttack = true;
 		AttackTime = GetTickCount64();
+		break;
+	case MARIO_STATE_SLOW_FALLING:
+		ay = 0;
+		vy = MARIO_SLOW_FALLING_SPEED;
+		IsSlowFalling = true;
+		SlowFallingTime = GetTickCount64();
 		break;
 	}
 
