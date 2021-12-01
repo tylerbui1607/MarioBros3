@@ -14,12 +14,23 @@
 #define FIRE_PIRANHAPLANT_STATE_UP	1
 #define FIRE_PIRANHAPLANT_STATE_DOWN	2
 
+#define ID_ANI_FIREPLANT_LEFT_DOWN		210000
+#define ID_ANI_FIREPLANT_RIGHT_DOWN		210001
+#define ID_ANI_FIREPLANT_LEFT_UP		210002
+#define ID_ANI_FIREPLANT_RIGHT_UP		210003
+
+#define ID_ANI_FIREPLANT_ATTACK_LEFT_DOWN		210004
+#define ID_ANI_FIREPLANT_ATTACK_RIGHT_DOWN		210005
+#define ID_ANI_FIREPLANT_ATTACK_LEFT_UP			210006
+#define ID_ANI_FIREPLANT_ATTACK_RIGHT_UP		210007
+
 class FirePiranhaPlant :
     public CGameObject
 {
 public:
 	float ax;
 	float ay;
+	int aniId;
 
 	float minY, maxY;
 
@@ -78,6 +89,8 @@ public:
 			fireBullet->SetSpeed(VxBullet, VyBullet);
 		}
 	}
+
+	void GetAniFirePlant();
 public:
 	void GetEnemyPos(float EnemyX, float EnemyY) {
 		enemyX = EnemyX;
