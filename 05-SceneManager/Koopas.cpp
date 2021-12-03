@@ -36,10 +36,10 @@ void Koopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void Koopas::Render()
 {
-	/*int aniId = ID_ANI_KOOPAS_WALKING_RIGHT;
+	int aniId = ID_ANI_KOOPAS_WALKING_RIGHT;
 	if (level == NORMAL_KOOPAS)GetKoopasAni(aniId);
 	else if (level == SMART_KOOPAS)GetRedKoopasAni(aniId);
-	CAnimations::GetInstance()->Get(aniId)->Render(x, y);*/
+	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	RenderBoundingBox();
 	//NavBox->Render();
 }
@@ -141,6 +141,10 @@ void Koopas::SetState(int state)
 		vx = nx*KOOPAS_WALKING_SPEED * 4;
 		InShell = true;
 		IsAttack = true;
+		break;
+	case KOOPAS_STATE_DIE_BY_SHELL:
+		vx = nx * GOOMBA_DIEBYSHELL_VX;
+		vy = -GOOMBA_DIEBYSHELL_VY;
 		break;
 	default:
 		break;
