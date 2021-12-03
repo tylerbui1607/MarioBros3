@@ -1,6 +1,12 @@
 #include "Animation.h"
 #include "debug.h"
 
+void CAnimation::ResetAni()
+{
+	currentFrame = 0;
+	lastFrameTime = GetTickCount64();
+}
+
 void CAnimation::Add(int spriteId, DWORD time)
 {
 	int t = time;

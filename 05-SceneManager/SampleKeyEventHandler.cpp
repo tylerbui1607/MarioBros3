@@ -19,7 +19,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_S:
 		if (mario->CheckMarioIsOnPlatform())
 			mario->SetState(MARIO_STATE_JUMP);
-		else
+		else if (mario->GetMarioLevel() == MARIO_LEVEL_RACOON)
 			mario->SetState(MARIO_STATE_SLOW_FALLING);
 		break;
 	case DIK_1:
@@ -27,6 +27,9 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_2:
 		mario->SetLevel(MARIO_LEVEL_BIG);
+		break;
+	case DIK_3:
+		mario->SetLevel(MARIO_LEVEL_RACOON);
 		break;
 	case DIK_0:
 		mario->SetState(MARIO_STATE_DIE);
