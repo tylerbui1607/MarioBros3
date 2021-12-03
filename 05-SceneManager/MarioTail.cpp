@@ -1,6 +1,7 @@
 #include "MarioTail.h"
 #include "Goomba.h"
 #include "QuestionBrick.h"
+#include "Koopas.h"
 void MarioTail::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	left = x - TAIL_BBOX_WIDTH / 2;
@@ -17,8 +18,10 @@ void MarioTail::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		{
 			if (dynamic_cast<CGoomba*>(coObjects->at(i)))
 				OnCollisionWithGoomba(coObjects->at(i));
-			else if(dynamic_cast<QuestionBrick*>(coObjects->at(i)))
+			else if (dynamic_cast<QuestionBrick*>(coObjects->at(i)))
 				OnCollisionWithQuestionBrick(coObjects->at(i));
+			else if (dynamic_cast<Koopas*>(coObjects->at(i)))
+				OnCollisionWithKoopas(coObjects->at(i));
 		}
 	}
 }
@@ -40,4 +43,10 @@ void MarioTail::OnCollisionWithQuestionBrick(LPGAMEOBJECT& obj)
 	if (!qbrick->innitItemSuccess) {
 		qbrick->SetState(QUESTION_BRICK_STATE_START_INNIT);
 	}
+}
+
+void MarioTail::OnCollisionWithKoopas(LPGAMEOBJECT& obj)
+{
+	Koopas* koopas = dynamic_cast<Koopas*>(obj);
+	koopas->SetState(KOOPAS_STATE_DIE_BY_SHELL);
 }
