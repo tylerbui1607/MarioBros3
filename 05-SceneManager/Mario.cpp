@@ -30,13 +30,25 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			SetState(MARIO_STATE_RELEASE_JUMP);
 		}
 	}
+	if (IsFalling)
+	{
+		if (GetTickCount64() - FallingTime >= MARIO_SLOWFALLING_TIME)
+		{
+			IsFalling = false;
+			SetState(MARIO_STATE_RELEASE_JUMP);
+		}
+	}
+
 	if (abs(ax) == MARIO_ACCEL_RUN_X)
 	{
 		IncreaseSpeedStack();
 	}
 	else {
 		if (speedStack > 0)
+		{
+			if(!isFlying)
 			DecreaseSpeedStack();
+		}
 	}
 	// reset untouchable timer if untouchable time has passed
 	if ( GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
@@ -589,7 +601,7 @@ void CMario::SetState(int state)
 
 	case MARIO_STATE_RELEASE_JUMP:
 		//if (vy < 0) vy += MARIO_JUMP_SPEED_Y / 2;
-		if (vy < 0) vy = 0;
+		//if (vy < 0 && !isFlying) vy = 0;
 		ay = MARIO_GRAVITY;
 		break;
 
@@ -640,6 +652,17 @@ void CMario::SetState(int state)
 		vy = MARIO_SLOW_FALLING_SPEED;
 		IsSlowFalling = true;
 		SlowFallingTime = GetTickCount64();
+		break;
+	case MARIO_STATE_FLYING:
+		vy = -0.1f;
+		ay = 0;
+		IsFalling = true;
+		FallingTime = GetTickCount64();
+		if (!isFlying)
+		{
+			isFlying = true;
+			FlyingTime = GetTickCount64();
+		}
 		break;
 	}
 
