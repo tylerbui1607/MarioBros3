@@ -38,7 +38,14 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			SetState(MARIO_STATE_RELEASE_JUMP);
 		}
 	}
-
+	if (isFlying)
+	{
+		if (GetTickCount64() - FlyingTime >= 3000)
+		{
+			isFlying = false;
+			if (!isOnPlatform)SetState(MARIO_STATE_RELEASE_JUMP);
+		}
+	}
 	if (abs(ax) == MARIO_ACCEL_RUN_X)
 	{
 		IncreaseSpeedStack();
@@ -671,7 +678,7 @@ void CMario::SetState(int state)
 
 void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
-	if (level != MARIO_LEVEL_SMALL)
+	if (level == MARIO_LEVEL_BIG)
 	{
 		if (isSitting)
 		{
@@ -688,12 +695,36 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 			bottom = top + MARIO_BIG_BBOX_HEIGHT;
 		}
 	}
-	else
+	else if(level == MARIO_LEVEL_SMALL)
 	{
 		left = x - MARIO_SMALL_BBOX_WIDTH/2;
 		top = y - MARIO_SMALL_BBOX_HEIGHT/2;
 		right = left + MARIO_SMALL_BBOX_WIDTH;
 		bottom = top + MARIO_SMALL_BBOX_HEIGHT;
+	}
+	else if (level == MARIO_LEVEL_RACOON)
+	{
+		if (isSitting)
+		{
+			left = x - MARIO_BIG_SITTING_BBOX_WIDTH / 2;
+			top = y - MARIO_BIG_SITTING_BBOX_HEIGHT / 2;
+			right = left + MARIO_BIG_SITTING_BBOX_WIDTH;
+			bottom = top + MARIO_BIG_SITTING_BBOX_HEIGHT;
+		}
+		else
+		{
+			if (nx > 0)
+			{
+				left = x - MARIO_BIG_BBOX_WIDTH / 2+3;
+				right = left + MARIO_BIG_BBOX_WIDTH;
+			}
+			else {
+				left = x - MARIO_BIG_BBOX_WIDTH / 2-3;
+				right = left + MARIO_BIG_BBOX_WIDTH;
+			}
+			top = y - MARIO_BIG_BBOX_HEIGHT / 2;
+			bottom = top + MARIO_BIG_BBOX_HEIGHT;
+		}
 	}
 }
 
