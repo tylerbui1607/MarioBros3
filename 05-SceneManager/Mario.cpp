@@ -394,8 +394,16 @@ int CMario::GetAniIdRacoon()
 		}
 		if (isFlying)
 		{
-			if (nx > 0)aniId = ID_ANI_RACOON_FLYING_RIGHT;
-			else aniId = ID_ANI_RACOON_FLYING_LEFT;
+			if (vy > 0)
+			{
+				if (nx > 0)aniId = ID_ANI_RACOON_FALLING_FLYING_RIGHT;
+				else aniId = ID_ANI_RACOON_FALLING_FLYING_LEFT;
+			}
+			else if (vy < 0)
+			{
+				if (nx > 0)aniId = ID_ANI_RACOON_FLYING_RIGHT;
+				else aniId = ID_ANI_RACOON_FLYING_LEFT;
+			}
 		}
 	}
 	else
@@ -478,7 +486,6 @@ int CMario::GetAniIdRacoon()
 			else aniId = ID_ANI_RACOON_ATTACK_LEFT;
 		}
 	}
-
 	return aniId;
 }
 
@@ -592,7 +599,7 @@ void CMario::Render()
 		aniId = GetAniIdRacoon();
 	animations->Get(aniId)->Render(x, y);
 
-	//RenderBoundingBox();
+	RenderBoundingBox();
 
 	if (IsAttack)tail->Render();
 	
@@ -748,15 +755,11 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 		}
 		else
 		{
-			if (nx > 0)
-			{
-				left = x - MARIO_BIG_BBOX_WIDTH / 2+3;
-				right = left + MARIO_BIG_BBOX_WIDTH;
-			}
-			else {
-				left = x - MARIO_BIG_BBOX_WIDTH / 2-3;
-				right = left + MARIO_BIG_BBOX_WIDTH;
-			}
+			if(nx>0)
+				left = x - MARIO_BIG_BBOX_WIDTH / 2+1;
+			else 
+				left = x - MARIO_BIG_BBOX_WIDTH / 2 + 2;
+			right = left + MARIO_BIG_BBOX_WIDTH-2;
 			top = y - MARIO_BIG_BBOX_HEIGHT / 2;
 			bottom = top + MARIO_BIG_BBOX_HEIGHT;
 		}
