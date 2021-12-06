@@ -16,7 +16,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
-
 	if (abs(vx) > abs(maxVx) && state != MARIO_STATE_IDLE) vx = maxVx;
 	if (state == MARIO_STATE_IDLE) {
 		if (nx > 0 && vx < 0) { vx = 0; ax = 0; }
@@ -70,6 +69,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			IsKickKoopas = false;
 		}
 	}
+
 	isOnPlatform = false;
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 	if (IsAttack)
@@ -185,7 +185,7 @@ void CMario::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 	QuestionBrick* QBrick = dynamic_cast<QuestionBrick*>(e->obj);
 	
 	//Check qbrick
-	if (!QBrick->innitItemSuccess) {
+	if (!QBrick->innitItemSuccess && QBrick->GetState()!= QUESTION_BRICK_STATE_START_INNIT) {
 		if (e->ny > 0)QBrick->SetState(QUESTION_BRICK_STATE_START_INNIT);
 	}
 }
@@ -311,8 +311,18 @@ int CMario::GetAniIdSmall()
 		else
 			if (vx == 0)
 			{
-				if (nx > 0) aniId = ID_ANI_MARIO_SMALL_IDLE_RIGHT;
-				else aniId = ID_ANI_MARIO_SMALL_IDLE_LEFT;
+				if (state == MARIO_STATE_IDLE)
+
+				{
+					if (nx > 0) aniId = ID_ANI_MARIO_SMALL_IDLE_RIGHT;
+					else aniId = ID_ANI_MARIO_SMALL_IDLE_LEFT;
+				}
+				else if (state == MARIO_STATE_WALKING_RIGHT)
+				{
+					aniId = ID_ANI_MARIO_SMALL_WALKING_RIGHT;
+				}
+				else if (state == MARIO_STATE_WALKING_LEFT)
+					aniId = ID_ANI_MARIO_SMALL_WALKING_LEFT;
 			}
 			else if (vx > 0)
 			{
@@ -399,8 +409,18 @@ int CMario::GetAniIdRacoon()
 		else
 			if (vx == 0)
 			{
-				if (nx > 0) aniId = ID_ANI_RACOON_IDLE_RIGHT;
-				else aniId = ID_ANI_RACOON_IDLE_LEFT;
+				if (state == MARIO_STATE_IDLE)
+
+				{
+					if (nx > 0) aniId = ID_ANI_RACOON_IDLE_RIGHT;
+					else aniId = ID_ANI_RACOON_IDLE_LEFT;
+				}
+				else if (state == MARIO_STATE_WALKING_RIGHT)
+				{
+					aniId = ID_ANI_RACOON_WALKING_RIGHT;
+				}
+				else if (state == MARIO_STATE_WALKING_LEFT)
+					aniId = ID_ANI_RACOON_WALKING_LEFT;
 			}
 			else if (vx > 0)
 			{
@@ -497,8 +517,18 @@ int CMario::GetAniIdBig()
 		else
 			if (vx == 0)
 			{
-				if (nx > 0) aniId = ID_ANI_MARIO_IDLE_RIGHT;
-				else aniId = ID_ANI_MARIO_IDLE_LEFT;
+				if (state == MARIO_STATE_IDLE)
+
+				{
+					if (nx > 0) aniId = ID_ANI_MARIO_IDLE_RIGHT;
+					else aniId = ID_ANI_MARIO_IDLE_LEFT;
+				}
+				else if (state == MARIO_STATE_WALKING_RIGHT)
+				{
+					aniId = ID_ANI_MARIO_WALKING_RIGHT;
+				}
+				else if(state == MARIO_STATE_WALKING_LEFT)
+					aniId = ID_ANI_MARIO_WALKING_LEFT;
 			}
 			else if (vx > 0)
 			{
