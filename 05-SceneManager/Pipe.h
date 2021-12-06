@@ -12,7 +12,7 @@ class Pipe :
 		void Render() { 
 			/*CSprites* sprite = CSprites::GetInstance();
 			int drawy = y + TileSize;
-			for (int i = 0; i < (Height / 16) * 2; i++)
+			for (int i = 0; i < Height / 16; i++)
 			{
 				if (i < 2)
 					animation_set->at(i)->Render(i * TileSize + x, y);

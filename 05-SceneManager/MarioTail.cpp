@@ -48,5 +48,6 @@ void MarioTail::OnCollisionWithQuestionBrick(LPGAMEOBJECT& obj)
 void MarioTail::OnCollisionWithKoopas(LPGAMEOBJECT& obj)
 {
 	Koopas* koopas = dynamic_cast<Koopas*>(obj);
+	koopas->nx = nx;
 	koopas->SetState(KOOPAS_STATE_DIE_BY_SHELL);
 }
