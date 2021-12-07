@@ -1,5 +1,10 @@
 #pragma once
 #include "GameObject.h"
+
+#define ID_SPRITE_PIPE_MOUTH 131313
+#define ID_SPRITE_PIPE_BODY 141414
+
+#define SPRITE_TILE_SIZE	16
 class Pipe :
     public CGameObject
 {
@@ -10,23 +15,16 @@ class Pipe :
 			Height = height;
 		}
 		void Render() { 
-			/*CSprites* sprite = CSprites::GetInstance();
-			int drawy = y + TileSize;
-			for (int i = 0; i < Height / 16; i++)
+			CSprites* sprite = CSprites::GetInstance();
+			int SpriteY = y - Height / 2 + SPRITE_TILE_SIZE/2;
+			for (int i = 0; i < Height / SPRITE_TILE_SIZE; i++)
 			{
-				if (i < 2)
-					animation_set->at(i)->Render(i * TileSize + x, y);
-				else if (i % 2 == 0)
-				{
-
-					animation_set->at(Ani_Body_Right)->Render(x, drawy);
-				}
+				if (i < 1)
+					sprite->Get(ID_SPRITE_PIPE_MOUTH)->Draw(x, SpriteY);
 				else
-				{
-					animation_set->at(Ani_Body_Left)->Render(x + TileSize, drawy);
-					drawy += TileSize;
-				}
-			}*/
+					sprite->Get(ID_SPRITE_PIPE_BODY)->Draw(x, SpriteY);
+				SpriteY += SPRITE_TILE_SIZE;
+			}
 		};
 		void Update(DWORD dt) {
 		}

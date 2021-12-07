@@ -634,7 +634,7 @@ void CMario::SetState(int state)
 
 	case MARIO_STATE_RELEASE_JUMP:
 		//if (vy < 0) vy += MARIO_JUMP_SPEED_Y / 2;
-		//if (vy < 0 && !isFlying) vy = 0;
+		if (vy < 0 && !isFlying) vy = 0;
 		ay = MARIO_GRAVITY;
 		break;
 
