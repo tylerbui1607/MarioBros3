@@ -8,7 +8,6 @@
 #include "Coin.h"
 #include "Portal.h"
 #include "ColorBox.h"
-#include "Koopas.h"
 
 #include "Collision.h"
 
@@ -21,6 +20,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		if (nx > 0 && vx < 0) { vx = 0; ax = 0; }
 		else if (nx < 0 && vx > 0) { vx = 0; ax = 0; }
 	}
+	
 	if (IsSlowFalling)
 	{
 		if (GetTickCount64() - SlowFallingTime >= MARIO_SLOWFALLING_TIME)
@@ -39,7 +39,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 	if (state == RACOON_STATE_IS_ATTACKED)
 	{
-		if (GetTickCount64() - effectTime > 600)
+		if (GetTickCount64() - effectTime > RACOON_IS_ATTACKED_TIME)
 		{
 			level = MARIO_LEVEL_BIG;
 			ay = MARIO_GRAVITY;
@@ -54,7 +54,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			if (!isOnPlatform)SetState(MARIO_STATE_RELEASE_JUMP);
 		}
 	}
-	if (abs(ax) == MARIO_ACCEL_RUN_X)
+	if (abs(ax) == MARIO_ACCEL_RUN_X && abs(vx) > MARIO_WALKING_SPEED)
 	{
 		IncreaseSpeedStack();
 	}
@@ -94,6 +94,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		{
 			IsAttack = false;
 		}
+	}
+	if (isHoldingKoopas)
+	{
+		if (nx > 0)
+			koopasHold->SetPosition(x + MARIO_BIG_BBOX_WIDTH / 2 + 8, y);
+		else
+			koopasHold->SetPosition(x - MARIO_BIG_BBOX_WIDTH, y);
 	}
 
 }
@@ -230,9 +237,19 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 			}
 			else if (e->nx != 0)
 			{
-				koopas->nx = nx;
-				SetState(MARIO_STATE_KICKKOOPAS);
-				koopas->SetState(KOOPAS_STATE_INSHELL_ATTACK);
+				if (abs(ax) == MARIO_ACCEL_WALK_X)
+				{
+					koopas->nx = nx;
+					SetState(MARIO_STATE_KICKKOOPAS);
+					koopas->SetState(KOOPAS_STATE_INSHELL_ATTACK);
+				}
+				else if (abs(ax) == MARIO_ACCEL_RUN_X)
+				{
+					koopas->SetSpeed(0, 0);
+					isHoldingKoopas = true;
+					koopas->isHold = true;
+					koopasHold = dynamic_cast<Koopas*>(e->obj);
+				}
 			}
 		}
 	}
@@ -297,11 +314,11 @@ int CMario::GetAniIdSmall()
 					if (nx > 0) aniId = ID_ANI_MARIO_SMALL_IDLE_RIGHT;
 					else aniId = ID_ANI_MARIO_SMALL_IDLE_LEFT;
 				}
-				else if (state == MARIO_STATE_WALKING_RIGHT)
+				else if (state == MARIO_STATE_RUNNING_RIGHT || state == MARIO_STATE_WALKING_RIGHT)
 				{
 					aniId = ID_ANI_MARIO_SMALL_WALKING_RIGHT;
 				}
-				else if (state == MARIO_STATE_WALKING_LEFT)
+				else if (state == MARIO_STATE_RUNNING_LEFT || state == MARIO_STATE_WALKING_LEFT)
 					aniId = ID_ANI_MARIO_SMALL_WALKING_LEFT;
 			}
 			else if (vx > 0)
@@ -403,11 +420,11 @@ int CMario::GetAniIdRacoon()
 					if (nx > 0) aniId = ID_ANI_RACOON_IDLE_RIGHT;
 					else aniId = ID_ANI_RACOON_IDLE_LEFT;
 				}
-				else if (state == MARIO_STATE_WALKING_RIGHT)
+				else if (state == MARIO_STATE_RUNNING_RIGHT || state == MARIO_STATE_WALKING_RIGHT)
 				{
 					aniId = ID_ANI_RACOON_WALKING_RIGHT;
 				}
-				else if (state == MARIO_STATE_WALKING_LEFT)
+				else if (state == MARIO_STATE_RUNNING_LEFT || state == MARIO_STATE_WALKING_LEFT)
 					aniId = ID_ANI_RACOON_WALKING_LEFT;
 			}
 			else if (vx > 0)
@@ -514,11 +531,11 @@ int CMario::GetAniIdBig()
 					if (nx > 0) aniId = ID_ANI_MARIO_IDLE_RIGHT;
 					else aniId = ID_ANI_MARIO_IDLE_LEFT;
 				}
-				else if (state == MARIO_STATE_WALKING_RIGHT)
+				else if (state == MARIO_STATE_RUNNING_RIGHT || state == MARIO_STATE_WALKING_RIGHT)
 				{
 					aniId = ID_ANI_MARIO_WALKING_RIGHT;
 				}
-				else if(state == MARIO_STATE_WALKING_LEFT)
+				else if(state == MARIO_STATE_RUNNING_LEFT || state == MARIO_STATE_WALKING_LEFT)
 					aniId = ID_ANI_MARIO_WALKING_LEFT;
 			}
 			else if (vx > 0)

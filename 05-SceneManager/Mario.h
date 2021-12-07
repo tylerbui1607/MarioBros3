@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "QuestionBrick.h"
 #include "FirePiranhaPlant.h"
+#include "Koopas.h"
 
 #include "MarioTail.h"
 #include "Animation.h"
@@ -31,7 +32,7 @@
 #define MARIO_KICK_KOOPAS_TIME 200
 #define MARIO_SLOWFALLING_TIME 300
 #define RACOON_ATTACK_TIME 250
-
+#define RACOON_IS_ATTACKED_TIME	600
 
 #define MARIO_STATE_DIE				-10
 #define MARIO_STATE_IDLE			0
@@ -174,10 +175,10 @@ class CMario : public CGameObject
 
 	bool IsSlowFalling, IsFalling;
 	DWORD SlowFallingTime, FallingTime;
-	bool isFly;
+	bool isFly,isHoldingKoopas;
 	int speedStack;
-	
 	MarioTail* tail;
+	Koopas* koopasHold;
 
 	DWORD effectTime;
 	DWORD SpeedStackTime;

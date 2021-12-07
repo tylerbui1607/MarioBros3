@@ -56,8 +56,9 @@ protected:
 	void GetKoopasAni(int& IdAni);
 	void GetRedKoopasAni(int& IdAni);
 public:
+	float ay;
 	NavigationBox* NavBox;
-
+	bool isHold;
 	int level;
 	bool IsAttack;
 	Koopas(float x, float y, int Level);
