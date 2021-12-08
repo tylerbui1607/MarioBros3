@@ -8,6 +8,7 @@ void Koopas::GetBoundingBox(float& left, float& top, float& right, float& bottom
 	if (!isHold)
 	{
 		if (state != KOOPAS_STATE_DIE_BY_SHELL)
+		{
 			if (!InShell) {
 				top = y - KOOPAS_BBOX_HEIGHT / 2;
 				bottom = top + KOOPAS_BBOX_HEIGHT;
@@ -16,8 +17,9 @@ void Koopas::GetBoundingBox(float& left, float& top, float& right, float& bottom
 				top = y - KOOPAS_BBOX_HIDDEN / 2;
 				bottom = top + KOOPAS_BBOX_HIDDEN;
 			}
-		left = x - KOOPAS_BBOX_WIDTH / 2;
-		right = left + KOOPAS_BBOX_WIDTH;
+			left = x - KOOPAS_BBOX_WIDTH / 2;
+			right = left + KOOPAS_BBOX_WIDTH;
+		}
 	}
 }
 
@@ -62,11 +64,18 @@ void Koopas::OnCollisionWith(LPCOLLISIONEVENT e, DWORD dt)
 	if (e->ny != 0 && e->obj->IsBlocking())
 	{
 		vy = 0;
+		if (state == KOOPAS_STATE_ATTACKED_BY_TAIL)
+		{
+			SetState(KOOPAS_STATE_INSHELL);
+		}
 	}
 	else if (e->nx != 0 && e->obj->IsBlocking())
 	{
-		vx = -vx;
-		nx = -nx;
+		if (state != KOOPAS_STATE_ATTACKED_BY_TAIL)
+		{
+			vx = -vx;
+			nx = -nx;
+		}
 	}
 	if (dynamic_cast<QuestionBrick*>(e->obj))
 		OnCollisionWithQuestionBrick(e);
@@ -117,9 +126,8 @@ void Koopas::GetKoopasAni(int& IdAni)
 		if (vx > 0)IdAni = ID_ANI_KOOPAS_WALKING_RIGHT;
 		else IdAni = ID_ANI_KOOPAS_WALKING_LEFT;
 	}
-	else if (state == KOOPAS_STATE_INSHELL || state == KOOPAS_STATE_DIE_BY_SHELL)IdAni = ID_ANI_KOOPAS_INSHELL;
+	else if (state == KOOPAS_STATE_INSHELL || state == KOOPAS_STATE_DIE_BY_SHELL || state == KOOPAS_STATE_ATTACKED_BY_TAIL)IdAni = ID_ANI_KOOPAS_INSHELL;
 	else if (state == KOOPAS_STATE_INSHELL_ATTACK)IdAni = ID_ANI_KOOPAS_INSHELL_ATTACK;
-
 }
 
 void Koopas::GetRedKoopasAni(int& IdAni)
@@ -129,7 +137,7 @@ void Koopas::GetRedKoopasAni(int& IdAni)
 		if (vx > 0)IdAni = ID_ANI_REDKOOPAS_WALKING_RIGHT;
 		else IdAni = ID_ANI_REDKOOPAS_WALKING_LEFT;
 	}
-	else if (state == KOOPAS_STATE_INSHELL || state == KOOPAS_STATE_DIE_BY_SHELL)IdAni = ID_ANI_REDKOOPAS_INSHELL;
+	else if (state == KOOPAS_STATE_INSHELL || state == KOOPAS_STATE_DIE_BY_SHELL || state == KOOPAS_STATE_ATTACKED_BY_TAIL)IdAni = ID_ANI_REDKOOPAS_INSHELL;
 	else if (state == KOOPAS_STATE_INSHELL_ATTACK)IdAni = ID_ANI_REDKOOPAS_INSHELL_ATTACK;
 }
 
