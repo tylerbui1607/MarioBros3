@@ -10,6 +10,7 @@
 #define KOOPAS_STATE_INSHELL	2
 #define KOOPAS_STATE_INSHELL_ATTACK		3
 #define KOOPAS_STATE_DIE_BY_SHELL	4
+#define KOOPAS_STATE_ATTACKED_BY_TAIL	5
 
 #define ID_ANI_KOOPAS_WALKING_RIGHT	30000
 #define ID_ANI_KOOPAS_WALKING_LEFT	30001
@@ -35,7 +36,7 @@ protected:
 
 	bool ParaKoopas;
 
-	bool InShell;
+	bool InShell, IsAttackedByTail;
 	DWORD phaseTime;
 
 	ULONGLONG die_start;

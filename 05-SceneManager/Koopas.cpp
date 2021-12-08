@@ -138,7 +138,7 @@ Koopas::Koopas(float x, float y, int Level):CGameObject(x,y)
 	level = Level;
 	SetState(KOOPAS_STATE_WALKING);
 	NavBox = new NavigationBox(x, y);
-	isHold = false;
+	IsAttackedByTail = isHold = false;
 	ay = KOOPAS_GRAVITY;
 }
 
@@ -166,6 +166,13 @@ void Koopas::SetState(int state)
 		vy = -GOOMBA_DIEBYSHELL_VY;
 		InShell = true;
 		IsAttack = false;
+		break;
+	case KOOPAS_STATE_ATTACKED_BY_TAIL:
+		vx = nx * GOOMBA_DIEBYSHELL_VX;
+		vy = -GOOMBA_DIEBYSHELL_VY;
+		InShell = true;
+		IsAttack = false;
+		IsAttackedByTail = true;
 		break;
 	default:
 		break;
