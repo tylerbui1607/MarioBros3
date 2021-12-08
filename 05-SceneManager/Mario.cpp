@@ -97,15 +97,25 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 	if (isHoldingKoopas)
 	{
-		float koopasY;
+		float koopasY,koopasX;
 		if (level == MARIO_LEVEL_SMALL)
 			koopasY = y - (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
 		else
 			koopasY = y;
+		if (level == MARIO_LEVEL_RACOON)
+		{
+			koopasX = x;
+		}
+		else {
+			if (nx > 0)
+				koopasX = x - KOOPAS_BBOX_WIDTH / 4;
+			else
+				koopasX = x + KOOPAS_BBOX_WIDTH / 4;
+		}
 		if (nx > 0)
-			koopasHold->SetPosition(x + MARIO_BIG_BBOX_WIDTH / 2 + KOOPAS_BBOX_WIDTH/2, koopasY);
+			koopasHold->SetPosition(koopasX + MARIO_BIG_BBOX_WIDTH / 2 + KOOPAS_BBOX_WIDTH/2, koopasY);
 		else
-			koopasHold->SetPosition(x - MARIO_BIG_BBOX_WIDTH, koopasY);
+			koopasHold->SetPosition(koopasX - MARIO_BIG_BBOX_WIDTH, koopasY);
 	}
 
 }

@@ -15,6 +15,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		switch (KeyCode)
 		{
 		case DIK_DOWN:
+			if(mario->GetMarioLevel()>MARIO_LEVEL_SMALL && !mario->CheckMarioHoldKoopas())
 			mario->SetState(MARIO_STATE_SIT);
 			break;
 		case DIK_S:
@@ -68,6 +69,7 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 			mario->SetState(MARIO_STATE_RELEASE_JUMP);
 			break;
 		case DIK_DOWN:
+			if(mario->CheckIsSitting())
 			mario->SetState(MARIO_STATE_SIT_RELEASE);
 			break;
 		case DIK_A:

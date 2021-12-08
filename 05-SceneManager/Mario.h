@@ -302,6 +302,9 @@ public:
 	bool CheckMarioHoldKoopas() {
 		return isHoldingKoopas;
 	}
+	bool CheckIsSitting() {
+		return isSitting;
+	}
 	void HandleMarioIsAttacked();
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };
