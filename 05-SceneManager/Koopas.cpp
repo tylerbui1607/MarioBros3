@@ -46,7 +46,7 @@ void Koopas::Render()
 	if (level == NORMAL_KOOPAS)GetKoopasAni(aniId);
 	else if (level == SMART_KOOPAS)GetRedKoopasAni(aniId);
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 	//NavBox->Render();
 }
 
