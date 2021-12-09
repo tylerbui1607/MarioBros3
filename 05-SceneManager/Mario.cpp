@@ -8,6 +8,7 @@
 #include "Coin.h"
 #include "Portal.h"
 #include "ColorBox.h"
+#include "Leaf.h"
 
 #include "Collision.h"
 
@@ -41,7 +42,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		if (GetTickCount64() - effectTime > RACOON_IS_ATTACKED_TIME)
 		{
-			level = MARIO_LEVEL_BIG;
+			if (level == MARIO_LEVEL_RACOON)
+				level = MARIO_LEVEL_BIG;
+			else level = MARIO_LEVEL_RACOON;
 			ay = MARIO_GRAVITY;
 			SetState(MARIO_STATE_IDLE);
 		}
@@ -296,7 +299,15 @@ void CMario::OnCollisionWithItem(LPCOLLISIONEVENT e)
 	if (dynamic_cast<Mushroom*>(e->obj))
 	{
 		level = MARIO_LEVEL_BIG;
-		y -= 16;
+		if (level == MARIO_LEVEL_SMALL)
+			y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
+		e->obj->Delete();
+	}
+	else if (dynamic_cast<Leaf*>(e->obj))
+	{
+		if (level == MARIO_LEVEL_SMALL)
+			y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
+		SetState(RACOON_STATE_IS_ATTACKED);
 		e->obj->Delete();
 	}
 }
@@ -694,6 +705,10 @@ int CMario::GetAniIdBig()
 		else
 			aniId = ID_ANI_MARIO_KICKKOOPAS_LEFT;
 		}
+	if (state == RACOON_STATE_IS_ATTACKED)
+	{
+		aniId = ID_ANI_RACOON_EFFECT_WHEN_ATTACKED;
+	}
 	if (aniId == -1) aniId = ID_ANI_MARIO_IDLE_RIGHT;
 
 	return aniId;

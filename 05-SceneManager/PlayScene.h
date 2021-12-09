@@ -7,6 +7,7 @@
 #include "Mario.h"
 #include "Goomba.h"
 #include "FirePiranhaPlant.h"
+#include "Leaf.h"
 //#include "Koopas.h"
 
 
@@ -49,10 +50,20 @@ public:
 		 {
 			if (QBrick->Item > 1)
 			{
-				Mushroom* mushroom = new Mushroom(BrickX, BrickY);
-				mushroom->SetState(MUSHROOOM_STATE_BEING_INNITED);
-				objects[index] = mushroom;
-				objects.push_back(QBrick);
+				if (mario->GetMarioLevel() == MARIO_LEVEL_SMALL)
+				{
+					Mushroom* mushroom = new Mushroom(BrickX, BrickY);
+					mushroom->SetState(MUSHROOOM_STATE_BEING_INNITED);
+					objects[index] = mushroom;
+					objects.push_back(QBrick);
+				}
+				else
+				{
+					Leaf* leaf = new Leaf(BrickX, BrickY);
+					leaf->SetState(LEAF_STATE_INNIT);
+					objects[index] = leaf;
+					objects.push_back(QBrick);
+				}
 			}
 			else QBrick->InitCoin = true;
 
