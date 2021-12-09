@@ -147,6 +147,9 @@
     <ClCompile Include="MarioTail.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Leaf.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -250,6 +253,9 @@
     </ClInclude>
     <ClInclude Include="MarioTail.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Leaf.h">
+      <Filter>Item</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

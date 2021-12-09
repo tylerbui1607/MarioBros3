@@ -171,7 +171,7 @@ void Koopas::SetState(int state)
 		WaitingRebornTime = GetTickCount64();
 		break;
 	case KOOPAS_STATE_INSHELL_ATTACK:
-		vx = nx*KOOPAS_WALKING_SPEED * 4;
+		vx = nx*KOOPAS_WALKING_SPEED * 5;
 		InShell = true;
 		IsAttack = true;
 		break;
