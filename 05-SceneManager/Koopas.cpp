@@ -129,6 +129,7 @@ void Koopas::GetKoopasAni(int& IdAni)
 	}
 	else if (state == KOOPAS_STATE_INSHELL || state == KOOPAS_STATE_DIE_BY_SHELL || state == KOOPAS_STATE_ATTACKED_BY_TAIL)IdAni = ID_ANI_KOOPAS_INSHELL;
 	else if (state == KOOPAS_STATE_INSHELL_ATTACK)IdAni = ID_ANI_KOOPAS_INSHELL_ATTACK;
+	else if (state == KOOPAS_STATE_REBORN) IdAni = ID_ANI_KOOPAS_REBORN;
 }
 
 void Koopas::GetRedKoopasAni(int& IdAni)
@@ -140,6 +141,7 @@ void Koopas::GetRedKoopasAni(int& IdAni)
 	}
 	else if (state == KOOPAS_STATE_INSHELL || state == KOOPAS_STATE_DIE_BY_SHELL || state == KOOPAS_STATE_ATTACKED_BY_TAIL)IdAni = ID_ANI_REDKOOPAS_INSHELL;
 	else if (state == KOOPAS_STATE_INSHELL_ATTACK)IdAni = ID_ANI_REDKOOPAS_INSHELL_ATTACK;
+	else if (state == KOOPAS_STATE_REBORN) IdAni = ID_ANI_REDKOOPAS_REBORN;
 }
 
 Koopas::Koopas(float x, float y, int Level):CGameObject(x,y)

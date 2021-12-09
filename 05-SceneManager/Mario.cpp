@@ -132,7 +132,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				if (dynamic_cast<Mushroom*>(coObjects->at(i)))
 				{
 					level = MARIO_LEVEL_BIG;
-					y -= 16;
+					if(level == MARIO_LEVEL_SMALL)
+					y -=(MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT)/2 ;
 					coObjects->at(i)->Delete();
 				}
 			}
