@@ -116,8 +116,28 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			koopasHold->SetPosition(koopasX + MARIO_BIG_BBOX_WIDTH / 2 + KOOPAS_BBOX_WIDTH/2, koopasY);
 		else
 			koopasHold->SetPosition(koopasX - MARIO_BIG_BBOX_WIDTH, koopasY);
+		if (koopasHold->GetState() == KOOPAS_STATE_WALKING)
+		{
+			koopasHold->y -= (KOOPAS_BBOX_HEIGHT - MARIO_BIG_BBOX_HEIGHT) / 2;
+			isHoldingKoopas = false;
+			HandleMarioIsAttacked();
+		}
 	}
-
+	for (int i = 0; i < coObjects->size(); i++)
+	{
+		if (CCollision::GetInstance()->CheckAABB(this, coObjects->at(i)))
+		{
+			if (coObjects->at(i)->isitem)
+			{
+				if (dynamic_cast<Mushroom*>(coObjects->at(i)))
+				{
+					level = MARIO_LEVEL_BIG;
+					y -= 16;
+					coObjects->at(i)->Delete();
+				}
+			}
+		}
+	}
 }
 
 void CMario::OnNoCollision(DWORD dt)

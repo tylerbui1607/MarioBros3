@@ -11,6 +11,7 @@
 #define KOOPAS_STATE_INSHELL_ATTACK		3
 #define KOOPAS_STATE_DIE_BY_SHELL	4
 #define KOOPAS_STATE_ATTACKED_BY_TAIL	5
+#define KOOPAS_STATE_REBORN  	6
 
 #define ID_ANI_KOOPAS_WALKING_RIGHT	30000
 #define ID_ANI_KOOPAS_WALKING_LEFT	30001
@@ -29,7 +30,7 @@
 #define KOOPAS_BBOX_HEIGHT 28
 #define KOOPAS_BBOX_HIDDEN 16
 
-
+#define KOOPAS_WAITING_REBORN_TIME	4000
 class Koopas : public CGameObject
 {
 protected:
@@ -39,6 +40,7 @@ protected:
 	bool InShell, IsAttackedByTail;
 	DWORD phaseTime;
 
+	DWORD ReborningTime, WaitingRebornTime;
 	ULONGLONG die_start;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
@@ -56,6 +58,20 @@ protected:
 
 	void GetKoopasAni(int& IdAni);
 	void GetRedKoopasAni(int& IdAni);
+	void HandleKoopasReborn() {
+		if (state == KOOPAS_STATE_INSHELL)
+		{
+			if (GetTickCount64() - WaitingRebornTime >= KOOPAS_WAITING_REBORN_TIME)
+				SetState(KOOPAS_STATE_REBORN);
+		}
+		else if (state == KOOPAS_STATE_REBORN)
+		{
+			if (GetTickCount64() - ReborningTime >= 3000)
+			{
+				SetState(KOOPAS_STATE_WALKING);
+			}
+		}
+	}
 public:
 	float ay;
 	NavigationBox* NavBox;

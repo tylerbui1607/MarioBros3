@@ -25,6 +25,7 @@ void Koopas::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 void Koopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	HandleKoopasReborn();
 	if (!isHold)
 	{
 		vy += ay * dt;
@@ -158,11 +159,14 @@ void Koopas::SetState(int state)
 		vx = -KOOPAS_WALKING_SPEED;
 		IsAttack = true;
 		InShell = false;
+		isHold = false;
+		y -= (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HIDDEN) / 2;
 		break;
 	case KOOPAS_STATE_INSHELL:
 		vx = 0;
 		InShell = true;
 		IsAttack = false;
+		WaitingRebornTime = GetTickCount64();
 		break;
 	case KOOPAS_STATE_INSHELL_ATTACK:
 		vx = nx*KOOPAS_WALKING_SPEED * 4;
@@ -181,6 +185,9 @@ void Koopas::SetState(int state)
 		InShell = true;
 		IsAttack = false;
 		IsAttackedByTail = true;
+		break;
+	case KOOPAS_STATE_REBORN:
+		ReborningTime = GetTickCount64();
 		break;
 	default:
 		break;
