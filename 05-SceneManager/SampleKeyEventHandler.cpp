@@ -10,7 +10,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 	CMario* mario = (CMario *)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer(); 
-	if (mario->GetState() != RACOON_STATE_IS_ATTACKED)
+	if (mario->GetState() != MARIO_STATE_TRANSFORM_RACOON && mario->GetState() != RACOON_STATE_TRANSFORM_MARIO)
 	{
 		switch (KeyCode)
 		{
@@ -22,7 +22,6 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 			if (mario->GetMarioLevel() == MARIO_LEVEL_RACOON && mario->GetSpeedStack() == MARIO_MAX_SPEED_STACK)
 			{
 				mario->SetState(MARIO_STATE_FLYING);
-				DebugOut(L"hello\n");
 			}
 			if (!mario->isFlying)
 			{
@@ -61,7 +60,7 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	//DebugOut(L"[INFO] KeyUp: %d\n", KeyCode);
 
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-	if (mario->GetState() != RACOON_STATE_IS_ATTACKED)
+	if (mario->GetState() != MARIO_STATE_TRANSFORM_RACOON && mario->GetState() != RACOON_STATE_TRANSFORM_MARIO)
 	{
 		switch (KeyCode)
 		{
@@ -84,7 +83,7 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 {
 	LPGAME game = CGame::GetInstance();
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-	if (mario->GetState() != RACOON_STATE_IS_ATTACKED)
+	if (mario->GetState() != MARIO_STATE_TRANSFORM_RACOON && mario->GetState() != RACOON_STATE_TRANSFORM_MARIO)
 	{
 		if (game->IsKeyDown(DIK_RIGHT))
 		{

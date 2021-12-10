@@ -38,13 +38,14 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			SetState(MARIO_STATE_RELEASE_JUMP);
 		}
 	}
-	if (state == RACOON_STATE_IS_ATTACKED)
+	if (state == MARIO_STATE_TRANSFORM_RACOON || state == RACOON_STATE_TRANSFORM_MARIO)
 	{
 		if (GetTickCount64() - effectTime > RACOON_IS_ATTACKED_TIME)
 		{
-			if (level == MARIO_LEVEL_RACOON)
+			if (state == RACOON_STATE_TRANSFORM_MARIO)
 				level = MARIO_LEVEL_BIG;
-			else level = MARIO_LEVEL_RACOON;
+			else
+				level = MARIO_LEVEL_RACOON;
 			ay = MARIO_GRAVITY;
 			SetState(MARIO_STATE_IDLE);
 		}
@@ -307,7 +308,7 @@ void CMario::OnCollisionWithItem(LPCOLLISIONEVENT e)
 	{
 		if (level == MARIO_LEVEL_SMALL)
 			y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
-		SetState(RACOON_STATE_IS_ATTACKED);
+		SetState(MARIO_STATE_TRANSFORM_RACOON);
 		e->obj->Delete();
 	}
 }
@@ -574,7 +575,7 @@ int CMario::GetAniIdRacoon()
 			else aniId = ID_ANI_RACOON_ATTACK_LEFT;
 		}
 	}
-	if (state == RACOON_STATE_IS_ATTACKED)
+	if (state == MARIO_STATE_TRANSFORM_RACOON || state == RACOON_STATE_TRANSFORM_MARIO)
 	{
 		aniId = ID_ANI_RACOON_EFFECT_WHEN_ATTACKED;
 	}
@@ -705,7 +706,7 @@ int CMario::GetAniIdBig()
 		else
 			aniId = ID_ANI_MARIO_KICKKOOPAS_LEFT;
 		}
-	if (state == RACOON_STATE_IS_ATTACKED)
+	if (state == MARIO_STATE_TRANSFORM_RACOON || state == RACOON_STATE_TRANSFORM_MARIO)
 	{
 		aniId = ID_ANI_RACOON_EFFECT_WHEN_ATTACKED;
 	}
@@ -850,7 +851,11 @@ void CMario::SetState(int state)
 			FlyingTime = GetTickCount64();
 		}
 		break;
-	case RACOON_STATE_IS_ATTACKED:
+	case MARIO_STATE_TRANSFORM_RACOON:
+		effectTime = GetTickCount64();
+		vx = vy = ax = ay = 0;
+		break;
+	case RACOON_STATE_TRANSFORM_MARIO:
 		effectTime = GetTickCount64();
 		vx = vy = ax = ay = 0;
 		break;
@@ -875,7 +880,7 @@ void CMario::HandleMarioIsAttacked()
 	if (level > MARIO_LEVEL_BIG)
 	{
 		StartUntouchable();
-		SetState(RACOON_STATE_IS_ATTACKED);
+		SetState(RACOON_STATE_TRANSFORM_MARIO);
 	}
 	else if(level == MARIO_LEVEL_BIG)
 	{
