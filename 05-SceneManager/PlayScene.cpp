@@ -318,7 +318,10 @@ void CPlayScene::Update(DWORD dt)
 			Fplant->GetEnemyPos(player->x, player->y);
 			objects[i]->Update(dt, &Mario);
 		}
-		else objects[i]->Update(dt, &coObjects);
+		else { 
+			if(Camera::GetInstance()->IsInCam(objects[i]->x, objects[i]->y) || i==0)
+			objects[i]->Update(dt, &coObjects); 
+		}
 	}
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)

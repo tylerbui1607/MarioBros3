@@ -869,7 +869,7 @@ void CMario::SetState(int state)
 		SlowFallingTime = GetTickCount64();
 		break;
 	case MARIO_STATE_FLYING:
-		vy = -0.1f;
+		vy = -0.15f;
 		ay = 0;
 		IsFalling = true;
 		FallingTime = GetTickCount64();

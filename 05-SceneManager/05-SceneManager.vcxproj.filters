@@ -150,6 +150,9 @@
     <ClCompile Include="Leaf.cpp">
       <Filter>Item</Filter>
     </ClCompile>
+    <ClCompile Include="BreakableBrick.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -256,6 +259,9 @@
     </ClInclude>
     <ClInclude Include="Leaf.h">
       <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="BreakableBrick.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
