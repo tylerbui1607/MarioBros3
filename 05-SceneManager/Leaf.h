@@ -9,6 +9,10 @@
 
 #define LEAF_STATE_INNIT 1
 #define LEAF_STATE_FALLING 2
+
+#define ID_ANI_LEAF_FALLING_RIGHT
+#define ID_ANI_LEAF_FALLING_RIGHT   80001
+#define ID_ANI_LEAF_FALLING_LEFT   80002
 class Leaf :
     public CGameObject
 {
@@ -41,9 +45,11 @@ public:
     }
 
     void Render() {
-        //CAnimations* animations = CAnimations::GetInstance();
-        //animations->Get(ID_ANI_LEAF)->Render(x, y);
-        RenderBoundingBox();
+        CAnimations* animations = CAnimations::GetInstance();
+        int aniId = ID_ANI_LEAF_FALLING_LEFT;
+        if (vx >= 0)aniId = ID_ANI_LEAF_FALLING_RIGHT;
+        else aniId = ID_ANI_LEAF_FALLING_LEFT;
+        animations->Get(aniId)->Render(x, y);
     }
     void GetBoundingBox(float& left, float& top, float& right, float& bottom) {
         left = x - LEAF_WIDTH / 2;

@@ -299,9 +299,9 @@ void CMario::OnCollisionWithItem(LPCOLLISIONEVENT e)
 {
 	if (dynamic_cast<Mushroom*>(e->obj))
 	{
-		level = MARIO_LEVEL_BIG;
 		if (level == MARIO_LEVEL_SMALL)
 			y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
+		level = MARIO_LEVEL_BIG;
 		e->obj->Delete();
 	}
 	else if (dynamic_cast<Leaf*>(e->obj))
