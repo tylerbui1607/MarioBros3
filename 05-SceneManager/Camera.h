@@ -64,6 +64,13 @@ public:
 		x = cam_x;
 		y = cam_y;
 	}
+	void FollowMario(float marrioVy) {
+		cam_vy = Mariovy;
+	}
+	void SetCamPosX(float x)
+	{
+		cam_x = x;
+	}
 	void Update( DWORD dt);
 };
 

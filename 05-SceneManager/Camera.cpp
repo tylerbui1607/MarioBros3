@@ -13,7 +13,7 @@ Camera::Camera()
 
 void Camera::Update(DWORD dt)
 {
-	if (AutoMove < 1)
+	/*if (AutoMove < 1)
 	{
 		if (IsFollowingMario)
 		{
@@ -28,5 +28,6 @@ void Camera::Update(DWORD dt)
 	{
 		cam_vy = 0;
 		cam_x += cam_vx * dt;
-	}
+	}*/
+	cam_y += cam_vy * dt;
 }

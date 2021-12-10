@@ -306,6 +306,10 @@ public:
 	bool CheckIsSitting() {
 		return isSitting;
 	}
+	bool CheckIsFlying()
+	{
+		return isFlying;
+	}
 	void HandleMarioIsAttacked();
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };

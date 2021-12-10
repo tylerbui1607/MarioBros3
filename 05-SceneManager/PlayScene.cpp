@@ -337,8 +337,10 @@ void CPlayScene::Update(DWORD dt)
 	//dirty way have to improve
 	if (cx + game->GetBackBufferWidth() >= 2816)cx = 2816 - game->GetBackBufferWidth();
 	if (player->x <= MARIO_BIG_BBOX_WIDTH / 2)player->x = MARIO_BIG_BBOX_WIDTH/2;
-	Camera::GetInstance()->SetCamPos(cx, 240.0f /*cy*/);
-
+	if (!Camera::GetInstance()->IsFollowingMario)
+		Camera::GetInstance()->SetCamPos(cx, 240.0f /*cy*/);
+	else
+		Camera::GetInstance()->SetCamPosX(cx);
 	PurgeDeletedObjects();
 }
 
