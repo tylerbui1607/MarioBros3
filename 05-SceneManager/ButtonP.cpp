@@ -1,5 +1,6 @@
 #include "ButtonP.h"
 #include "debug.h"
+
 ButtonP* ButtonP::__instance = NULL;
 ButtonP::ButtonP()
 {
@@ -29,9 +30,14 @@ void ButtonP::Update(DWORD dt)
 
 void ButtonP::Render()
 {
-	if(isCreated)
-	RenderBoundingBox();
-	DebugOut(L"hello\n");
+	CAnimations* animations = CAnimations::GetInstance();
+	int aniId = ID_ANI_BUTTON_P;
+	if (isCreated)
+	{
+		if (isPushed)
+			aniId = ID_ANI_BUTTON_P_PUSHED;
+		animations->Get(aniId)->Render(x, y);
+	}
 }
 
 void ButtonP::SetState(int state)

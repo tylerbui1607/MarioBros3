@@ -7,6 +7,9 @@
 #define BUTTON_P_STATE_PUSHED 1
 
 #define BUTTON_PUSHED_HEIGHT	7
+
+#define ID_ANI_BUTTON_P	80003
+#define ID_ANI_BUTTON_P_PUSHED	80004
 class ButtonP :
     public CGameObject
 {
