@@ -889,6 +889,7 @@ void CMario::SetState(int state)
 		{
 			IsAttack = true;
 			AttackTime = GetTickCount64();
+			tail->IsActive = true;
 		}
 		break;
 	case MARIO_STATE_SLOW_FALLING:

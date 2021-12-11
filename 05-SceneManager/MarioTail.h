@@ -11,7 +11,7 @@ public:
 	float ax;
 	float ay;
 
-	bool IsAttack;
+	bool IsActive;
 
 	DWORD attackTime;
 
