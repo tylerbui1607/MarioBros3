@@ -8,6 +8,7 @@
 #define BREAKABLE_BRICK_STATE_TRANSFORMS_COIN	1
 #define BREAKABLE_BRICK_STATE_BREAK_DOWN	2
 #define BREAKABLE_BRICK_STATE_CREATE_BUTTON	3
+#define COIN_STATE_TRANSFORMS_BRICK	4
 
 #define OBJECT_TYPE_BREAKABLE_BRICK	30
 #define OBJECT_TYPE_COIN	31
@@ -23,7 +24,7 @@ public:
 	int isBlocking;
 	int startY;
 	bool InitCoin;
-	DWORD coinUpTime;
+	DWORD ChangeBackToBrickTime;
 	bool haveButton;
 	bool buttonCreated, isBreakDown;
 	BreakableBrick(float x, float y, bool HaveButton) : CGameObject(x, y) {
@@ -32,8 +33,8 @@ public:
 		objType = OBJECT_TYPE_BREAKABLE_BRICK;
 		buttonCreated = false;
 		vy = 0;
-		isBreakDown = false;
-		isBlocking = 1;
+		InitCoin = isBreakDown = false;
+		isBlocking = 1; 
 	}
 	void Render();
 	virtual int IsCollidable() { return 1; };
@@ -51,10 +52,15 @@ public:
 		}
 		if (!haveButton)
 		{
-			if (ButtonP::GetInstance()->isPushed)
+			if (ButtonP::GetInstance()->isPushed && !InitCoin)
 			{
 				SetState(BREAKABLE_BRICK_STATE_TRANSFORMS_COIN);
 			}
+		}
+		if (InitCoin)
+		{
+			if (GetTickCount64() - ChangeBackToBrickTime >= 5000)
+				SetState(COIN_STATE_TRANSFORMS_BRICK);
 		}
 	}
 	void GetBoundingBox(float& l, float& t, float& r, float& b) {
@@ -71,7 +77,9 @@ public:
 		switch (state) {
 		case BREAKABLE_BRICK_STATE_TRANSFORMS_COIN:
 			objType = OBJECT_TYPE_COIN;
+			ChangeBackToBrickTime = GetTickCount64();
 			isBlocking = 0;
+			InitCoin = true;
 			break;
 		case BREAKABLE_BRICK_STATE_BREAK_DOWN:
 			isBreakDown = true;
@@ -82,8 +90,13 @@ public:
 			ButtonP::GetInstance()->SetPosition(x, y - BRICK_BBOX_HEIGHT);
 			ButtonP::GetInstance()->isCreated = true;
 			break;
+		case COIN_STATE_TRANSFORMS_BRICK:
+			objType = OBJECT_TYPE_BREAKABLE_BRICK;
+			isBlocking = 1;
+			break;
 		default:break;
 		}
+		CGameObject::SetState(state);
 	}
 };
 
