@@ -9,6 +9,7 @@ questionBrick.txt
 item.txt
 plants.txt
 pipe.txt
+brick.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type

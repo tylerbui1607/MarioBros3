@@ -61,8 +61,7 @@ public:
 				{
 					Leaf* leaf = new Leaf(BrickX, BrickY);
 					leaf->SetState(LEAF_STATE_INNIT);
-					objects[index] = leaf;
-					objects.push_back(QBrick);
+					objects.push_back(leaf);
 				}
 			}
 			else QBrick->InitCoin = true;
