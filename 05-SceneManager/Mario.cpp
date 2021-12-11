@@ -365,7 +365,7 @@ void CMario::OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e)
 			breakableBrick->SetState(BREAKABLE_BRICK_STATE_CREATE_BUTTON);
 		}
 		else if (!breakableBrick->haveButton) {
-			e->obj->Delete();
+			e->obj->SetState(BREAKABLE_BRICK_STATE_BREAK_DOWN);
 		}
 	}
 }

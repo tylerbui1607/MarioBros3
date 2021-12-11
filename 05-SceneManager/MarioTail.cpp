@@ -69,7 +69,7 @@ void MarioTail::OnCollisionWithBreakableBrick(LPGAMEOBJECT& obj)
 		breakableBrick->SetState(BREAKABLE_BRICK_STATE_CREATE_BUTTON);
 	}
 	else if (!breakableBrick->haveButton) {
-		obj->Delete();
+		breakableBrick->SetState(BREAKABLE_BRICK_STATE_BREAK_DOWN);
 	}
 	IsActive = false;
 }
