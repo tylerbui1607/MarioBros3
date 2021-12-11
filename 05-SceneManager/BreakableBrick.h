@@ -1,67 +1,86 @@
 #pragma once
 #include "GameObject.h"
+#include "Coin.h"
+#include "ButtonP.h"
+
+#define BRICK_BBOX_WIDTH	16
+#define BRICK_BBOX_HEIGHT	16
+#define BREAKABLE_BRICK_STATE_TRANSFORMS_COIN	1
+#define BREAKABLE_BRICK_STATE_BREAK_DOWN	2
+#define BREAKABLE_BRICK_STATE_CREATE_BUTTON	3
+
+#define OBJECT_TYPE_BREAKABLE_BRICK	30
+#define OBJECT_TYPE_COIN	31
+
+#define ID_ANI_COIN 90000
+#define ID_ANI_BREAKABLE_BRICK 
+
+#define BREAKBLE_BRICK_VY	0.05f
 class BreakableBrick :
     public CGameObject
 {
 public:
+	int isBlocking;
 	int startY;
-	bool readyInnitItem;
-	bool innitItemSuccess;
-	int Item;
-	CCoin* coin;
 	bool InitCoin;
 	DWORD coinUpTime;
-
-	QuestionBrick(float x, float y, int item) : CGameObject(x, y) {
+	bool haveButton;
+	bool buttonCreated, isBreakDown;
+	BreakableBrick(float x, float y, bool HaveButton) : CGameObject(x, y) {
 		startY = y;
-		InitCoin = readyInnitItem = innitItemSuccess = false;
-		Item = item;
-		coinUpTime = 0;
+		haveButton = HaveButton;
+		objType = OBJECT_TYPE_BREAKABLE_BRICK;
+		buttonCreated = false;
+		vy = 0;
+		isBreakDown = false;
+		isBlocking = 1;
 	}
 	void Render();
+	virtual int IsCollidable() { return 1; };
+	virtual int IsBlocking() { return isBlocking; }
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL) {
-
-		if (startY - y >= QUESTION_BRICK_UP)
-			vy = -vy;
-		if (vy > 0 && y >= startY) {
-			SetState(QUESTION_BRICK_STATE_INNITED);
-		}
-		if (InitCoin)
+		y += vy * dt;
+		if (startY - y >= 5 && vy < 0)
 		{
-			if (coinUpTime == 0)
-			{
-				coin = new CCoin(x, y - 16);
-				coin->SetSpeed(0, -COIN_UP_VY);
-				coinUpTime = GetTickCount64();
-			}
-			else if (GetTickCount64() - coinUpTime >= 700) {
-				coinUpTime = 0;
-				InitCoin = false;
-			}
-			coin->Update(dt);
+			vy = -vy;
 		}
-
-		if (!readyInnitItem)y += vy * dt;
-
+		if (vy > 0 && y >= startY)
+		{
+			y = startY;
+			vy = 0;
+		}
+		if (!haveButton)
+		{
+			if (ButtonP::GetInstance()->isPushed)
+			{
+				SetState(BREAKABLE_BRICK_STATE_TRANSFORMS_COIN);
+			}
+		}
 	}
 	void GetBoundingBox(float& l, float& t, float& r, float& b) {
-		l = x - BRICK_BBOX_WIDTH / 2;
-		t = y - BRICK_BBOX_HEIGHT / 2;
-		r = l + BRICK_BBOX_WIDTH;
-		b = t + BRICK_BBOX_HEIGHT;
-
+		if (!isBreakDown)
+		{
+			l = x - BRICK_BBOX_WIDTH / 2;
+			t = y - BRICK_BBOX_HEIGHT / 2;
+			r = l + BRICK_BBOX_WIDTH;
+			b = t + BRICK_BBOX_HEIGHT;
+		}
 	};
 
 	void SetState(int state) {
 		switch (state) {
-		case QUESTION_BRICK_STATE_START_INNIT:
-			if (vy == 0)
-				vy = -QUESTION_BRICK_VY;
+		case BREAKABLE_BRICK_STATE_TRANSFORMS_COIN:
+			objType = OBJECT_TYPE_COIN;
+			isBlocking = 0;
 			break;
-		case QUESTION_BRICK_STATE_INNITED:
-			vy = 0;
-			y = startY;
-			readyInnitItem = true;
+		case BREAKABLE_BRICK_STATE_BREAK_DOWN:
+			isBreakDown = true;
+			break;
+		case BREAKABLE_BRICK_STATE_CREATE_BUTTON:
+			buttonCreated = true;
+			vy = -BREAKBLE_BRICK_VY;
+			ButtonP::GetInstance()->SetPosition(x, y - BRICK_BBOX_HEIGHT);
+			ButtonP::GetInstance()->isCreated = true;
 			break;
 		default:break;
 		}

@@ -144,14 +144,17 @@
     <ClCompile Include="Mario.cpp">
       <Filter>Player</Filter>
     </ClCompile>
-    <ClCompile Include="MarioTail.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Leaf.cpp">
       <Filter>Item</Filter>
     </ClCompile>
     <ClCompile Include="BreakableBrick.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ButtonP.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MarioTail.cpp">
+      <Filter>Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -254,14 +257,17 @@
     <ClInclude Include="Mario.h">
       <Filter>Player</Filter>
     </ClInclude>
-    <ClInclude Include="MarioTail.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Leaf.h">
       <Filter>Item</Filter>
     </ClInclude>
     <ClInclude Include="BreakableBrick.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ButtonP.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MarioTail.h">
+      <Filter>Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

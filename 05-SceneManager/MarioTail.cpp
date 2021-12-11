@@ -2,6 +2,7 @@
 #include "Goomba.h"
 #include "QuestionBrick.h"
 #include "Koopas.h"
+#include "BreakableBrick.h"
 void MarioTail::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	left = x - TAIL_BBOX_WIDTH / 2;
@@ -22,6 +23,8 @@ void MarioTail::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				OnCollisionWithQuestionBrick(coObjects->at(i));
 			else if (dynamic_cast<Koopas*>(coObjects->at(i)))
 				OnCollisionWithKoopas(coObjects->at(i));
+			else if (dynamic_cast<BreakableBrick*>(coObjects->at(i)))
+				OnCollisionWithBreakableBrick(coObjects->at(i));
 		}
 	}
 }
@@ -50,4 +53,16 @@ void MarioTail::OnCollisionWithKoopas(LPGAMEOBJECT& obj)
 	Koopas* koopas = dynamic_cast<Koopas*>(obj);
 	koopas->nx = nx;
 	koopas->SetState(KOOPAS_STATE_ATTACKED_BY_TAIL);
+}
+
+void MarioTail::OnCollisionWithBreakableBrick(LPGAMEOBJECT& obj)
+{
+	BreakableBrick* breakableBrick = dynamic_cast<BreakableBrick*>(obj);
+	if (breakableBrick->haveButton && !breakableBrick->buttonCreated)
+	{
+		breakableBrick->SetState(BREAKABLE_BRICK_STATE_CREATE_BUTTON);
+	}
+	else if (!breakableBrick->haveButton) {
+		obj->Delete();
+	}
 }

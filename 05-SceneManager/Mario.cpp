@@ -9,7 +9,9 @@
 #include "Portal.h"
 #include "ColorBox.h"
 #include "Leaf.h"
+#include "ButtonP.h"
 
+#include "BreakableBrick.h"
 #include "Collision.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
@@ -195,18 +197,22 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e,DWORD dt)
 
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
-	else if (dynamic_cast<CCoin*>(e->obj))
+	else if (dynamic_cast<CCoin*>(e->obj) || e->obj->objType == OBJECT_TYPE_COIN)
 		OnCollisionWithCoin(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
 	else if (dynamic_cast<QuestionBrick*>(e->obj))
 		OnCollisionWithQuestionBrick(e);
 	else if (dynamic_cast<Koopas*>(e->obj))
-		OnCollisionWithKoopas(e); 
+		OnCollisionWithKoopas(e);
 	else if (dynamic_cast<FirePiranhaPlant*>(e->obj))
 		OnCollisionWithPlant(e);
 	else if (e->obj->isitem)
 		OnCollisionWithItem(e);
+	else if (e->obj->objType == OBJECT_TYPE_BREAKABLE_BRICK)
+		OnCollisionWithBreakableBrick(e);
+	else if (e->obj->objType == OBJTYPE_BUTTON_P)
+		OnCollisionWithButtonP(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -346,6 +352,29 @@ void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 	if (untouchable == 0)
 	{
 		HandleMarioIsAttacked();
+	}
+}
+
+void CMario::OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e)
+{
+	if (e->ny > 0)
+	{
+		BreakableBrick* breakableBrick = dynamic_cast<BreakableBrick*>(e->obj);
+		if (breakableBrick->haveButton && !breakableBrick->buttonCreated)
+		{
+			breakableBrick->SetState(BREAKABLE_BRICK_STATE_CREATE_BUTTON);
+		}
+		else if (!breakableBrick->haveButton) {
+			e->obj->Delete();
+		}
+	}
+}
+
+void CMario::OnCollisionWithButtonP(LPCOLLISIONEVENT e)
+{
+	if (e->ny < 0 && !ButtonP::GetInstance()->isPushed)
+	{
+		ButtonP::GetInstance()->SetState(BUTTON_P_STATE_PUSHED);
 	}
 }
 

@@ -219,6 +219,8 @@ class CMario : public CGameObject
 	void OnCollisionWithKoopas(LPCOLLISIONEVENT e);
 	void OnCollisionWithItem(LPCOLLISIONEVENT e);
 	void OnCollisionWithPlant(LPCOLLISIONEVENT e);
+	void OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e);
+	void OnCollisionWithButtonP(LPCOLLISIONEVENT e);
 
 	bool IsAttack;
 	DWORD AttackTime;

@@ -14,6 +14,7 @@
 #include "ColorBox.h"
 #include "Koopas.h"
 #include "Pipe.h"
+#include "BreakableBrick.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -168,6 +169,18 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int width = atoi(tokens[3].c_str());
 		int height = atoi(tokens[4].c_str());
 		obj = new Pipe(x, y, width, height);
+		break;
+	}
+	case OBJECT_TYPE_BREAKBLEBRICK: {
+		bool HaveButton = false;
+		int Item = atoi(tokens[3].c_str());
+		if (Item == 1)
+		{
+			HaveButton = true;
+			ButtonP* buttonP = ButtonP::GetInstance();
+			objects.push_back(buttonP);
+		}
+		obj = new BreakableBrick(x, y, HaveButton);
 		break;
 	}
 	case OBJECT_TYPE_PLATFORM:

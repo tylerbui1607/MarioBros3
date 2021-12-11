@@ -26,6 +26,7 @@ public:
 	void OnCollisionWithGoomba(LPGAMEOBJECT& obj);
 	void OnCollisionWithQuestionBrick(LPGAMEOBJECT& obj);
 	void OnCollisionWithKoopas(LPGAMEOBJECT& obj);
+	void OnCollisionWithBreakableBrick(LPGAMEOBJECT& obj);
 
 public:
 	int level, goombaPhase;

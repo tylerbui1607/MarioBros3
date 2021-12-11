@@ -19,7 +19,7 @@
 #define ID_ANI_QUESTION_BRICK_HAVEITEM	70000
 #define ID_ANI_QUESTION_BRICK_HAVENOITEM	70001
 
-#define QUESTION_BRICK_VY	0.03f
+#define QUESTION_BRICK_VY	0.05f
 #define COIN_UP_VY	0.1f
 class QuestionBrick : public CGameObject {
 public:
