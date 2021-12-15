@@ -9,6 +9,10 @@
 
 #define ID_SPRITE_HUD	170720
 #define ID_SPEED_STACK	170721
+#define ID_SPEED_STACK_P	170722
+
+#define ID_ANI_SPEEDSTACK_MAX	17072000
+#define ID_ANI_SPEEDSTACK_MAX_P	17072001
 
 class HUD
 {
@@ -23,9 +27,11 @@ public:
 	}
 public:
 	float x, y;
+	bool MarioIsFlying;
 	int speedStack;
 	HUD() {
-		speedStack = 7;
+		speedStack = 0;
+		MarioIsFlying = false;
 	};
 	~HUD();
 	void Draw();

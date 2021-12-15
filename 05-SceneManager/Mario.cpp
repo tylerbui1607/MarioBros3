@@ -118,9 +118,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	if (IsAttack)
 	{
 		if (nx > 0)
-			tail->SetPosition(x + MARIO_BIG_BBOX_WIDTH / 2 + TAIL_BBOX_WIDTH / 2, y + 6);
+			tail->SetPosition(x + MARIO_BIG_BBOX_WIDTH / 2 + TAIL_BBOX_WIDTH / 2, y + TAIL_BBOX_HEIGHT * 2);
 		else
-			tail->SetPosition(x - MARIO_BIG_BBOX_WIDTH / 2 - TAIL_BBOX_WIDTH / 2, y + 6);
+			tail->SetPosition(x - MARIO_BIG_BBOX_WIDTH / 2 - TAIL_BBOX_WIDTH / 2, y + TAIL_BBOX_HEIGHT * 2);
 		tail->nx = nx;
 
 		tail->Update(dt, coObjects);
@@ -131,6 +131,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 
 	HUD::GetInstance()->speedStack = speedStack;
+	HUD::GetInstance()->MarioIsFlying = isFlying;
 
 	if (isHoldingKoopas)
 	{
