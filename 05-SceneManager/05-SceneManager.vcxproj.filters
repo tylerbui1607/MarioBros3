@@ -162,6 +162,9 @@
     <ClCompile Include="FireBullet.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="HUD.cpp">
+      <Filter>hud</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -277,6 +280,9 @@
     </ClInclude>
     <ClInclude Include="ButtonP.h">
       <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="HUD.h">
+      <Filter>hud</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

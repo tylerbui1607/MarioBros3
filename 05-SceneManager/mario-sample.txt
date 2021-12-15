@@ -21,4 +21,5 @@ height	240
 20	textures\misc.png
 30	textures\pipe.png
 40	textures\misc1.png
+50	textures\HUD.png
 9000	map\Map1.png
