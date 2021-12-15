@@ -13,7 +13,7 @@
 
 #include "BreakableBrick.h"
 #include "Collision.h"
-
+#include "HUD.h"
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	vy += ay * dt;
@@ -129,6 +129,9 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			IsAttack = false;
 		}
 	}
+
+	HUD::GetInstance()->speedStack = speedStack;
+
 	if (isHoldingKoopas)
 	{
 		float koopasY,koopasX;
