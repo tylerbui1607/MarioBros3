@@ -18,6 +18,9 @@
 #define ID_ANI_BREAKABLE_BRICK 10001
 #define ID_ANI_BREAKABLE_BRICK_IS_UP	10002
 
+#define INNIT_VX_BREAKABLE_BRICK_EFFECT	0.05
+#define INNIT_VY_BREAKABLE_BRICK_EFFECT	0.1
+
 #define BREAKBLE_BRICK_VY	0.05f
 class BreakableBrick :
     public CGameObject
@@ -41,10 +44,10 @@ public:
 		vy = 0;
 		InitCoin = isBreakDown = false;
 		isBlocking = 1; 
-		piece1 = new BreakableBrickEffect(x, y, -0.05, -0.2);
-		piece2 = new BreakableBrickEffect(x, y, 0.05, -0.2);
-		piece3 = new BreakableBrickEffect(x, y, -0.05, -0.1);
-		piece4 = new BreakableBrickEffect(x, y, 0.05, -0.1);
+		piece1 = new BreakableBrickEffect(x, y, -INNIT_VX_BREAKABLE_BRICK_EFFECT, -INNIT_VY_BREAKABLE_BRICK_EFFECT*2);
+		piece2 = new BreakableBrickEffect(x, y, INNIT_VX_BREAKABLE_BRICK_EFFECT, -INNIT_VY_BREAKABLE_BRICK_EFFECT * 2);
+		piece3 = new BreakableBrickEffect(x, y, -INNIT_VX_BREAKABLE_BRICK_EFFECT, -INNIT_VY_BREAKABLE_BRICK_EFFECT);
+		piece4 = new BreakableBrickEffect(x, y, INNIT_VX_BREAKABLE_BRICK_EFFECT, -INNIT_VY_BREAKABLE_BRICK_EFFECT);
 	}
 	void Render();
 	virtual int IsCollidable() { return 1; };

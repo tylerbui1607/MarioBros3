@@ -168,7 +168,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_PIPE:{
 		int width = atoi(tokens[3].c_str());
 		int height = atoi(tokens[4].c_str());
-		obj = new Pipe(x, y, width, height);
+		int allowRender = atoi(tokens[5].c_str());
+		obj = new Pipe(x, y, width, height, allowRender);
 		break;
 	}
 	case OBJECT_TYPE_BREAKBLEBRICK: {

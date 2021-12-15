@@ -26,7 +26,7 @@ void MarioTail::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				OnCollisionWithQuestionBrick(coObjects->at(i));
 			else if (dynamic_cast<Koopas*>(coObjects->at(i)))
 				OnCollisionWithKoopas(coObjects->at(i));
-			else if (dynamic_cast<BreakableBrick*>(coObjects->at(i)))
+			else if (coObjects->at(i)->objType == OBJECT_TYPE_BREAKABLE_BRICK)
 				OnCollisionWithBreakableBrick(coObjects->at(i));
 		}
 	}

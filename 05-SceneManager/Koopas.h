@@ -31,7 +31,7 @@
 
 #define KOOPAS_BBOX_WIDTH 16
 #define KOOPAS_BBOX_HEIGHT 28
-#define KOOPAS_BBOX_HIDDEN 16
+#define KOOPAS_BBOX_HIDDEN 14
 
 #define KOOPAS_WAITING_REBORN_TIME	4000
 class Koopas : public CGameObject

@@ -1,6 +1,6 @@
 #pragma once
 #include "GameObject.h"
-#define LEAF_GRAVITY 0.0006f
+#define LEAF_GRAVITY 0.001f
 
 #define LEAF_WIDTH  16
 #define LEAF_HEIGHT  14
@@ -37,7 +37,7 @@ public:
         }
         else if (vy != 0)
         {
-            if (startY - y > 50)
+            if (startY - y > 30)
                 SetState(LEAF_STATE_FALLING);
         }
         x += vx * dt;

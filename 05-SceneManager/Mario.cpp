@@ -170,6 +170,13 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 					y -=(MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT)/2 ;
 					coObjects->at(i)->Delete();
 				}
+				else if (dynamic_cast<Leaf*>(coObjects->at(i)))
+				{
+					if (level == MARIO_LEVEL_SMALL)
+						y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
+					SetState(MARIO_STATE_TRANSFORM_RACOON);
+					coObjects->at(i)->Delete();
+				}
 			}
 		}
 	}

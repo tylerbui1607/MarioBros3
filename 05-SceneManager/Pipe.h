@@ -8,22 +8,27 @@
 class Pipe :
     public CGameObject
 {
+	int AllowRender;
 	public:
 		int Width, Height, TileSize;
-		Pipe(float x, float y, int width, int height) : CGameObject(x, y) {
+		Pipe(float x, float y, int width, int height, int allowRender) : CGameObject(x, y) {
 			Width = width;
 			Height = height;
+			AllowRender = allowRender;
 		}
 		void Render() { 
-			CSprites* sprite = CSprites::GetInstance();
-			int SpriteY = y - Height / 2 + SPRITE_TILE_SIZE/2;
-			for (int i = 0; i < Height / SPRITE_TILE_SIZE; i++)
+			if (AllowRender != 0)
 			{
-				if (i < 1)
-					sprite->Get(ID_SPRITE_PIPE_MOUTH)->Draw(x, SpriteY);
-				else
-					sprite->Get(ID_SPRITE_PIPE_BODY)->Draw(x, SpriteY);
-				SpriteY += SPRITE_TILE_SIZE;
+				CSprites* sprite = CSprites::GetInstance();
+				int SpriteY = y - Height / 2 + SPRITE_TILE_SIZE / 2;
+				for (int i = 0; i < Height / SPRITE_TILE_SIZE; i++)
+				{
+					if (i < 1)
+						sprite->Get(ID_SPRITE_PIPE_MOUTH)->Draw(x, SpriteY);
+					else
+						sprite->Get(ID_SPRITE_PIPE_BODY)->Draw(x, SpriteY);
+					SpriteY += SPRITE_TILE_SIZE;
+				}
 			}
 		};
 		void Update(DWORD dt) {
