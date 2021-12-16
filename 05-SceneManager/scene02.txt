@@ -17,9 +17,8 @@ brick.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
-0	1000	380
+0	100	380
 #GOOMBA (1=NORMAL,2=SMART)
-2	200	400	2
 2	200	400	2
 
 #Platform
@@ -75,7 +74,10 @@ brick.txt
 6	2200	344	48	144
 
 #FirePiranhaPlant
-21	368	392
+#21	368	392
+
+#Portal_Of_Pipe
+51	368	360
 
 #Pipe
 10	368	392	32	48	1

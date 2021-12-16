@@ -15,6 +15,7 @@
 #include "Koopas.h"
 #include "Pipe.h"
 #include "BreakableBrick.h"
+#include "PortalOfPipe.h"
 
 #include "SampleKeyEventHandler.h"
 #include "HUD.h"
@@ -216,9 +217,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		float b = (float)atof(tokens[4].c_str());
 		int scene_id = atoi(tokens[5].c_str());
 		obj = new CPortal(x, y, r, b, scene_id);
+		break;
 	}
-	break;
-
+	case OBJECT_TYPE_PORTAL_OF_PIPE:
+	{
+		obj = new PortalOfPipe(x, y);
+		break;
+	}
 
 	default:
 		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);

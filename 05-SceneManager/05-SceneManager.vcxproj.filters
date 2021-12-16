@@ -165,6 +165,9 @@
     <ClCompile Include="HUD.cpp">
       <Filter>hud</Filter>
     </ClCompile>
+    <ClCompile Include="PortalOfPipe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -283,6 +286,9 @@
     </ClInclude>
     <ClInclude Include="HUD.h">
       <Filter>hud</Filter>
+    </ClInclude>
+    <ClInclude Include="PortalOfPipe.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
