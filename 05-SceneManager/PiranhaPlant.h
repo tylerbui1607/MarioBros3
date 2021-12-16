@@ -12,7 +12,7 @@
 #define PIRANHAPLANT_STATE_UP	1
 #define PIRANHAPLANT_STATE_DOWN	2
 
-#define ID_ANI_FIREPLANT_LEFT_DOWN		210000
+#define ID_ANI_PLANT		220000
 
 
 class PiranhaPlant :

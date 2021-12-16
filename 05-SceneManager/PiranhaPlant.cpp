@@ -56,5 +56,7 @@ void PiranhaPlant::SetState(int state)
 
 	void PiranhaPlant::Render()
 	{
-		RenderBoundingBox();
+		int aniId = ID_ANI_PLANT;
+		CAnimations* animations = CAnimations::GetInstance();
+		animations->Get(aniId)->Render(x, y);
 	}
