@@ -57,6 +57,9 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		case DIK_A:
 			mario->SetState(MARIO_STATE_ATTACK);
 			break;
+		case DIK_H:
+			mario->SetState(MARIO_STATE_GO_IN_HIDDEN_MAP);
+			break;
 		}
 	}
 }

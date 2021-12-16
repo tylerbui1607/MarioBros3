@@ -17,7 +17,7 @@
 #include "HUD.h"
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	if (!goingHidden)
+	if (!goInHidden && !goOutHidden)
 	{
 		vy += ay * dt;
 		vx += ax * dt;
@@ -188,8 +188,16 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 				else if (dynamic_cast<PortalOfPipe*>(coObjects->at(i)))
 				{
-					canGotoHiddenMap = true;
-					StartY = y;
+					PortalOfPipe* pPipe = dynamic_cast<PortalOfPipe*>(coObjects->at(i));
+					if (pPipe->typeGate == GATE_IN)
+					{
+						canGotoHiddenMap = true;
+						StartY = y;
+					}
+					else if(pPipe->typeGate == GATE_OUT && !isOnPlatform) {
+						StartY = coObjects->at(i)->y;
+						SetState(MARIO_STATE_GO_OUT_HIDDEN_MAP);
+					}
 				}
 			}
 		}
@@ -660,6 +668,10 @@ int CMario::GetAniIdRacoon()
 	{
 		aniId = ID_ANI_RACOON_EFFECT_WHEN_ATTACKED;
 	}
+	if (goInHidden || goOutHidden)
+	{
+		aniId = ID_ANI_RACOON_GO_HIDDEN_MAP;
+	}
 	return aniId;
 }
 
@@ -953,7 +965,10 @@ void CMario::SetState(int state)
 		koopasHold->SetState(KOOPAS_STATE_INSHELL_ATTACK);
 		break;
 	case MARIO_STATE_GO_IN_HIDDEN_MAP:
-		goingHidden = true;
+		goInHidden = true;
+		break;
+	case MARIO_STATE_GO_OUT_HIDDEN_MAP:
+		goOutHidden = true;
 		break;
 	}
 
@@ -1028,17 +1043,35 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 
 void CMario::HandleMarioGoInHiddenMap(DWORD dt)
 {
-	vy = 0.1;
-	vx = 0;
-	if (y - StartY >= MARIO_BIG_BBOX_HEIGHT)
+	if (goInHidden)
 	{
-		SetPosition(HIDDEN_MAP_START_POS_X, HIDDEN_MAP_START_POS_Y);
-		StartY = 1000;
-		IsInHiddenMap = true;
+		vy = 0.05;
+		vx = 0;
+		if (y - StartY >= MARIO_BIG_BBOX_HEIGHT)
+		{
+			SetPosition(HIDDEN_MAP_START_POS_X, HIDDEN_MAP_START_POS_Y);
+			StartY = 1000;
+			IsInHiddenMap = true;
+		}
+		if (y - HIDDEN_MAP_START_POS_Y >= MARIO_BIG_BBOX_HEIGHT)
+		{
+			goInHidden = false;
+		}
 	}
-	if (y - HIDDEN_MAP_START_POS_Y >= MARIO_BIG_BBOX_HEIGHT)
+	else if(goOutHidden)
 	{
-		goingHidden = false;
+		vy = -0.05;
+		vx = 0;
+		if (StartY - y >= MARIO_BIG_BBOX_HEIGHT)
+		{
+			IsInHiddenMap = false;
+			SetPosition(HIDDEN_MAP_OUT_POS_X, HIDDEN_MAP_OUT_POS_Y);
+			StartY = 0;
+		}
+		if (HIDDEN_MAP_OUT_POS_Y - y>= 32)
+		{
+			goOutHidden = false;
+		}
 	}
 	y += vy * dt;
 }

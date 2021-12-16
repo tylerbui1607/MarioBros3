@@ -25,6 +25,8 @@ void Koopas::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 void Koopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (y > 500)
+		isDeleted = true;
 	HandleKoopasReborn();
 	if (!isHold)
 	{

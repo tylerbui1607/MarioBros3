@@ -171,6 +171,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int height = atoi(tokens[4].c_str());
 		int allowRender = atoi(tokens[5].c_str());
 		obj = new Pipe(x, y, width, height, allowRender);
+		Pipes.push_back(obj);
 		break;
 	}
 	case OBJECT_TYPE_BREAKBLEBRICK: {
@@ -221,7 +222,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_PORTAL_OF_PIPE:
 	{
-		obj = new PortalOfPipe(x, y);
+		int gate = atoi(tokens[3].c_str());
+		obj = new PortalOfPipe(x, y,gate);
 		break;
 	}
 
@@ -337,7 +339,6 @@ void CPlayScene::Update(DWORD dt)
 			objects[i]->Update(dt, &Mario);
 		}
 		else { 
-			if(Camera::GetInstance()->IsInCam(objects[i]->x, objects[i]->y) || i==0)
 			objects[i]->Update(dt, &coObjects); 
 		}
 	}
@@ -359,9 +360,12 @@ void CPlayScene::Update(DWORD dt)
 	if (cx + game->GetBackBufferWidth() >= 2816)cx = 2816 - game->GetBackBufferWidth();
 	if (player->x <= MARIO_BIG_BBOX_WIDTH / 2)player->x = MARIO_BIG_BBOX_WIDTH/2;
 	if (!Camera::GetInstance()->IsFollowingMario)
+	{
 		Camera::GetInstance()->SetCamPos(cx, 240.0f /*cy*/);
-	else
+	}
+	else {
 		Camera::GetInstance()->SetCamPosX(cx);
+	}
 	if (mario->IsInHiddenMap)
 	{
 		Camera::GetInstance()->SetCamPos(cx, 464 /*cy*/);
@@ -373,8 +377,15 @@ void CPlayScene::Render()
 {
 	map->Draw();
 	for (int i = 1; i < objects.size(); i++)
-		objects[i]->Render();
+	{
+		if(!dynamic_cast<Pipe*>(objects[i]))
+			objects[i]->Render();
+	}
 	objects[0]->Render();
+	for (int i = 0; i < Pipes.size(); i++)
+	{
+		Pipes[i]->Render();
+	}
 	HUD::GetInstance()->Draw();
 }
 
