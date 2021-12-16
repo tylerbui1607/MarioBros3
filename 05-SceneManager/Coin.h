@@ -4,15 +4,28 @@
 #include "Animation.h"
 #include "Animations.h"
 
-#define ID_ANI_COIN 90000
+#define ID_ANI_SMALL_COIN 90000
+#define ID_ANI_BIG_COIN 80005
 
 #define	COIN_WIDTH 10
 #define COIN_BBOX_WIDTH 10
 #define COIN_BBOX_HEIGHT 16
 
+#define SMALL_COIN	1
+#define BIG_COIN	2
+
 class CCoin : public CGameObject {
+	int coinType;
 public:
-	CCoin(float x, float y) : CGameObject(x, y) {}
+	CCoin(float x, float y) : CGameObject(x, y) {
+		coinType == SMALL_COIN;
+	}
+	CCoin(float X, float Y, int type)
+	{
+		x = X;
+		y = Y;
+		coinType = type;
+	}
 	void Render();
 	void Update(DWORD dt) {
 		x += vx * dt;

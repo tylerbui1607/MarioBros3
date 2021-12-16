@@ -49,7 +49,7 @@ public:
 		{
 			if (coinUpTime == 0)
 			{
-				coin = new CCoin(x, y - 16);
+				coin = new CCoin(x, y - 16, 1);
 				coin->SetSpeed(0, -COIN_UP_VY);
 				coinUpTime = GetTickCount64();
 			}

@@ -143,7 +143,8 @@ void Koopas::GetKoopasAni(int& IdAni)
 		if (vx > 0)IdAni = ID_ANI_KOOPAS_WALKING_RIGHT;
 		else IdAni = ID_ANI_KOOPAS_WALKING_LEFT;
 	}
-	else if (state == KOOPAS_STATE_INSHELL || state == KOOPAS_STATE_DIE_BY_SHELL || state == KOOPAS_STATE_ATTACKED_BY_TAIL)IdAni = ID_ANI_KOOPAS_INSHELL;
+	else if (IsAttackedByTail)IdAni = ID_ANI_KOOPAS_ATTACKED_BY_TAIL;
+	else if (state == KOOPAS_STATE_INSHELL || state == KOOPAS_STATE_DIE_BY_SHELL)IdAni = ID_ANI_KOOPAS_INSHELL;
 	else if (state == KOOPAS_STATE_INSHELL_ATTACK)IdAni = ID_ANI_KOOPAS_INSHELL_ATTACK;
 	else if (state == KOOPAS_STATE_REBORN) IdAni = ID_ANI_KOOPAS_REBORN;
 }
@@ -155,7 +156,8 @@ void Koopas::GetRedKoopasAni(int& IdAni)
 		if (vx > 0)IdAni = ID_ANI_REDKOOPAS_WALKING_RIGHT;
 		else IdAni = ID_ANI_REDKOOPAS_WALKING_LEFT;
 	}
-	else if (state == KOOPAS_STATE_INSHELL || state == KOOPAS_STATE_DIE_BY_SHELL || state == KOOPAS_STATE_ATTACKED_BY_TAIL)IdAni = ID_ANI_REDKOOPAS_INSHELL;
+	else if (IsAttackedByTail)IdAni = ID_ANI_REDKOOPAS_ATTACKED_BY_TAIL;
+	else if (state == KOOPAS_STATE_INSHELL || state == KOOPAS_STATE_DIE_BY_SHELL)IdAni = ID_ANI_REDKOOPAS_INSHELL;
 	else if (state == KOOPAS_STATE_INSHELL_ATTACK)IdAni = ID_ANI_REDKOOPAS_INSHELL_ATTACK;
 	else if (state == KOOPAS_STATE_REBORN) IdAni = ID_ANI_REDKOOPAS_REBORN;
 }
@@ -178,6 +180,7 @@ void Koopas::SetState(int state)
 		IsAttack = true;
 		InShell = false;
 		isHold = false;
+		IsAttackedByTail = false;
 		y -= (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HIDDEN) / 2;
 		break;
 	case KOOPAS_STATE_INSHELL:
