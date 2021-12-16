@@ -335,7 +335,8 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 				}
 			}
 			else {
-				vy = 0;
+				vy = -MARIO_JUMP_DEFLECT_SPEED;
+				koopas->SetSpeed(0,0);
 				koopas->level = NORMAL_KOOPAS;
 				koopas->SetState(KOOPAS_STATE_WALKING);
 			}

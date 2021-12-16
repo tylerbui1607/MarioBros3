@@ -73,7 +73,7 @@ void Koopas::OnCollisionWith(LPCOLLISIONEVENT e, DWORD dt)
 		if (level == PARA_KOOPAS)
 		{
 			if (e->ny < 0)
-				vy = -0.2;
+				vy = -0.25;
 		}
 		else {
 			vy = 0;
