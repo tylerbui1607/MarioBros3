@@ -10,6 +10,9 @@
 
 #include "debug.h"
 
+#define HIDDEN_MAP_START_POS_X	2116
+#define HIDDEN_MAP_START_POS_Y	480
+
 #define MARIO_WALKING_SPEED		0.1f
 #define MARIO_RUNNING_SPEED		0.3f
 
@@ -60,6 +63,7 @@
 #define RACOON_STATE_TRANSFORM_MARIO		902
 
 #define MARIO_STATE_RELEASE_KOOPAS	1000
+#define MARIO_STATE_GO_IN_HIDDEN_MAP 1100
 
 
 #pragma region ANIMATION_ID
@@ -235,10 +239,10 @@ class CMario : public CGameObject
 
 public:
 	bool isFlying;
-
+	bool canGotoHiddenMap,goingHidden, IsInHiddenMap;
 	int untouchable;
 	bool CheckMarioIsOnPlatform() { return isOnPlatform; };
-
+	float StartY;
 	CMario(float x, float y) : CGameObject(x, y)
 	{
 		isSitting = false;
@@ -249,12 +253,13 @@ public:
 		level = MARIO_LEVEL_SMALL;
 		untouchable = 0;
 		untouchable_start = -1;
-		isOnPlatform = false;
+		canGotoHiddenMap = goingHidden = isOnPlatform = false;
 		coin = 0;
 		speedStack = 0;
 		AttackTime = SpeedStackTime = 0;
 		tail = new MarioTail();
 		level = MARIO_LEVEL_RACOON;
+		StartY = 0;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
@@ -314,4 +319,5 @@ public:
 	}
 	void HandleMarioIsAttacked();
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	void HandleMarioGoInHiddenMap(DWORD dt);
 };

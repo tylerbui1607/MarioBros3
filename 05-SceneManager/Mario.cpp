@@ -13,49 +13,69 @@
 
 #include "BreakableBrick.h"
 #include "Collision.h"
+#include "PortalOfPipe.h"
 #include "HUD.h"
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	vy += ay * dt;
-	vx += ax * dt;
-	if (abs(vx) > abs(maxVx) && state != MARIO_STATE_IDLE) vx = maxVx;
-	if (state == MARIO_STATE_IDLE) {
-		if (nx > 0 && vx < 0) { vx = 0; ax = 0; }
-		else if (nx < 0 && vx > 0) { vx = 0; ax = 0; }
-	}
-	
-	if (IsSlowFalling)
+	if (!goingHidden)
 	{
-		if (GetTickCount64() - SlowFallingTime >= MARIO_SLOWFALLING_TIME)
-		{
-			IsSlowFalling = false;
-			SetState(MARIO_STATE_RELEASE_JUMP);
+		vy += ay * dt;
+		vx += ax * dt;
+		if (abs(vx) > abs(maxVx) && state != MARIO_STATE_IDLE) vx = maxVx;
+		if (state == MARIO_STATE_IDLE) {
+			if (nx > 0 && vx < 0) { vx = 0; ax = 0; }
+			else if (nx < 0 && vx > 0) { vx = 0; ax = 0; }
 		}
-	}
-	if (IsFalling)
-	{
-		if (GetTickCount64() - FallingTime >= MARIO_SLOWFALLING_TIME)
+
+		if (IsSlowFalling)
 		{
-			IsFalling = false;
-			SetState(MARIO_STATE_RELEASE_JUMP);
+			if (GetTickCount64() - SlowFallingTime >= MARIO_SLOWFALLING_TIME)
+			{
+				IsSlowFalling = false;
+				SetState(MARIO_STATE_RELEASE_JUMP);
+			}
 		}
-	}
-	if (state == MARIO_STATE_TRANSFORM_RACOON || state == RACOON_STATE_TRANSFORM_MARIO)
-	{
-		if (GetTickCount64() - effectTime > RACOON_IS_ATTACKED_TIME)
+		if (IsFalling)
 		{
-			if (state == RACOON_STATE_TRANSFORM_MARIO)
-				level = MARIO_LEVEL_BIG;
-			else
-				level = MARIO_LEVEL_RACOON;
-			ay = MARIO_GRAVITY;
-			SetState(MARIO_STATE_IDLE);
+			if (GetTickCount64() - FallingTime >= MARIO_SLOWFALLING_TIME)
+			{
+				IsFalling = false;
+				SetState(MARIO_STATE_RELEASE_JUMP);
+			}
 		}
-	}
-	if (isFlying)
-	{
-		Camera::GetInstance()->IsFollowingMario = true;
-		if (y - CGame::GetInstance()->GetBackBufferHeight() / 2 < 240)
+		if (state == MARIO_STATE_TRANSFORM_RACOON || state == RACOON_STATE_TRANSFORM_MARIO)
+		{
+			if (GetTickCount64() - effectTime > RACOON_IS_ATTACKED_TIME)
+			{
+				if (state == RACOON_STATE_TRANSFORM_MARIO)
+					level = MARIO_LEVEL_BIG;
+				else
+					level = MARIO_LEVEL_RACOON;
+				ay = MARIO_GRAVITY;
+				SetState(MARIO_STATE_IDLE);
+			}
+		}
+		if (isFlying)
+		{
+			Camera::GetInstance()->IsFollowingMario = true;
+			if (y - CGame::GetInstance()->GetBackBufferHeight() / 2 < 240)
+			{
+				if (y - CGame::GetInstance()->GetBackBufferHeight() / 2 < 0)
+					Camera::GetInstance()->cam_y = 0;
+				else if (!isOnPlatform)
+				{
+					Camera::GetInstance()->cam_vy = vy;
+					Camera::GetInstance()->Update(dt);
+				}
+			}
+			else { Camera::GetInstance()->cam_y = 240; }
+			if (GetTickCount64() - FlyingTime >= 3000)
+			{
+				isFlying = false;
+				if (!isOnPlatform)SetState(MARIO_STATE_RELEASE_JUMP);
+			}
+		}
+		if (Camera::GetInstance()->cam_y < 240 && !isFlying)
 		{
 			if (y - CGame::GetInstance()->GetBackBufferHeight() / 2 < 0)
 				Camera::GetInstance()->cam_y = 0;
@@ -65,124 +85,117 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				Camera::GetInstance()->Update(dt);
 			}
 		}
-		else { Camera::GetInstance()->cam_y = 240; }
-		if (GetTickCount64() - FlyingTime >= 3000)
-		{
-			isFlying = false;
-			if (!isOnPlatform)SetState(MARIO_STATE_RELEASE_JUMP);
+		else {
+			if (!isFlying)
+			{
+				Camera::GetInstance()->IsFollowingMario = false;
+			}
 		}
-	}
-	if (Camera::GetInstance()->cam_y < 240 && !isFlying)
-	{
-		if (y - CGame::GetInstance()->GetBackBufferHeight() / 2 < 0)
-			Camera::GetInstance()->cam_y = 0;
-		else if (!isOnPlatform)
+		if (abs(ax) == MARIO_ACCEL_RUN_X && abs(vx) > MARIO_WALKING_SPEED)
 		{
-			Camera::GetInstance()->cam_vy = vy;
-			Camera::GetInstance()->Update(dt);
-		}
-	}
-	else  {
-		if (!isFlying)
-		{
-			Camera::GetInstance()->IsFollowingMario = false;
-		}
-	}
-	if (abs(ax) == MARIO_ACCEL_RUN_X && abs(vx) > MARIO_WALKING_SPEED)
-	{
-		IncreaseSpeedStack();
-	}
-	else {
-		if (speedStack > 0)
-		{
-			if(!isFlying)
-			DecreaseSpeedStack();
-		}
-	}
-	// reset untouchable timer if untouchable time has passed
-	if ( GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
-	{
-		untouchable_start = 0;
-		untouchable = 0;
-	}
-	if (IsKickKoopas)
-	{
-		if (GetTickCount64() - KickKoopasTime >= MARIO_KICK_KOOPAS_TIME)
-		{
-			IsKickKoopas = false;
-		}
-	}
-
-	isOnPlatform = false;
-	CCollision::GetInstance()->Process(this, dt, coObjects);
-	if (IsAttack)
-	{
-		if (nx > 0)
-			tail->SetPosition(x + MARIO_BIG_BBOX_WIDTH / 2 + TAIL_BBOX_WIDTH / 2, y + TAIL_BBOX_HEIGHT * 2);
-		else
-			tail->SetPosition(x - MARIO_BIG_BBOX_WIDTH / 2 - TAIL_BBOX_WIDTH / 2, y + TAIL_BBOX_HEIGHT * 2);
-		tail->nx = nx;
-
-		tail->Update(dt, coObjects);
-		if (GetTickCount64() - AttackTime >= RACOON_ATTACK_TIME)
-		{
-			IsAttack = false;
-		}
-	}
-
-	HUD::GetInstance()->speedStack = speedStack;
-	HUD::GetInstance()->MarioIsFlying = isFlying;
-
-	if (isHoldingKoopas)
-	{
-		float koopasY,koopasX;
-		if (level == MARIO_LEVEL_SMALL)
-			koopasY = y - (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
-		else
-			koopasY = y;
-		if (level == MARIO_LEVEL_RACOON)
-		{
-			koopasX = x;
+			IncreaseSpeedStack();
 		}
 		else {
-			if (nx > 0)
-				koopasX = x - KOOPAS_BBOX_WIDTH / 4;
-			else
-				koopasX = x + KOOPAS_BBOX_WIDTH / 4;
-		}
-		if (nx > 0)
-			koopasHold->SetPosition(koopasX + MARIO_BIG_BBOX_WIDTH / 2 + KOOPAS_BBOX_WIDTH/2, koopasY);
-		else
-			koopasHold->SetPosition(koopasX - MARIO_BIG_BBOX_WIDTH, koopasY);
-		if (koopasHold->GetState() == KOOPAS_STATE_WALKING)
-		{
-			koopasHold->y -= (KOOPAS_BBOX_HEIGHT - MARIO_BIG_BBOX_HEIGHT) / 2;
-			isHoldingKoopas = false;
-			HandleMarioIsAttacked();
-		}
-	}
-	for (int i = 0; i < coObjects->size(); i++)
-	{
-		if (CCollision::GetInstance()->CheckAABB(this, coObjects->at(i)))
-		{
-			if (coObjects->at(i)->isitem)
+			if (speedStack > 0)
 			{
-				if (dynamic_cast<Mushroom*>(coObjects->at(i)))
+				if (!isFlying)
+					DecreaseSpeedStack();
+			}
+		}
+		// reset untouchable timer if untouchable time has passed
+		if (GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
+		{
+			untouchable_start = 0;
+			untouchable = 0;
+		}
+		if (IsKickKoopas)
+		{
+			if (GetTickCount64() - KickKoopasTime >= MARIO_KICK_KOOPAS_TIME)
+			{
+				IsKickKoopas = false;
+			}
+		}
+
+		isOnPlatform = false;
+		CCollision::GetInstance()->Process(this, dt, coObjects);
+		if (IsAttack)
+		{
+			if (nx > 0)
+				tail->SetPosition(x + MARIO_BIG_BBOX_WIDTH / 2 + TAIL_BBOX_WIDTH / 2, y + TAIL_BBOX_HEIGHT * 2);
+			else
+				tail->SetPosition(x - MARIO_BIG_BBOX_WIDTH / 2 - TAIL_BBOX_WIDTH / 2, y + TAIL_BBOX_HEIGHT * 2);
+			tail->nx = nx;
+
+			tail->Update(dt, coObjects);
+			if (GetTickCount64() - AttackTime >= RACOON_ATTACK_TIME)
+			{
+				IsAttack = false;
+			}
+		}
+
+		HUD::GetInstance()->speedStack = speedStack;
+		HUD::GetInstance()->MarioIsFlying = isFlying;
+
+		if (isHoldingKoopas)
+		{
+			float koopasY, koopasX;
+			if (level == MARIO_LEVEL_SMALL)
+				koopasY = y - (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
+			else
+				koopasY = y;
+			if (level == MARIO_LEVEL_RACOON)
+			{
+				koopasX = x;
+			}
+			else {
+				if (nx > 0)
+					koopasX = x - KOOPAS_BBOX_WIDTH / 4;
+				else
+					koopasX = x + KOOPAS_BBOX_WIDTH / 4;
+			}
+			if (nx > 0)
+				koopasHold->SetPosition(koopasX + MARIO_BIG_BBOX_WIDTH / 2 + KOOPAS_BBOX_WIDTH / 2, koopasY);
+			else
+				koopasHold->SetPosition(koopasX - MARIO_BIG_BBOX_WIDTH, koopasY);
+			if (koopasHold->GetState() == KOOPAS_STATE_WALKING)
+			{
+				koopasHold->y -= (KOOPAS_BBOX_HEIGHT - MARIO_BIG_BBOX_HEIGHT) / 2;
+				isHoldingKoopas = false;
+				HandleMarioIsAttacked();
+			}
+		}
+		canGotoHiddenMap = false;
+		for (int i = 0; i < coObjects->size(); i++)
+		{
+			if (CCollision::GetInstance()->CheckAABB(this, coObjects->at(i)))
+			{
+				if (coObjects->at(i)->isitem)
 				{
-					level = MARIO_LEVEL_BIG;
-					if(level == MARIO_LEVEL_SMALL)
-					y -=(MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT)/2 ;
-					coObjects->at(i)->Delete();
+					if (dynamic_cast<Mushroom*>(coObjects->at(i)))
+					{
+						level = MARIO_LEVEL_BIG;
+						if (level == MARIO_LEVEL_SMALL)
+							y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
+						coObjects->at(i)->Delete();
+					}
+					else if (dynamic_cast<Leaf*>(coObjects->at(i)))
+					{
+						if (level == MARIO_LEVEL_SMALL)
+							y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
+						SetState(MARIO_STATE_TRANSFORM_RACOON);
+						coObjects->at(i)->Delete();
+					}
 				}
-				else if (dynamic_cast<Leaf*>(coObjects->at(i)))
+				else if (dynamic_cast<PortalOfPipe*>(coObjects->at(i)))
 				{
-					if (level == MARIO_LEVEL_SMALL)
-						y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
-					SetState(MARIO_STATE_TRANSFORM_RACOON);
-					coObjects->at(i)->Delete();
+					canGotoHiddenMap = true;
+					StartY = y;
 				}
 			}
 		}
+	}
+	else {
+	HandleMarioGoInHiddenMap(dt);
 	}
 }
 
@@ -939,6 +952,9 @@ void CMario::SetState(int state)
 		koopasHold->SetPosition(koopasHold->x+KOOPAS_BBOX_WIDTH/8,koopasY);
 		koopasHold->SetState(KOOPAS_STATE_INSHELL_ATTACK);
 		break;
+	case MARIO_STATE_GO_IN_HIDDEN_MAP:
+		goingHidden = true;
+		break;
 	}
 
 	CGameObject::SetState(state);
@@ -1008,6 +1024,23 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 			bottom = top + MARIO_BIG_BBOX_HEIGHT;
 		}
 	}
+}
+
+void CMario::HandleMarioGoInHiddenMap(DWORD dt)
+{
+	vy = 0.1;
+	vx = 0;
+	if (y - StartY >= MARIO_BIG_BBOX_HEIGHT)
+	{
+		SetPosition(HIDDEN_MAP_START_POS_X, HIDDEN_MAP_START_POS_Y);
+		StartY = 1000;
+		IsInHiddenMap = true;
+	}
+	if (y - HIDDEN_MAP_START_POS_Y >= MARIO_BIG_BBOX_HEIGHT)
+	{
+		goingHidden = false;
+	}
+	y += vy * dt;
 }
 
 void CMario::SetLevel(int l)

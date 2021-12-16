@@ -354,7 +354,7 @@ void CPlayScene::Update(DWORD dt)
 	cy -= game->GetBackBufferHeight() / 2;
 
 	if (cx < 0) cx = 0;
-	
+	CMario* mario = dynamic_cast<CMario*>(player);
 	//dirty way have to improve
 	if (cx + game->GetBackBufferWidth() >= 2816)cx = 2816 - game->GetBackBufferWidth();
 	if (player->x <= MARIO_BIG_BBOX_WIDTH / 2)player->x = MARIO_BIG_BBOX_WIDTH/2;
@@ -362,6 +362,10 @@ void CPlayScene::Update(DWORD dt)
 		Camera::GetInstance()->SetCamPos(cx, 240.0f /*cy*/);
 	else
 		Camera::GetInstance()->SetCamPosX(cx);
+	if (mario->IsInHiddenMap)
+	{
+		Camera::GetInstance()->SetCamPos(cx, 464 /*cy*/);
+	}
 	PurgeDeletedObjects();
 }
 
