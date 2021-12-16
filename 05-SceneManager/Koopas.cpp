@@ -25,8 +25,7 @@ void Koopas::GetBoundingBox(float& left, float& top, float& right, float& bottom
 
 void Koopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (y > 500)
-		isDeleted = true;
+	HandleKoopasDropOut();
 	HandleKoopasReborn();
 	if (!isHold)
 	{
@@ -73,7 +72,7 @@ void Koopas::OnCollisionWith(LPCOLLISIONEVENT e, DWORD dt)
 		if (level == PARA_KOOPAS)
 		{
 			if (e->ny < 0)
-				vy = -0.25;
+				vy = -KOOPAS_JUMP_SPEED;
 		}
 		else {
 			vy = 0;
@@ -151,10 +150,10 @@ void Koopas::GetKoopasAni(int& IdAni)
 		if (vx > 0)IdAni = ID_ANI_KOOPAS_WALKING_RIGHT;
 		else IdAni = ID_ANI_KOOPAS_WALKING_LEFT;
 	}
+	else if (state == KOOPAS_STATE_REBORN) IdAni = ID_ANI_KOOPAS_REBORN;
 	else if (IsAttackedByTail)IdAni = ID_ANI_KOOPAS_ATTACKED_BY_TAIL;
 	else if (state == KOOPAS_STATE_INSHELL || state == KOOPAS_STATE_DIE_BY_SHELL)IdAni = ID_ANI_KOOPAS_INSHELL;
 	else if (state == KOOPAS_STATE_INSHELL_ATTACK)IdAni = ID_ANI_KOOPAS_INSHELL_ATTACK;
-	else if (state == KOOPAS_STATE_REBORN) IdAni = ID_ANI_KOOPAS_REBORN;
 }
 
 void Koopas::GetRedKoopasAni(int& IdAni)
@@ -164,10 +163,11 @@ void Koopas::GetRedKoopasAni(int& IdAni)
 		if (vx > 0)IdAni = ID_ANI_REDKOOPAS_WALKING_RIGHT;
 		else IdAni = ID_ANI_REDKOOPAS_WALKING_LEFT;
 	}
+	else if (state == KOOPAS_STATE_REBORN) IdAni = ID_ANI_REDKOOPAS_REBORN;
 	else if (IsAttackedByTail)IdAni = ID_ANI_REDKOOPAS_ATTACKED_BY_TAIL;
 	else if (state == KOOPAS_STATE_INSHELL || state == KOOPAS_STATE_DIE_BY_SHELL)IdAni = ID_ANI_REDKOOPAS_INSHELL;
 	else if (state == KOOPAS_STATE_INSHELL_ATTACK)IdAni = ID_ANI_REDKOOPAS_INSHELL_ATTACK;
-	else if (state == KOOPAS_STATE_REBORN) IdAni = ID_ANI_REDKOOPAS_REBORN;
+	
 }
 
 void Koopas::GetParaKoopasAni(int& IdAni)

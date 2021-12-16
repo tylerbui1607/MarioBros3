@@ -350,21 +350,21 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 			{
 				HandleMarioIsAttacked();
 			}
-			else if (e->nx != 0)
+		}
+		if (e->nx != 0 && !koopas->IsAttack)
+		{
+			if (abs(ax) == MARIO_ACCEL_WALK_X)
 			{
-				if (abs(ax) == MARIO_ACCEL_WALK_X)
-				{
-					koopas->nx = nx;
-					SetState(MARIO_STATE_KICKKOOPAS);
-					koopas->SetState(KOOPAS_STATE_INSHELL_ATTACK);
-				}
-				else if (abs(ax) == MARIO_ACCEL_RUN_X)
-				{
-					koopas->SetSpeed(0, 0);
-					isHoldingKoopas = true;
-					koopas->isHold = true;
-					koopasHold = dynamic_cast<Koopas*>(e->obj);
-				}
+				koopas->nx = nx;
+				SetState(MARIO_STATE_KICKKOOPAS);
+				koopas->SetState(KOOPAS_STATE_INSHELL_ATTACK);
+			}
+			else if (abs(ax) == MARIO_ACCEL_RUN_X)
+			{
+				koopas->SetSpeed(0, 0);
+				isHoldingKoopas = true;
+				koopas->isHold = true;
+				koopasHold = dynamic_cast<Koopas*>(e->obj);
 			}
 		}
 	}
@@ -1054,7 +1054,7 @@ void CMario::HandleMarioGoInHiddenMap(DWORD dt)
 {
 	if (goInHidden)
 	{
-		vy = 0.05;
+		vy = MARIO_GO_HIDDEN_MAP_SPEED;
 		vx = 0;
 		if (y - StartY >= MARIO_BIG_BBOX_HEIGHT)
 		{
@@ -1069,7 +1069,7 @@ void CMario::HandleMarioGoInHiddenMap(DWORD dt)
 	}
 	else if(goOutHidden)
 	{
-		vy = -0.05;
+		vy = -MARIO_GO_HIDDEN_MAP_SPEED;
 		vx = 0;
 		if (StartY - y >= MARIO_BIG_BBOX_HEIGHT)
 		{
@@ -1077,7 +1077,7 @@ void CMario::HandleMarioGoInHiddenMap(DWORD dt)
 			SetPosition(HIDDEN_MAP_OUT_POS_X, HIDDEN_MAP_OUT_POS_Y);
 			StartY = 0;
 		}
-		if (HIDDEN_MAP_OUT_POS_Y - y>= 32)
+		if (HIDDEN_MAP_OUT_POS_Y - y>= PORTAL_OF_PIPE_BBOX_SIZE*2)
 		{
 			goOutHidden = false;
 		}

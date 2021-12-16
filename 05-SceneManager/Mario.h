@@ -10,6 +10,8 @@
 
 #include "debug.h"
 
+#define MARIO_GO_HIDDEN_MAP_SPEED 0.05
+
 #define HIDDEN_MAP_START_POS_X	2116
 #define HIDDEN_MAP_START_POS_Y	480
 
@@ -244,7 +246,13 @@ class CMario : public CGameObject
 
 	DWORD FlyingTime;
 
+
 public:
+	void Reset()
+	{
+		y = 240;
+		level = MARIO_LEVEL_RACOON;
+	}
 	bool isFlying;
 	bool canGotoHiddenMap,goInHidden, goOutHidden, IsInHiddenMap;
 	int untouchable;

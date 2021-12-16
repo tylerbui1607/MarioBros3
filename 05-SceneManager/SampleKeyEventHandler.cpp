@@ -51,14 +51,14 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		case DIK_0:
 			mario->SetState(MARIO_STATE_DIE);
 			break;
-		case DIK_R: // reset
-			//Reload();
-			break;
 		case DIK_A:
 			mario->SetState(MARIO_STATE_ATTACK);
 			break;
 		case DIK_H:
 			mario->SetState(MARIO_STATE_GO_IN_HIDDEN_MAP);
+			break;
+		case DIK_R:
+			mario->Reset();
 			break;
 		}
 	}
@@ -96,7 +96,7 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 	{
 		if (game->IsKeyDown(DIK_RIGHT))
 		{
-			if (game->IsKeyDown(DIK_A) && mario->CheckMarioIsOnPlatform())
+			if (game->IsKeyDown(DIK_A) && !mario->CheckIsFlying())
 			{
 					mario->SetState(MARIO_STATE_RUNNING_RIGHT);
 			}

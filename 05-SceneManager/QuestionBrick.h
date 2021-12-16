@@ -40,8 +40,11 @@ public:
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL) {
 
-		if (startY - y >= QUESTION_BRICK_UP)
+		if (startY - y > QUESTION_BRICK_UP)
+		{
 			vy = -vy;
+			y = startY - QUESTION_BRICK_UP;
+		}
 		if (vy > 0 && y >= startY) {
 			SetState(QUESTION_BRICK_STATE_INNITED);
 		}

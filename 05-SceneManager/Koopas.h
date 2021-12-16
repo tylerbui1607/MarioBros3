@@ -38,6 +38,8 @@
 #define KOOPAS_BBOX_HEIGHT 28
 #define KOOPAS_BBOX_HIDDEN 14
 
+#define KOOPAS_JUMP_SPEED 0.25
+
 #define KOOPAS_WAITING_REBORN_TIME	4000
 class Koopas : public CGameObject
 {
@@ -90,4 +92,8 @@ public:
 	bool IsAttack;
 	Koopas(float x, float y, int Level);
 	virtual void SetState(int state);
+	void HandleKoopasDropOut() {
+		if (y > 500)
+			y = 1000;
+	};
 };
