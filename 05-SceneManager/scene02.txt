@@ -63,6 +63,8 @@ brick.txt
 
 7	664	392	2
 
+7	1448	128	2
+
 7	1480	368	2
 #ColorBox
 6	264	392	48	48
@@ -85,6 +87,9 @@ brick.txt
 #FirePiranhaPlant
 21	368	392
 21	1872	392
+
+#PiranhaPlant
+22	1808	400
 #Portal_Of_Pipe
 51	2272	100	0
 51	2336	500	1
