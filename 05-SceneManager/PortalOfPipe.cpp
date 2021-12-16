@@ -2,7 +2,6 @@
 
 void PortalOfPipe::Render()
 {
-	RenderBoundingBox();
 }
 
 void PortalOfPipe::GetBoundingBox(float& l, float& t, float& r, float& b)
