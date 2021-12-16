@@ -11,6 +11,7 @@
 #include "Leaf.h"
 #include "ButtonP.h"
 
+#include "PiranhaPlant.h"
 #include "BreakableBrick.h"
 #include "Collision.h"
 #include "PortalOfPipe.h"
@@ -238,6 +239,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e,DWORD dt)
 	else if (dynamic_cast<Koopas*>(e->obj))
 		OnCollisionWithKoopas(e);
 	else if (dynamic_cast<FirePiranhaPlant*>(e->obj))
+		OnCollisionWithPlant(e);
+	else if (dynamic_cast<PiranhaPlant*>(e->obj))
 		OnCollisionWithPlant(e);
 	else if (e->obj->isitem)
 		OnCollisionWithItem(e);
