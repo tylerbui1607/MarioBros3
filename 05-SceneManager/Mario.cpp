@@ -334,6 +334,11 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 					break;
 				}
 			}
+			else {
+				vy = 0;
+				koopas->level = NORMAL_KOOPAS;
+				koopas->SetState(KOOPAS_STATE_WALKING);
+			}
 		}
 	}
 	else // hit by Koopas

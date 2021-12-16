@@ -19,6 +19,8 @@
 #define ID_ANI_KOOPAS_INSHELL_ATTACK	30003
 #define ID_ANI_KOOPAS_REBORN	30009
 #define ID_ANI_KOOPAS_ATTACKED_BY_TAIL	30011
+#define ID_ANI_KOOPAS_HAVE_WING_LEFT	30012
+#define ID_ANI_KOOPAS_HAVE_WING_RIGHT	30013
 
 #define ID_ANI_REDKOOPAS_WALKING_RIGHT	30004
 #define ID_ANI_REDKOOPAS_WALKING_LEFT	30005
@@ -65,6 +67,7 @@ protected:
 
 	void GetKoopasAni(int& IdAni);
 	void GetRedKoopasAni(int& IdAni);
+	void GetParaKoopasAni(int& IdAni);
 	void HandleKoopasReborn() {
 		if (state == KOOPAS_STATE_INSHELL)
 		{

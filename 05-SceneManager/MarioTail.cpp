@@ -57,6 +57,7 @@ void MarioTail::OnCollisionWithKoopas(LPGAMEOBJECT& obj)
 {
 	Koopas* koopas = dynamic_cast<Koopas*>(obj);
 	koopas->nx = nx;
+	if (koopas->level == PARA_KOOPAS) koopas->level = NORMAL_KOOPAS;
 	koopas->SetState(KOOPAS_STATE_ATTACKED_BY_TAIL);
 	IsActive = false;
 }
