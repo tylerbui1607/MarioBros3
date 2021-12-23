@@ -7,6 +7,7 @@
 #include "Mario.h"
 #include "Goomba.h"
 #include "FirePiranhaPlant.h"
+#include "Leaf.h"
 //#include "Koopas.h"
 
 
@@ -17,7 +18,7 @@ protected:
 	LPGAMEOBJECT player;					
 
 	vector<LPGAMEOBJECT> objects;
-	vector<LPGAMEOBJECT> Bricks;
+	vector<LPGAMEOBJECT> Pipes;
 
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
@@ -49,10 +50,19 @@ public:
 		 {
 			if (QBrick->Item > 1)
 			{
-				Mushroom* mushroom = new Mushroom(BrickX, BrickY);
-				mushroom->SetState(MUSHROOOM_STATE_BEING_INNITED);
-				objects[index] = mushroom;
-				objects.push_back(QBrick);
+				if (mario->GetMarioLevel() == MARIO_LEVEL_SMALL)
+				{
+					Mushroom* mushroom = new Mushroom(BrickX, BrickY);
+					mushroom->SetState(MUSHROOOM_STATE_BEING_INNITED);
+					objects[index] = mushroom;
+					objects.push_back(QBrick);
+				}
+				else
+				{
+					Leaf* leaf = new Leaf(BrickX, BrickY);
+					leaf->SetState(LEAF_STATE_INNIT);
+					objects.push_back(leaf);
+				}
 			}
 			else QBrick->InitCoin = true;
 

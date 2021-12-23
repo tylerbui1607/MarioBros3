@@ -52,6 +52,9 @@
     <Filter Include="Player">
       <UniqueIdentifier>{ae02b6a9-2c4e-4f99-9f10-03f5bde0b757}</UniqueIdentifier>
     </Filter>
+    <Filter Include="hud">
+      <UniqueIdentifier>{a631b1a4-ea51-4c60-affb-9085452acc32}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -64,9 +67,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Animations.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Brick.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Collision.cpp">
@@ -132,19 +132,43 @@
     <ClCompile Include="Coin.cpp">
       <Filter>Item</Filter>
     </ClCompile>
-    <ClCompile Include="Pipe.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="FirePiranhaPlant.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="FireBullet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Mario.cpp">
       <Filter>Player</Filter>
     </ClCompile>
+    <ClCompile Include="Leaf.cpp">
+      <Filter>Item</Filter>
+    </ClCompile>
+    <ClCompile Include="BreakableBrick.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="MarioTail.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="BreakableBrickEffect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ButtonP.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+    <ClCompile Include="FirePiranhaPlant.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Brick.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+    <ClCompile Include="Pipe.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
+    <ClCompile Include="FireBullet.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="HUD.cpp">
+      <Filter>hud</Filter>
+    </ClCompile>
+    <ClCompile Include="PortalOfPipe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PiranhaPlant.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -236,19 +260,40 @@
     <ClInclude Include="Coin.h">
       <Filter>Item</Filter>
     </ClInclude>
-    <ClInclude Include="Pipe.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FirePiranhaPlant.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FireBullet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Mario.h">
       <Filter>Player</Filter>
     </ClInclude>
+    <ClInclude Include="Leaf.h">
+      <Filter>Item</Filter>
+    </ClInclude>
+    <ClInclude Include="BreakableBrick.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="MarioTail.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="BreakableBrickEffect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FirePiranhaPlant.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Pipe.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="FireBullet.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="ButtonP.h">
+      <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="HUD.h">
+      <Filter>hud</Filter>
+    </ClInclude>
+    <ClInclude Include="PortalOfPipe.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PiranhaPlant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

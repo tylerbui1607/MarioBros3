@@ -76,18 +76,6 @@ void Map::Draw()
 			}
 		}
 	}
-	/*else
-	{
-		for (UINT i = 0; i < Num_Rows; i++)
-		{
-			for (UINT j = 0; j <Num_Cols; j++)
-			{
-				float x = Tile_Width * j;
-				float y = Tile_Height * i;
-				sprites->Get(tilemap[i][j] + Id)->DrawHUD(x, y);
-			}
-		}
-	}*/
 	
 }                                                                          
 

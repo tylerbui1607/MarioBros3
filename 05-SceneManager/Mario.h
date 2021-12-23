@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "QuestionBrick.h"
 #include "FirePiranhaPlant.h"
+#include "Koopas.h"
 
 #include "MarioTail.h"
 #include "Animation.h"
@@ -9,29 +10,37 @@
 
 #include "debug.h"
 
+#define MARIO_GO_HIDDEN_MAP_SPEED 0.05
+
+#define HIDDEN_MAP_START_POS_X	2116
+#define HIDDEN_MAP_START_POS_Y	480
+
+#define HIDDEN_MAP_OUT_POS_X	2336
+#define HIDDEN_MAP_OUT_POS_Y	400
+
 #define MARIO_WALKING_SPEED		0.1f
-#define MARIO_RUNNING_SPEED		0.2f
+#define MARIO_RUNNING_SPEED		0.3f
 
 #define MARIO_ACCEL_WALK_X	0.0005f
 #define MARIO_ACCEL_SLOWING_DOWN_X	0.00015f
 #define MARIO_ACCEL_RUN_X	0.0007f
 #define MARIO_FRICTION		0.006f
 
-#define MARIO_JUMP_SPEED_Y		0.6f
-#define MARIO_JUMP_RUN_SPEED_Y	0.7f
+#define MARIO_JUMP_SPEED_Y		0.4f
+#define MARIO_JUMP_RUN_SPEED_Y	0.45f
 
-#define MARIO_GRAVITY			0.002f
+#define MARIO_GRAVITY			0.001f
 
-#define MARIO_JUMP_DEFLECT_SPEED  0.5f
+#define MARIO_JUMP_DEFLECT_SPEED  0.3f
 #define MARIO_SLOW_FALLING_SPEED  0.02f
 
 #define MARIO_MAX_SPEED_STACK	7
 
-#define MARIO_SPEEDSTACK_TIME 250
+#define MARIO_SPEEDSTACK_TIME 140
 #define MARIO_KICK_KOOPAS_TIME 200
 #define MARIO_SLOWFALLING_TIME 300
 #define RACOON_ATTACK_TIME 250
-
+#define RACOON_IS_ATTACKED_TIME	600
 
 #define MARIO_STATE_DIE				-10
 #define MARIO_STATE_IDLE			0
@@ -54,6 +63,13 @@
 #define MARIO_STATE_SLOW_FALLING_RELEASE	303
 
 #define MARIO_STATE_FLYING	900
+
+#define MARIO_STATE_TRANSFORM_RACOON	901
+#define RACOON_STATE_TRANSFORM_MARIO		902
+
+#define MARIO_STATE_RELEASE_KOOPAS	1000
+#define MARIO_STATE_GO_IN_HIDDEN_MAP 1100
+#define MARIO_STATE_GO_OUT_HIDDEN_MAP 1200
 
 
 #pragma region ANIMATION_ID
@@ -83,6 +99,16 @@
 
 #define ID_ANI_MARIO_KICKKOOPAS_RIGHT	1701
 #define ID_ANI_MARIO_KICKKOOPAS_LEFT	1700
+
+#define ID_ANI_MARIO_HOLDKOOPAS_IDLE_RIGHT	1702
+#define ID_ANI_MARIO_HOLDKOOPAS_IDLE_LEFT	1703
+
+#define ID_ANI_MARIO_HOLDKOOPAS_WALK_RIGHT	1704
+#define ID_ANI_MARIO_HOLDKOOPAS_WALK_LEFT	1705
+
+#define ID_ANI_MARIO_HOLDKOOPAS_JUMP_RIGHT	1706
+#define ID_ANI_MARIO_HOLDKOOPAS_JUMP_LEFT	1707
+
 // SMALL MARIO
 #define ID_ANI_MARIO_SMALL_IDLE_RIGHT 1100
 #define ID_ANI_MARIO_SMALL_IDLE_LEFT 1102
@@ -134,6 +160,26 @@
 
 #define ID_ANI_RACOON_ATTACK_RIGHT	1918
 #define ID_ANI_RACOON_ATTACK_LEFT	1919
+
+#define ID_ANI_RACOON_FALLING_FLYING_RIGHT 1920
+#define ID_ANI_RACOON_FALLING_FLYING_LEFT 1921
+
+#define ID_ANI_RACOON_EFFECT_WHEN_ATTACKED	1922
+
+#define ID_ANI_RACOON_KICKKOOPAS_RIGHT	1923
+#define ID_ANI_RACOON_KICKKOOPAS_LEFT	1924
+
+#define ID_ANI_RACOON_HOLDINGKOOPAS_IDLE_RIGHT	1925
+#define ID_ANI_RACOON_HOLDINGKOOPAS_IDLE_LEFT	1926
+
+#define ID_ANI_RACOON_HOLDINGKOOPAS_WALKING_RIGHT	1927
+#define ID_ANI_RACOON_HOLDINGKOOPAS_WALKING_LEFT	1928
+
+#define ID_ANI_RACOON_HOLDINGKOOPAS_JUMPING_RIGHT	1929
+#define ID_ANI_RACOON_HOLDINGKOOPAS_JUMPING_LEFT	1930
+
+#define ID_ANI_RACOON_GO_HIDDEN_MAP	1932
+
 #pragma endregion
 
 #define GROUND_Y 160.0f
@@ -167,11 +213,12 @@ class CMario : public CGameObject
 
 	bool IsSlowFalling, IsFalling;
 	DWORD SlowFallingTime, FallingTime;
-	bool isFly;
+	bool isFly,isHoldingKoopas;
 	int speedStack;
-	
 	MarioTail* tail;
+	Koopas* koopasHold;
 
+	DWORD effectTime;
 	DWORD SpeedStackTime;
 
 	int level; 
@@ -185,6 +232,8 @@ class CMario : public CGameObject
 	void OnCollisionWithKoopas(LPCOLLISIONEVENT e);
 	void OnCollisionWithItem(LPCOLLISIONEVENT e);
 	void OnCollisionWithPlant(LPCOLLISIONEVENT e);
+	void OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e);
+	void OnCollisionWithButtonP(LPCOLLISIONEVENT e);
 
 	bool IsAttack;
 	DWORD AttackTime;
@@ -197,12 +246,18 @@ class CMario : public CGameObject
 
 	DWORD FlyingTime;
 
-public:
-	bool isFlying;
 
+public:
+	void Reset()
+	{
+		y = 240;
+		level = MARIO_LEVEL_RACOON;
+	}
+	bool isFlying;
+	bool canGotoHiddenMap,goInHidden, goOutHidden, IsInHiddenMap;
 	int untouchable;
 	bool CheckMarioIsOnPlatform() { return isOnPlatform; };
-
+	float StartY;
 	CMario(float x, float y) : CGameObject(x, y)
 	{
 		isSitting = false;
@@ -213,12 +268,13 @@ public:
 		level = MARIO_LEVEL_SMALL;
 		untouchable = 0;
 		untouchable_start = -1;
-		isOnPlatform = false;
+		canGotoHiddenMap = goInHidden = goOutHidden = isOnPlatform = false;
 		coin = 0;
 		speedStack = 0;
 		AttackTime = SpeedStackTime = 0;
 		tail = new MarioTail();
 		level = MARIO_LEVEL_RACOON;
+		StartY = 0;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
@@ -266,5 +322,17 @@ public:
 	{
 		return speedStack;
 	}
+	bool CheckMarioHoldKoopas() {
+		return isHoldingKoopas;
+	}
+	bool CheckIsSitting() {
+		return isSitting;
+	}
+	bool CheckIsFlying()
+	{
+		return isFlying;
+	}
+	void HandleMarioIsAttacked();
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	void HandleMarioGoInHiddenMap(DWORD dt);
 };

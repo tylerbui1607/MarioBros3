@@ -2,7 +2,7 @@
 #include "GameObject.h"
 
 #define TAIL_BBOX_WIDTH 8
-#define TAIL_BBOX_HEIGHT 5
+#define TAIL_BBOX_HEIGHT 3
 
 class MarioTail :
     public CGameObject
@@ -11,7 +11,7 @@ public:
 	float ax;
 	float ay;
 
-	bool IsAttack;
+	bool IsActive;
 
 	DWORD attackTime;
 
@@ -26,6 +26,7 @@ public:
 	void OnCollisionWithGoomba(LPGAMEOBJECT& obj);
 	void OnCollisionWithQuestionBrick(LPGAMEOBJECT& obj);
 	void OnCollisionWithKoopas(LPGAMEOBJECT& obj);
+	void OnCollisionWithBreakableBrick(LPGAMEOBJECT& obj);
 
 public:
 	int level, goombaPhase;

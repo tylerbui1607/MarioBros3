@@ -14,9 +14,12 @@
 #include "ColorBox.h"
 #include "Koopas.h"
 #include "Pipe.h"
+#include "BreakableBrick.h"
+#include "PortalOfPipe.h"
+#include "PiranhaPlant.h"
 
 #include "SampleKeyEventHandler.h"
-
+#include "HUD.h"
 using namespace std;
 
 
@@ -163,11 +166,31 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	}
 	case OBJECT_TYPE_FIREPIRANHAPLANT: {obj = new FirePiranhaPlant(x, y); break; }
-	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
+	case OBJECT_TYPE_PIRANHAPLANT: {obj = new PiranhaPlant(x, y); break; }
+	case OBJECT_TYPE_COIN: {
+		int type = atoi(tokens[3].c_str());
+		obj = new CCoin(x, y, type);
+		break;
+	}
 	case OBJECT_TYPE_PIPE:{
 		int width = atoi(tokens[3].c_str());
 		int height = atoi(tokens[4].c_str());
-		obj = new Pipe(x, y, width, height);
+		int allowRender = atoi(tokens[5].c_str());
+		int type = atoi(tokens[6].c_str());
+		obj = new Pipe(x, y, width, height, allowRender, type);
+		Pipes.push_back(obj);
+		break;
+	}
+	case OBJECT_TYPE_BREAKBLEBRICK: {
+		bool HaveButton = false;
+		int Item = atoi(tokens[3].c_str());
+		if (Item == 1)
+		{
+			HaveButton = true;
+			ButtonP* buttonP = ButtonP::GetInstance();
+			objects.push_back(buttonP);
+		}
+		obj = new BreakableBrick(x, y, HaveButton);
 		break;
 	}
 	case OBJECT_TYPE_PLATFORM:
@@ -202,9 +225,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		float b = (float)atof(tokens[4].c_str());
 		int scene_id = atoi(tokens[5].c_str());
 		obj = new CPortal(x, y, r, b, scene_id);
+		break;
 	}
-	break;
-
+	case OBJECT_TYPE_PORTAL_OF_PIPE:
+	{
+		int gate = atoi(tokens[3].c_str());
+		obj = new PortalOfPipe(x, y,gate);
+		break;
+	}
 
 	default:
 		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
@@ -284,7 +312,6 @@ void CPlayScene::Load()
 	}
 
 	f.close();
-
 	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
 }
 
@@ -318,7 +345,9 @@ void CPlayScene::Update(DWORD dt)
 			Fplant->GetEnemyPos(player->x, player->y);
 			objects[i]->Update(dt, &Mario);
 		}
-		else objects[i]->Update(dt, &coObjects);
+		else { 
+			objects[i]->Update(dt, &coObjects); 
+		}
 	}
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
@@ -333,20 +362,38 @@ void CPlayScene::Update(DWORD dt)
 	cy -= game->GetBackBufferHeight() / 2;
 
 	if (cx < 0) cx = 0;
-	
+	CMario* mario = dynamic_cast<CMario*>(player);
 	//dirty way have to improve
 	if (cx + game->GetBackBufferWidth() >= 2816)cx = 2816 - game->GetBackBufferWidth();
 	if (player->x <= MARIO_BIG_BBOX_WIDTH / 2)player->x = MARIO_BIG_BBOX_WIDTH/2;
-	Camera::GetInstance()->SetCamPos(cx, 240.0f /*cy*/);
-
+	if (!Camera::GetInstance()->IsFollowingMario)
+	{
+		Camera::GetInstance()->SetCamPos(cx, 240.0f /*cy*/);
+	}
+	else {
+		Camera::GetInstance()->SetCamPosX(cx);
+	}
+	if (mario->IsInHiddenMap)
+	{
+		Camera::GetInstance()->SetCamPos(cx, 464 /*cy*/);
+	}
 	PurgeDeletedObjects();
 }
 
 void CPlayScene::Render()
 {
 	map->Draw();
-	for (int i = 0; i < objects.size(); i++)
-		objects[i]->Render();
+	for (int i = 1; i < objects.size(); i++)
+	{
+		if(!dynamic_cast<Pipe*>(objects[i]))
+			objects[i]->Render();
+	}
+	objects[0]->Render();
+	for (int i = 0; i < Pipes.size(); i++)
+	{
+		Pipes[i]->Render();
+	}
+	HUD::GetInstance()->Draw();
 }
 
 /*

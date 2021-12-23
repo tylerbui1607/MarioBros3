@@ -19,7 +19,7 @@
 #define ID_ANI_QUESTION_BRICK_HAVEITEM	70000
 #define ID_ANI_QUESTION_BRICK_HAVENOITEM	70001
 
-#define QUESTION_BRICK_VY	0.03f
+#define QUESTION_BRICK_VY	0.05f
 #define COIN_UP_VY	0.1f
 class QuestionBrick : public CGameObject {
 public:
@@ -40,8 +40,11 @@ public:
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL) {
 
-		if (startY - y >= QUESTION_BRICK_UP)
+		if (startY - y > QUESTION_BRICK_UP)
+		{
 			vy = -vy;
+			y = startY - QUESTION_BRICK_UP;
+		}
 		if (vy > 0 && y >= startY) {
 			SetState(QUESTION_BRICK_STATE_INNITED);
 		}
@@ -49,7 +52,7 @@ public:
 		{
 			if (coinUpTime == 0)
 			{
-				coin = new CCoin(x, y - 16);
+				coin = new CCoin(x, y - 16, 1);
 				coin->SetSpeed(0, -COIN_UP_VY);
 				coinUpTime = GetTickCount64();
 			}
@@ -74,7 +77,8 @@ public:
 	void SetState(int state) {
 		switch (state) {
 		case QUESTION_BRICK_STATE_START_INNIT:
-			vy = -QUESTION_BRICK_VY;
+			if (vy == 0)
+				vy = -QUESTION_BRICK_VY;
 			break;
 		case QUESTION_BRICK_STATE_INNITED:
 			vy = 0;

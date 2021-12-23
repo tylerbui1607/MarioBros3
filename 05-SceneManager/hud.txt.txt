@@ -1,0 +1,6 @@
+# id	left	top	right	bottom	texture_id
+[SPRITES]
+#HUD_BOARD
+170720	5	244	257	278	50
+#SPEED_STACK
+# ani_id	sprite1_id	time1	sprite2_id	time2	...
