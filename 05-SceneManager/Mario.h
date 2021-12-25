@@ -22,7 +22,7 @@
 #define MARIO_RUNNING_SPEED		0.3f
 
 #define MARIO_ACCEL_WALK_X	0.0005f
-#define MARIO_ACCEL_SLOWING_DOWN_X	0.00015f
+#define MARIO_ACCEL_SLOWING_DOWN_X	0.00035f
 #define MARIO_ACCEL_RUN_X	0.0007f
 #define MARIO_FRICTION		0.006f
 
@@ -130,6 +130,15 @@
 
 #define ID_ANI_SMALLMARIO_KICKKOOPAS_RIGHT	1801
 #define ID_ANI_SMALLMARIO_KICKKOOPAS_LEFT	1800
+
+#define ID_ANI_SMALLMARIO_HOLDKOOPAS_IDLE_RIGHT	1802
+#define ID_ANI_SMALLMARIO_HOLDKOOPAS_IDLE_LEFT	1803
+
+#define ID_ANI_SMALLMARIO_HOLDKOOPAS_WALK_RIGHT	1804
+#define ID_ANI_SMALLMARIO_HOLDKOOPAS_WALK_LEFT	1805
+
+#define ID_ANI_SMALLMARIO_HOLDKOOPAS_JUMP_RIGHT	1806
+#define ID_ANI_SMALLMARIO_HOLDKOOPAS_JUMP_LEFT	1807
 
 #define ID_ANI_RACOON_IDLE_RIGHT 1900
 #define ID_ANI_RACOON_IDLE_LEFT 1901
@@ -332,7 +341,17 @@ public:
 	{
 		return isFlying;
 	}
+
+	void HandleMarioIsFlying(DWORD dt);
 	void HandleMarioIsAttacked();
+	void HandleMarioRunning();
+	void HandleMarioStateIdle();
+	void HandleMarioFalling();
+	void HandleMarioKickKoopas();
+	void HandleMarioHoldingKoopas();
+	void HandleRacoonAttack(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	void HandleMarioTransformRacoon();
+	void HandleMarioUntouchable();
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void HandleMarioGoInHiddenMap(DWORD dt);
 };
