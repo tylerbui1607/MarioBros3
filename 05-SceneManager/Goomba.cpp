@@ -84,8 +84,9 @@ void CGoomba::Render()
 		else if (state == GOOMBA_STATE_DIEBYSHELL)
 			aniId = ID_ANI_GOOMBA_DIEBYSHELL;
 	}
-	CAnimations::GetInstance()->Get(aniId)->Render(x,y);
-	//RenderBoundingBox();
+	if(CAnimations::GetInstance()->Get(aniId))
+		CAnimations::GetInstance()->Get(aniId)->Render(x,y);
+	else RenderBoundingBox();
 }
 
 void CGoomba::SetState(int state)

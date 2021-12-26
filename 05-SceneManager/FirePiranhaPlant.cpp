@@ -47,7 +47,8 @@ void FirePiranhaPlant::Render()
 	aniId = -1;
 	GetAniFirePlant();
 	CAnimations* animations = CAnimations::GetInstance();
-	animations->Get(aniId)->Render(x, y);
+	if(animations->Get(aniId))
+		animations->Get(aniId)->Render(x, y);
 	if (fireBullet->isActivate)
 	{
 		fireBullet->Render();

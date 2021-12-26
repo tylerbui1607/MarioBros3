@@ -20,6 +20,7 @@ void FireBullet::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void FireBullet::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
+	if(animations->Get(ID_ANI_FIREBULLET))
 	animations->Get(ID_ANI_FIREBULLET)->Render(x, y);
 }
 

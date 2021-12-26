@@ -58,8 +58,9 @@ public:
     }
     void Render() {
         CAnimations* animations = CAnimations::GetInstance();
+        if(animations->Get(ID_ANI_MUSHROOM))
         animations->Get(ID_ANI_MUSHROOM)->Render(x, y);
-        //RenderBoundingBox();
+        else RenderBoundingBox();
     }
     void GetBoundingBox(float& left, float& top, float& right, float& bottom) {
         left = x - MUSHROOM_WIDTH / 2;

@@ -33,6 +33,8 @@ public:
 	float x;
 	float y;
 
+	bool IsAllowRender, IsAllowUpdate;
+
 	bool isitem;
 	int objType;
 

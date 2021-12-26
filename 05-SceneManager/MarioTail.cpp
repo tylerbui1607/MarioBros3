@@ -34,7 +34,7 @@ void MarioTail::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void MarioTail::Render()
 {
-	RenderBoundingBox();
+
 }
 
 void MarioTail::OnCollisionWithGoomba(LPGAMEOBJECT& obj)

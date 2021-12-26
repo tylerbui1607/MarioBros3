@@ -232,7 +232,6 @@ class CMario : public CGameObject
 
 	int level; 
 	ULONGLONG untouchable_start;
-	BOOLEAN isOnPlatform;
 	int coin; 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
@@ -257,10 +256,13 @@ class CMario : public CGameObject
 
 
 public:
+	BOOLEAN isOnPlatform;
+
 	void Reset()
 	{
 		y = 240;
-		level = MARIO_LEVEL_RACOON;
+		level = MARIO_LEVEL_BIG;
+		SetState(MARIO_STATE_IDLE);
 	}
 	bool isFlying;
 	bool canGotoHiddenMap,goInHidden, goOutHidden, IsInHiddenMap;

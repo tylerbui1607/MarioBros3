@@ -173,9 +173,12 @@ int Run()
 		{
 			frameStart = now;
 
-			CGame::GetInstance()->ProcessKeyboard();			
-			Update(dt);
-			Render();
+			CGame::GetInstance()->ProcessKeyboard();	
+			if (!CGame::GetInstance()->IsSwitchScene)
+			{
+				Update(dt);
+				Render();
+			}
 
 			CGame::GetInstance()->SwitchScene();
 		}

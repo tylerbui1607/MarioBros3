@@ -49,6 +49,7 @@ public:
         int aniId = ID_ANI_LEAF_FALLING_LEFT;
         if (vx >= 0)aniId = ID_ANI_LEAF_FALLING_RIGHT;
         else aniId = ID_ANI_LEAF_FALLING_LEFT;
+        if(animations->Get(aniId))
         animations->Get(aniId)->Render(x, y);
     }
     void GetBoundingBox(float& left, float& top, float& right, float& bottom) {

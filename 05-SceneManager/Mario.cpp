@@ -766,11 +766,10 @@ void CMario::Render()
 		aniId = GetAniIdSmall();
 	else if (level == MARIO_LEVEL_RACOON)
 		aniId = GetAniIdRacoon();
-	animations->Get(aniId)->Render(x, y);
+	if(animations->Get(aniId))
+		animations->Get(aniId)->Render(x, y);
+	else RenderBoundingBox();
 
-	//RenderBoundingBox();
-
-	if (IsAttack)tail->Render();
 	
 	DebugOutTitle(L"Coins: %d", coin);
 }

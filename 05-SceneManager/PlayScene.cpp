@@ -313,6 +313,7 @@ void CPlayScene::Load()
 
 	f.close();
 	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
+	CGame::GetInstance()->IsSwitchScene = false;
 }
 
 void CPlayScene::Update(DWORD dt)
@@ -322,62 +323,62 @@ void CPlayScene::Update(DWORD dt)
 
 	vector<LPGAMEOBJECT> coObjects;
 	vector<LPGAMEOBJECT> Mario;
-	for (size_t i = 1; i < objects.size(); i++)
-	{
-		
-		if (dynamic_cast<QuestionBrick*>(objects[i]))
+		for (size_t i = 1; i < objects.size(); i++)
 		{
-			QuestionBrick* Qbrick = dynamic_cast<QuestionBrick*>(objects[i]);
-			if (!Qbrick->innitItemSuccess)
-				AddItemToQBrick(Qbrick,i);
+
+			if (dynamic_cast<QuestionBrick*>(objects[i]))
+			{
+				QuestionBrick* Qbrick = dynamic_cast<QuestionBrick*>(objects[i]);
+				if (!Qbrick->innitItemSuccess)
+					AddItemToQBrick(Qbrick, i);
+			}
+
+			coObjects.push_back(objects[i]);
 		}
-
-		coObjects.push_back(objects[i]);
-	}
-	Mario.push_back(objects[0]);
+		Mario.push_back(objects[0]);
 
 
-	for (size_t i = 0; i < objects.size(); i++)
-	{
-		if (dynamic_cast<FirePiranhaPlant*>(objects[i]))
+		for (size_t i = 0; i < objects.size(); i++)
 		{
-			FirePiranhaPlant* Fplant = dynamic_cast<FirePiranhaPlant*>(objects[i]);
-			Fplant->GetEnemyPos(player->x, player->y);
-			objects[i]->Update(dt, &Mario);
+			if (dynamic_cast<FirePiranhaPlant*>(objects[i]))
+			{
+				FirePiranhaPlant* Fplant = dynamic_cast<FirePiranhaPlant*>(objects[i]);
+				Fplant->GetEnemyPos(player->x, player->y);
+				objects[i]->Update(dt, &Mario);
+			}
+			else {
+				objects[i]->Update(dt, &coObjects);
+			}
 		}
-		else { 
-			objects[i]->Update(dt, &coObjects); 
+
+		// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
+		if (player == NULL) return;
+
+		// Update camera to follow mario
+		float cx, cy;
+		player->GetPosition(cx, cy);
+
+		CGame* game = CGame::GetInstance();
+		cx -= game->GetBackBufferWidth() / 2;
+		cy -= game->GetBackBufferHeight() / 2;
+
+		if (cx < 0) cx = 0;
+		CMario* mario = dynamic_cast<CMario*>(player);
+		//dirty way have to improve
+		if (cx + game->GetBackBufferWidth() >= 2816)cx = 2816 - game->GetBackBufferWidth();
+		if (player->x <= MARIO_BIG_BBOX_WIDTH / 2)player->x = MARIO_BIG_BBOX_WIDTH / 2;
+		if (!Camera::GetInstance()->IsFollowingMario)
+		{
+			Camera::GetInstance()->SetCamPos(cx, 240.0f /*cy*/);
 		}
-	}
-
-	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
-	if (player == NULL) return; 
-
-	// Update camera to follow mario
-	float cx, cy;
-	player->GetPosition(cx, cy);
-
-	CGame *game = CGame::GetInstance();
-	cx -= game->GetBackBufferWidth() / 2;
-	cy -= game->GetBackBufferHeight() / 2;
-
-	if (cx < 0) cx = 0;
-	CMario* mario = dynamic_cast<CMario*>(player);
-	//dirty way have to improve
-	if (cx + game->GetBackBufferWidth() >= 2816)cx = 2816 - game->GetBackBufferWidth();
-	if (player->x <= MARIO_BIG_BBOX_WIDTH / 2)player->x = MARIO_BIG_BBOX_WIDTH/2;
-	if (!Camera::GetInstance()->IsFollowingMario)
-	{
-		Camera::GetInstance()->SetCamPos(cx, 240.0f /*cy*/);
-	}
-	else {
-		Camera::GetInstance()->SetCamPosX(cx);
-	}
-	if (mario->IsInHiddenMap)
-	{
-		Camera::GetInstance()->SetCamPos(cx, 464 /*cy*/);
-	}
-	PurgeDeletedObjects();
+		else {
+			Camera::GetInstance()->SetCamPosX(cx);
+		}
+		if (mario->IsInHiddenMap)
+		{
+			Camera::GetInstance()->SetCamPos(cx, 464 /*cy*/);
+		}
+		PurgeDeletedObjects();
 }
 
 void CPlayScene::Render()
