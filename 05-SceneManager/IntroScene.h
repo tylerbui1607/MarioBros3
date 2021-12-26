@@ -73,7 +73,11 @@ public:
 				redMario->IsAllowUpdate = true;
 				greenMario->IsAllowUpdate = true;
 			}
+			if (GetTickCount64() - SequenceTime >= Sequence1MaxTime + 3500)
+				isDoneSeq2 = true;
 		}
+		if (isDoneSeq2)
+			CGame::GetInstance()->InitiateSwitchScene(1);
 	}
 	void Clear();
 	void PurgeDeletedObjects();

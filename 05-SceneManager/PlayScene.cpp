@@ -325,15 +325,14 @@ void CPlayScene::Update(DWORD dt)
 	vector<LPGAMEOBJECT> Mario;
 		for (size_t i = 1; i < objects.size(); i++)
 		{
+				if (dynamic_cast<QuestionBrick*>(objects[i]))
+				{
+					QuestionBrick* Qbrick = dynamic_cast<QuestionBrick*>(objects[i]);
+					if (!Qbrick->innitItemSuccess)
+						AddItemToQBrick(Qbrick, i);
+				}
 
-			if (dynamic_cast<QuestionBrick*>(objects[i]))
-			{
-				QuestionBrick* Qbrick = dynamic_cast<QuestionBrick*>(objects[i]);
-				if (!Qbrick->innitItemSuccess)
-					AddItemToQBrick(Qbrick, i);
-			}
-
-			coObjects.push_back(objects[i]);
+				coObjects.push_back(objects[i]);
 		}
 		Mario.push_back(objects[0]);
 
@@ -423,7 +422,7 @@ void CPlayScene::Unload()
 
 	objects.clear();
 	player = NULL;
-
+	DebugOut(L"[INFO] Scene %d unloaded! %d \n", id, objects.size());
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
 }
 

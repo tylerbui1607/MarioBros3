@@ -5,7 +5,7 @@ HUD* HUD::__instance = NULL;
 
 void HUD::Draw()
 {
-	CSprites* sprites = CSprites::GetInstance();
+	/*CSprites* sprites = CSprites::GetInstance();
 	sprites->Get(ID_SPRITE_HUD)->Draw(Camera::GetInstance()->cam_x + 126, Camera::GetInstance()->cam_y+216);
 	if (speedStack)
 	{
@@ -31,5 +31,5 @@ void HUD::Draw()
 					animations->Get(ID_ANI_SPEEDSTACK_MAX)->Render(Camera::GetInstance()->cam_x + startX, Camera::GetInstance()->cam_y + 210);
 			}
 		}
-	}
+	}*/
 }
