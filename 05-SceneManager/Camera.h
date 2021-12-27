@@ -6,10 +6,11 @@
 class Camera
 {
 public:
-	float Mariovx, Mariovy=0, MarioY;
+	float Mariovx, Mariovy=0, MarioX, MarioY;
 	float cam_x, cam_y, cam_vx, cam_vy =0;
 	int AutoMove = 0;
 	bool IsFollowingMario;
+	bool MarioIsOnPlatForm, MarioIsFlying;
 public:
 
 	static Camera* __instance;
@@ -23,29 +24,17 @@ public:
 
 
 
-	void SetCamSpeed()
-
+	void GetMarioInfo(float vx, float vy, float x, float y, bool isonplatform, bool isflying)
 	{
-		if (Mariovy < 0 && cam_y >= 0)
-			cam_vy = Mariovy;
-		else {
-			if (cam_y <= 0)
-				cam_y = 0;
-			cam_vy = Mariovy*0.5;
-		}
-		if (cam_vy > 0)
-		{
-			if (cam_y >= 240)
-			{
-				IsFollowingMario = false;
-				cam_vy = 0;
-				cam_y = 240;
-			}
-		}
+		Mariovy = vy;
+		MarioX = x;
+		MarioY = y;
+		MarioIsOnPlatForm = isonplatform;
+		MarioIsFlying = isflying;
 	}
 	bool IsInCam(float objX, float objY)
 	{
-		return !(objX < cam_x || objX - cam_x>SCREEN_WIDTH || objY < cam_y || objY - cam_y > SCREEN_HEIGHT);
+		return !(objX < cam_x-100 || objX - cam_x>SCREEN_WIDTH+100 || objY < cam_y || objY - cam_y > SCREEN_HEIGHT);
 	}
 	void SetCamPos(float x, float y) {
 		cam_x = x;

@@ -18,8 +18,6 @@
 #include "HUD.h"
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	if (!goInHidden && !goOutHidden)
-	{
 		vy += ay * dt;
 		vx += ax * dt;
 
@@ -31,22 +29,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 		HandleMarioIsFlying(dt);
 		
-		if (Camera::GetInstance()->cam_y < 240 && !isFlying)
-		{
-			if (y - CGame::GetInstance()->GetBackBufferHeight() / 2 < 0)
-				Camera::GetInstance()->cam_y = 0;
-			else if (!isOnPlatform)
-			{
-				Camera::GetInstance()->cam_vy = vy;
-				Camera::GetInstance()->Update(dt);
-			}
-		}
-		else {
-			if (!isFlying)
-			{
-				Camera::GetInstance()->IsFollowingMario = false;
-			}
-		}
 		HandleMarioRunning();
 
 		HandleMarioUntouchable();
@@ -59,7 +41,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 		HUD::GetInstance()->speedStack = speedStack;
 		HUD::GetInstance()->MarioIsFlying = isFlying;
-
+		Camera::GetInstance()->GetMarioInfo(vx, vy, x, y,isOnPlatform,isFlying);
 		HandleMarioHoldingKoopas();
 		canGotoHiddenMap = false;
 		for (int i = 0; i < coObjects->size(); i++)
@@ -83,25 +65,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 						coObjects->at(i)->Delete();
 					}
 				}
-				else if (dynamic_cast<PortalOfPipe*>(coObjects->at(i)))
-				{
-					PortalOfPipe* pPipe = dynamic_cast<PortalOfPipe*>(coObjects->at(i));
-					if (pPipe->typeGate == GATE_IN)
-					{
-						canGotoHiddenMap = true;
-						StartY = y;
-					}
-					else if(pPipe->typeGate == GATE_OUT && !isOnPlatform) {
-						StartY = coObjects->at(i)->y;
-						SetState(MARIO_STATE_GO_OUT_HIDDEN_MAP);
-					}
-				}
 			}
 		}
-	}
-	else {
-	HandleMarioGoInHiddenMap(dt);
-	}
 }
 
 void CMario::OnNoCollision(DWORD dt)
@@ -919,18 +884,7 @@ void CMario::HandleMarioIsFlying(DWORD dt)
 {
 	if (isFlying)
 	{
-		Camera::GetInstance()->IsFollowingMario = true;
-		if (y - CGame::GetInstance()->GetBackBufferHeight() / 2 < 240)
-		{
-			if (y - CGame::GetInstance()->GetBackBufferHeight() / 2 < 0)
-				Camera::GetInstance()->cam_y = 0;
-			else if (!isOnPlatform)
-			{
-				Camera::GetInstance()->cam_vy = vy;
-				Camera::GetInstance()->Update(dt);
-			}
-		}
-		else { Camera::GetInstance()->cam_y = 240; }
+		
 		if (GetTickCount64() - FlyingTime >= 3000)
 		{
 			isFlying = false;

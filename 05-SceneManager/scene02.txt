@@ -95,9 +95,6 @@ brick.txt
 
 #PiranhaPlant
 22	1808	400
-#Portal_Of_Pipe
-51	2272	100	0
-51	2336	500	1
 
 #Pipe
 10	368	392	32	48	1	1
@@ -140,6 +137,6 @@ brick.txt
 8	2032	392	0
 
 #PORTAL
-50	300	300	316	316	2
+50	300	300	316	316	1
 [MAP]
 9000	map/MapData1-1.txt	42	176	11	11	16	16	0

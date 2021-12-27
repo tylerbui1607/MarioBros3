@@ -16,7 +16,8 @@ using namespace std;
 #define MAX_FRAME_RATE 100
 #define KEYBOARD_BUFFER_SIZE 1024
 #define KEYBOARD_STATE_SIZE 256
-
+#define INTRO_SCENE 1
+#define HIDDEN_SCENE 3
 
 
 /*
@@ -61,10 +62,14 @@ public:
 	int next_scene = -1;
 	int current_scene;
 
+
+
 	// Init DirectX, Sprite Handler
 	void Init(HWND hWnd, HINSTANCE hInstance);
 
 	bool IsSwitchScene = false;
+
+	int CheckSceneType() { return current_scene; };
 
 	//
 	// Draw a portion or ALL the texture at position (x,y) on the screen. (x,y) is at the CENTER of the image
