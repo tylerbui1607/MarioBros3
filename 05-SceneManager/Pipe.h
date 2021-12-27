@@ -11,6 +11,8 @@
 
 #define NORMAL_PIPE	1
 #define HIDDEN_MAP_PIPE	2
+#define SPECIAL_PIPE	3
+#define SPECIAL_PIPE_HIDDEN_MAP_PIPE	4
 
 class Pipe :
     public CGameObject
@@ -28,7 +30,7 @@ class Pipe :
 		void Render() { 
 			if (AllowRender != 0)
 			{
-				if (PipeType == NORMAL_PIPE)
+				if (PipeType != HIDDEN_MAP_PIPE && PipeType != SPECIAL_PIPE_HIDDEN_MAP_PIPE)
 				{
 					CSprites* sprite = CSprites::GetInstance();
 					int SpriteY = y - Height / 2 + SPRITE_TILE_SIZE / 2;
@@ -41,7 +43,7 @@ class Pipe :
 						SpriteY += SPRITE_TILE_SIZE;
 					}
 				}
-				else if (PipeType == HIDDEN_MAP_PIPE)
+				else 
 				{
 					CSprites* sprite = CSprites::GetInstance();
 					int SpriteY = y - Height / 2 + SPRITE_TILE_SIZE / 2;

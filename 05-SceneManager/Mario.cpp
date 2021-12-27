@@ -15,9 +15,12 @@
 #include "BreakableBrick.h"
 #include "Collision.h"
 #include "PortalOfPipe.h"
+#include "Pipe.h"
 #include "HUD.h"
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+	if (!goInHidden && !goOutHidden)
+	{
 		vy += ay * dt;
 		vx += ax * dt;
 
@@ -28,22 +31,22 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		HandleMarioTransformRacoon();
 
 		HandleMarioIsFlying(dt);
-		
+
 		HandleMarioRunning();
 
 		HandleMarioUntouchable();
 
 		HandleMarioKickKoopas();
-
+		canGotoHiddenMap = false;
 		isOnPlatform = false;
 		CCollision::GetInstance()->Process(this, dt, coObjects);
 		HandleRacoonAttack(dt, coObjects);
 
 		HUD::GetInstance()->speedStack = speedStack;
 		HUD::GetInstance()->MarioIsFlying = isFlying;
-		Camera::GetInstance()->GetMarioInfo(vx, vy, x, y,isOnPlatform,isFlying);
+		Camera::GetInstance()->GetMarioInfo(vx, vy, x, y, isOnPlatform, isFlying, IsInHiddenMap);
 		HandleMarioHoldingKoopas();
-		canGotoHiddenMap = false;
+		
 		for (int i = 0; i < coObjects->size(); i++)
 		{
 			if (CCollision::GetInstance()->CheckAABB(this, coObjects->at(i)))
@@ -67,6 +70,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 				}
 			}
 		}
+	}
+	else {
+		HandleMarioGoInHiddenMap(dt);
+	}
 }
 
 void CMario::OnNoCollision(DWORD dt)
@@ -95,6 +102,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e,DWORD dt)
 		OnCollisionWithCoin(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
+	else if (dynamic_cast<Pipe*>(e->obj))
+		OnCollisionWithSpecialPipe(e);
 	else if (dynamic_cast<QuestionBrick*>(e->obj))
 		OnCollisionWithQuestionBrick(e);
 	else if (dynamic_cast<Koopas*>(e->obj))
@@ -277,6 +286,16 @@ void CMario::OnCollisionWithButtonP(LPCOLLISIONEVENT e)
 	if (e->ny < 0 && !ButtonP::GetInstance()->isPushed)
 	{
 		ButtonP::GetInstance()->SetState(BUTTON_P_STATE_PUSHED);
+	}
+}
+
+void CMario::OnCollisionWithSpecialPipe(LPCOLLISIONEVENT e)
+{
+	Pipe* pipe = dynamic_cast<Pipe*>(e->obj);
+	if (pipe->PipeType == SPECIAL_PIPE && e->ny < 0)
+	{
+		StartY = pipe->y;
+		canGotoHiddenMap = true;
 	}
 }
 
@@ -1096,7 +1115,7 @@ void CMario::HandleMarioGoInHiddenMap(DWORD dt)
 	{
 		vy = MARIO_GO_HIDDEN_MAP_SPEED;
 		vx = 0;
-		if (y - StartY >= MARIO_BIG_BBOX_HEIGHT)
+		if (y - StartY >= MARIO_BIG_BBOX_HEIGHT/2-2)
 		{
 			SetPosition(HIDDEN_MAP_START_POS_X, HIDDEN_MAP_START_POS_Y);
 			StartY = 1000;

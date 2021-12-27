@@ -10,7 +10,7 @@ public:
 	float cam_x, cam_y, cam_vx, cam_vy =0;
 	int AutoMove = 0;
 	bool IsFollowingMario;
-	bool MarioIsOnPlatForm, MarioIsFlying;
+	bool MarioIsOnPlatForm, MarioIsFlying, MarioIsInHiddenMap;
 public:
 
 	static Camera* __instance;
@@ -24,13 +24,14 @@ public:
 
 
 
-	void GetMarioInfo(float vx, float vy, float x, float y, bool isonplatform, bool isflying)
+	void GetMarioInfo(float vx, float vy, float x, float y, bool isonplatform, bool isflying, bool IsInHiddenMap)
 	{
 		Mariovy = vy;
 		MarioX = x;
 		MarioY = y;
 		MarioIsOnPlatForm = isonplatform;
 		MarioIsFlying = isflying;
+		MarioIsInHiddenMap = IsInHiddenMap;
 	}
 	bool IsInCam(float objX, float objY)
 	{

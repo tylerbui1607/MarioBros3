@@ -77,7 +77,7 @@ public:
 				isDoneSeq2 = true;
 		}
 		if (isDoneSeq2)
-			CGame::GetInstance()->InitiateSwitchScene(3);
+			CGame::GetInstance()->InitiateSwitchScene(2);
 	}
 	void Clear();
 	void PurgeDeletedObjects();

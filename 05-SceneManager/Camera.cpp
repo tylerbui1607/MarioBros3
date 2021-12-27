@@ -25,7 +25,7 @@ void Camera::Update(DWORD dt)
 	if (cx < 0) cx = 0;
 	//dirty way have to improve
 	if (cx + game->GetBackBufferWidth() >= 2816)cx = 2816 - game->GetBackBufferWidth();
-	if (game->CheckSceneType() != HIDDEN_SCENE)
+	if (!MarioIsInHiddenMap)
 	{
 		if (MarioIsFlying)
 		{
@@ -39,6 +39,9 @@ void Camera::Update(DWORD dt)
 				else if (!MarioIsOnPlatForm)
 				{
 					Camera::GetInstance()->cam_vy = Mariovy;
+				}
+				else {
+					cam_vy = 0;
 				}
 			}
 			else { Camera::GetInstance()->cam_y = 240; cam_vy = 0; }
@@ -69,7 +72,8 @@ void Camera::Update(DWORD dt)
 			}
 		}
 	}
-	else
-		Camera::GetInstance()->SetCamPos(cx, 0);
+	else {
+		Camera::GetInstance()->SetCamPos(cx, 468);
+	}
 	cam_y += cam_vy * dt;
 }

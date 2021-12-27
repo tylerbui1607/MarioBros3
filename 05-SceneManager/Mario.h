@@ -242,7 +242,7 @@ class CMario : public CGameObject
 	void OnCollisionWithPlant(LPCOLLISIONEVENT e);
 	void OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithButtonP(LPCOLLISIONEVENT e);
-
+	void OnCollisionWithSpecialPipe(LPCOLLISIONEVENT e);
 	bool IsAttack;
 	DWORD AttackTime;
 
