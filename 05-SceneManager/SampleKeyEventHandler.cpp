@@ -27,19 +27,19 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 				}
 				break;
 			case DIK_S:
-				if (mario->GetMarioLevel() == MARIO_LEVEL_RACOON && mario->GetSpeedStack() == MARIO_MAX_SPEED_STACK)
-				{
-					mario->SetState(MARIO_STATE_FLYING);
-				}
-				if (!mario->isFlying)
-				{
-					if (mario->CheckMarioIsOnPlatform())
-						mario->SetState(MARIO_STATE_JUMP);
-					else if (mario->GetMarioLevel() == MARIO_LEVEL_RACOON)
+					if (mario->GetMarioLevel() == MARIO_LEVEL_RACOON && mario->GetSpeedStack() == MARIO_MAX_SPEED_STACK)
 					{
-						mario->SetState(MARIO_STATE_SLOW_FALLING);
+						mario->SetState(MARIO_STATE_FLYING);
 					}
-				}
+					if (!mario->isFlying)
+					{
+						if (mario->CheckMarioIsOnPlatform())
+							mario->SetState(MARIO_STATE_JUMP);
+						else if (mario->GetMarioLevel() == MARIO_LEVEL_RACOON)
+						{
+							mario->SetState(MARIO_STATE_SLOW_FALLING);
+						}
+					}
 				break;
 			case DIK_1:
 				mario->SetLevel(MARIO_LEVEL_SMALL);
@@ -78,6 +78,7 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 			switch (KeyCode)
 			{
 			case DIK_S:
+				if(!mario->isOnPlatform)
 				mario->SetState(MARIO_STATE_RELEASE_JUMP);
 				break;
 			case DIK_DOWN:
@@ -116,6 +117,12 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 					mario->SetState(MARIO_STATE_RUNNING_LEFT);
 				else
 					mario->SetState(MARIO_STATE_WALKING_LEFT);
+			}
+			else if (game->IsKeyDown(DIK_UP)) {
+				if (mario->canGotoHiddenMap)
+				{
+					mario->SetState(MARIO_STATE_GO_OUT_HIDDEN_MAP);
+				}
 			}
 			else
 				mario->SetState(MARIO_STATE_IDLE);

@@ -14,13 +14,6 @@ class ButtonP :
     public CGameObject
 {
 public:
-	static ButtonP* __instance;
-
-	static ButtonP* GetInstance()
-	{
-		if (__instance == NULL) __instance = new ButtonP();
-		return __instance;
-	}
 	ButtonP() ;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);

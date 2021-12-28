@@ -2,5 +2,5 @@
 
 void ColorBox::Render()
 {
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }

@@ -1,5 +1,5 @@
 [SETTINGS]
-start	1
+start	2
 width	320
 height	240
 
@@ -9,7 +9,7 @@ height	240
 0	test.txt
 1	intro.txt
 2	scene02.txt
-
+4	sceneTest.txt
 
 # id	file 
 [TEXTURES]

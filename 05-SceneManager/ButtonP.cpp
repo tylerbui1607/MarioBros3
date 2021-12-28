@@ -1,11 +1,11 @@
 #include "ButtonP.h"
 #include "debug.h"
 
-ButtonP* ButtonP::__instance = NULL;
 ButtonP::ButtonP()
 {
 	isPushed = false;
 	objType = OBJTYPE_BUTTON_P;
+	isCreated = false;
 }
 
 void ButtonP::GetBoundingBox(float& left, float& top, float& right, float& bottom)

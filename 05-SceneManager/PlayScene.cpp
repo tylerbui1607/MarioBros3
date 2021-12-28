@@ -187,10 +187,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		if (Item == 1)
 		{
 			HaveButton = true;
-			ButtonP* buttonP = ButtonP::GetInstance();
+			ButtonP* buttonP = new ButtonP();
+			buttonP->SetPosition(0, 0);
 			objects.push_back(buttonP);
+			BreakableBrick* Brkbrick = new BreakableBrick(x, y, HaveButton);
+			Brkbrick->buttonP = buttonP;
+			obj = Brkbrick;
 		}
-		obj = new BreakableBrick(x, y, HaveButton);
+		else obj = new BreakableBrick(x, y, HaveButton);
 		break;
 	}
 	case OBJECT_TYPE_PLATFORM:
@@ -241,6 +245,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	// General object setup
 		obj->SetPosition(x, y);
 
+		//DebugOut(L"ObjectSize%d\n", objects.size());
 		objects.push_back(obj);
 }
 
@@ -313,7 +318,7 @@ void CPlayScene::Load()
 
 	f.close();
 	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
-	CGame::GetInstance()->IsSwitchScene = false;
+	CGame::GetInstance()->buttonIsPushed = false;
 }
 
 void CPlayScene::Update(DWORD dt)
@@ -325,6 +330,8 @@ void CPlayScene::Update(DWORD dt)
 	vector<LPGAMEOBJECT> Mario;
 		for (size_t i = 1; i < objects.size(); i++)
 		{
+			if (objects[i] != NULL)
+			{
 				if (dynamic_cast<QuestionBrick*>(objects[i]))
 				{
 					QuestionBrick* Qbrick = dynamic_cast<QuestionBrick*>(objects[i]);
@@ -333,6 +340,7 @@ void CPlayScene::Update(DWORD dt)
 				}
 
 				coObjects.push_back(objects[i]);
+			}
 		}
 		Mario.push_back(objects[0]);
 
@@ -399,8 +407,7 @@ void CPlayScene::Unload()
 		delete objects[i];
 
 	objects.clear();
-	player = NULL;
-	DebugOut(L"[INFO] Scene %d unloaded! %d \n", id, objects.size());
+	/*player = NULL;*/
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
 }
 

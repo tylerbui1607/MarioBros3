@@ -283,9 +283,11 @@ void CMario::OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithButtonP(LPCOLLISIONEVENT e)
 {
-	if (e->ny < 0 && !ButtonP::GetInstance()->isPushed)
+	ButtonP* button = dynamic_cast<ButtonP*>(e->obj);
+	if (e->ny < 0 && !button->isPushed)
 	{
-		ButtonP::GetInstance()->SetState(BUTTON_P_STATE_PUSHED);
+		button->SetState(BUTTON_P_STATE_PUSHED);
+		CGame::GetInstance()->buttonIsPushed = true;
 	}
 }
 
@@ -294,6 +296,10 @@ void CMario::OnCollisionWithSpecialPipe(LPCOLLISIONEVENT e)
 	Pipe* pipe = dynamic_cast<Pipe*>(e->obj);
 	if (pipe->PipeType == SPECIAL_PIPE && e->ny < 0)
 	{
+		StartY = y + MARIO_BIG_BBOX_HEIGHT;
+		canGotoHiddenMap = true;
+	}
+	else if(pipe->PipeType == SPECIAL_PIPE_HIDDEN_MAP_PIPE && e->ny > 0) {
 		StartY = pipe->y;
 		canGotoHiddenMap = true;
 	}
@@ -1120,6 +1126,7 @@ void CMario::HandleMarioGoInHiddenMap(DWORD dt)
 			SetPosition(HIDDEN_MAP_START_POS_X, HIDDEN_MAP_START_POS_Y);
 			StartY = 1000;
 			IsInHiddenMap = true;
+			Camera::GetInstance()->GetMarioInfo(vx, vy, x, y, isOnPlatform, isFlying, IsInHiddenMap);
 		}
 		if (y - HIDDEN_MAP_START_POS_Y >= MARIO_BIG_BBOX_HEIGHT)
 		{
@@ -1135,6 +1142,7 @@ void CMario::HandleMarioGoInHiddenMap(DWORD dt)
 			IsInHiddenMap = false;
 			SetPosition(HIDDEN_MAP_OUT_POS_X, HIDDEN_MAP_OUT_POS_Y);
 			StartY = 0;
+			Camera::GetInstance()->GetMarioInfo(vx, vy, x, y, isOnPlatform, isFlying, IsInHiddenMap);
 		}
 		if (HIDDEN_MAP_OUT_POS_Y - y>= PORTAL_OF_PIPE_BBOX_SIZE*2)
 		{

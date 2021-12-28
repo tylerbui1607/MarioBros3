@@ -61,7 +61,7 @@ class CGame
 public:
 	int next_scene = -1;
 	int current_scene;
-
+	bool buttonIsPushed;
 
 
 	// Init DirectX, Sprite Handler

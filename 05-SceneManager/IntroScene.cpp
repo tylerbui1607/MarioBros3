@@ -152,12 +152,13 @@ void IntroScene::Load()
 	}
 
 	f.close();
-	redMario->SetPosition(8, 402);
-	greenMario->SetPosition(242, 402);
+	redMario =  new CMario(8, 402);
+	greenMario = new CMario(242, 402);
 	redMario->SetLevel(MARIO_LEVEL_BIG);
 	greenMario->SetLevel(MARIO_LEVEL_BIG);
 	redMario->isOnPlatform = true;
 	greenMario->isOnPlatform = true;
+	platform = new CPlatform(8, 424, 16, 16, 39, 51000, 52000, 53000);
 	objects.push_back(redMario);
 	objects.push_back(greenMario);
 	objects.push_back(platform);

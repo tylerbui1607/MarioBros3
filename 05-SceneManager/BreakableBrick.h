@@ -31,6 +31,7 @@ public:
 	bool InitCoin;
 	DWORD ChangeBackToBrickTime;
 	bool haveButton;
+	ButtonP* buttonP;
 	bool buttonCreated, isBreakDown;
 	BreakableBrickEffect* piece1;
 	BreakableBrickEffect* piece2;
@@ -49,6 +50,16 @@ public:
 		piece3 = new BreakableBrickEffect(x, y, -INNIT_VX_BREAKABLE_BRICK_EFFECT, -INNIT_VY_BREAKABLE_BRICK_EFFECT);
 		piece4 = new BreakableBrickEffect(x, y, INNIT_VX_BREAKABLE_BRICK_EFFECT, -INNIT_VY_BREAKABLE_BRICK_EFFECT);
 	}
+	BreakableBrick(float x, float y, bool HaveButton, ButtonP* button):CGameObject(x,y) {
+		startY = y;
+		haveButton = HaveButton;
+		objType = OBJECT_TYPE_BREAKABLE_BRICK;
+		buttonP = button;
+		buttonCreated = false;
+		vy = 0;
+		InitCoin = isBreakDown = false;
+		isBlocking = 1;
+	}
 	void Render();
 	virtual int IsCollidable() { return 1; };
 	virtual int IsBlocking() { return isBlocking; }
@@ -66,7 +77,7 @@ public:
 		if (!isBreakDown){
 			if (!haveButton)
 			{
-				if (ButtonP::GetInstance()->isPushed && !InitCoin)
+				if (CGame::GetInstance()->buttonIsPushed && !InitCoin)
 				{
 					SetState(BREAKABLE_BRICK_STATE_TRANSFORMS_COIN);
 				}
@@ -111,8 +122,8 @@ public:
 		case BREAKABLE_BRICK_STATE_CREATE_BUTTON:
 			buttonCreated = true;
 			vy = -BREAKBLE_BRICK_VY;
-			ButtonP::GetInstance()->SetPosition(x, y - BRICK_BBOX_HEIGHT);
-			ButtonP::GetInstance()->isCreated = true;
+			buttonP->SetPosition(x, y - BRICK_BBOX_HEIGHT);
+			buttonP->isCreated = true;
 			break;
 		case COIN_STATE_TRANSFORMS_BRICK:
 			objType = OBJECT_TYPE_BREAKABLE_BRICK;

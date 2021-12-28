@@ -36,9 +36,9 @@ protected:
 	void LoadAssets(LPCWSTR assetFile);
 
 public:
-	CMario* redMario = new CMario(0, 0);
-	CMario* greenMario = new CMario(0, 0);
-	CPlatform* platform = new CPlatform(8,424,16,16,39,51000,52000,53000);
+	CMario* redMario;
+	CMario* greenMario;
+	CPlatform* platform;
 	DWORD SequenceTime;
 	IntroScene(int id, LPCWSTR filePath);
 	bool isDoneSeq1,isDoneSeq2, isFirstJump;
