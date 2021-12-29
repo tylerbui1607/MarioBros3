@@ -43,12 +43,14 @@ void PiranhaPlant::SetState(int state)
 		}
 		
 		if (state == PIRANHAPLANT_STATE_UP) {
-			if (GetTickCount64() - CalcAtkTime >= 3000) {
+			if (x == CGame::GetInstance()->pipeX)
+				vy = 0;
+			else if (GetTickCount64() - CalcAtkTime >= 2000) {
 				SetState(PIRANHAPLANT_STATE_DOWN);
 			}
 		}
 		else {
-			if (GetTickCount64() - CalcAtkTime >= 2000) {
+			if (GetTickCount64() - CalcAtkTime >= 1000 && x != CGame::GetInstance()->pipeX) {
 				SetState(PIRANHAPLANT_STATE_UP);
 			}
 		}

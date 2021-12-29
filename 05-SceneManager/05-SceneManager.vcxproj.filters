@@ -138,9 +138,6 @@
     <ClCompile Include="Leaf.cpp">
       <Filter>Item</Filter>
     </ClCompile>
-    <ClCompile Include="BreakableBrick.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MarioTail.cpp">
       <Filter>Player</Filter>
     </ClCompile>
@@ -168,14 +165,17 @@
     <ClCompile Include="PortalOfPipe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PiranhaPlant.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="IntroScene.cpp">
       <Filter>scene</Filter>
     </ClCompile>
     <ClCompile Include="LastItemObject.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PiranhaPlant.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="BreakableBrick.cpp">
+      <Filter>Brick</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -272,9 +272,6 @@
     <ClInclude Include="Leaf.h">
       <Filter>Item</Filter>
     </ClInclude>
-    <ClInclude Include="BreakableBrick.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MarioTail.h">
       <Filter>Player</Filter>
     </ClInclude>
@@ -299,14 +296,17 @@
     <ClInclude Include="PortalOfPipe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PiranhaPlant.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IntroScene.h">
       <Filter>scene</Filter>
     </ClInclude>
     <ClInclude Include="LastItemObject.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PiranhaPlant.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="BreakableBrick.h">
+      <Filter>Brick</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

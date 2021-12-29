@@ -114,13 +114,12 @@ void Koopas::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
 
 void Koopas::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
+	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
 	if (state == KOOPAS_STATE_INSHELL_ATTACK)
 	{
-		if (e->nx)
+		if (e->nx && goomba->GetState() != GOOMBA_STATE_DIEBYSHELL)
 		{
-			CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
 			goomba->nx = nx;
-			if(goomba->GetState()!=GOOMBA_STATE_DIEBYSHELL)
 			goomba->SetState(GOOMBA_STATE_DIEBYSHELL);
 		}
 	}

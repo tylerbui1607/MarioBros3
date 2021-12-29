@@ -91,6 +91,7 @@ void CGoomba::Render()
 
 void CGoomba::SetState(int state)
 {
+	if (this->state == GOOMBA_STATE_DIE || this->state == GOOMBA_STATE_DIEBYSHELL)return;
 	CGameObject::SetState(state);
 	switch (state)
 	{

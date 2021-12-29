@@ -116,7 +116,7 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 			}
 			else if (game->IsKeyDown(DIK_LEFT))
 			{
-				if (game->IsKeyDown(DIK_A) && mario->CheckMarioIsOnPlatform())
+				if (game->IsKeyDown(DIK_A) && !mario->CheckIsFlying())
 					mario->SetState(MARIO_STATE_RUNNING_LEFT);
 				else
 					mario->SetState(MARIO_STATE_WALKING_LEFT);

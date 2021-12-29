@@ -18,8 +18,8 @@
 #define HIDDEN_MAP_OUT_POS_X	2336
 #define HIDDEN_MAP_OUT_POS_Y	400
 
-#define MARIO_WALKING_SPEED		0.1f
-#define MARIO_RUNNING_SPEED		0.3f
+#define MARIO_WALKING_SPEED		0.15f
+#define MARIO_RUNNING_SPEED		0.35f
 
 #define MARIO_ACCEL_WALK_X	0.0005f
 #define MARIO_ACCEL_SLOWING_DOWN_X	0.00035f
@@ -264,7 +264,7 @@ public:
 	{
 		y = 240;
 		level = MARIO_LEVEL_BIG;
-		SetState(MARIO_STATE_IDLE);
+		state = MARIO_STATE_IDLE;
 	}
 	bool isFlying;
 	bool canGotoHiddenMap,goInHidden, goOutHidden, IsInHiddenMap;

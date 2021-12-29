@@ -275,12 +275,19 @@ void CMario::OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e)
 	if (e->ny > 0)
 	{
 		BreakableBrick* breakableBrick = dynamic_cast<BreakableBrick*>(e->obj);
-		if (breakableBrick->haveButton && !breakableBrick->buttonCreated)
+		if (level == MARIO_LEVEL_SMALL)
 		{
-			breakableBrick->SetState(BREAKABLE_BRICK_STATE_CREATE_BUTTON);
+			if(breakableBrick->y == breakableBrick->startY)
+				e->obj->SetState(BREAKABLE_BRICK_STATE_IS_UP);
 		}
-		else if (!breakableBrick->haveButton) {
-			e->obj->SetState(BREAKABLE_BRICK_STATE_BREAK_DOWN);
+		else {
+			if (breakableBrick->haveButton && !breakableBrick->buttonCreated)
+			{
+				breakableBrick->SetState(BREAKABLE_BRICK_STATE_CREATE_BUTTON);
+			}
+			else if (!breakableBrick->haveButton) {
+				e->obj->SetState(BREAKABLE_BRICK_STATE_BREAK_DOWN);
+			}
 		}
 	}
 }
@@ -810,7 +817,7 @@ void CMario::SetState(int state)
 		if (isSitting) break;
 		if (isOnPlatform)
 		{
-			if (abs(this->vx) == MARIO_RUNNING_SPEED)
+			if (abs(vx) >= MARIO_RUNNING_SPEED)
 				vy = -MARIO_JUMP_RUN_SPEED_Y;
 			else
 				vy = -MARIO_JUMP_SPEED_Y;
