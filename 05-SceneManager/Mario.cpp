@@ -308,11 +308,13 @@ void CMario::OnCollisionWithSpecialPipe(LPCOLLISIONEVENT e)
 	if (pipe->PipeType == SPECIAL_PIPE && e->ny < 0)
 	{
 		StartY = y + MARIO_BIG_BBOX_HEIGHT;
+		pipeX = pipe->x;
 		canGotoHiddenMap = true;
 	}
 	else if(pipe->PipeType == SPECIAL_PIPE_HIDDEN_MAP_PIPE && e->ny > 0) {
 		StartY = pipe->y;
 		canGotoHiddenMap = true;
+		pipeX = pipe->x;
 	}
 }
 
@@ -635,19 +637,28 @@ int CMario::GetAniIdBig()
 	{
 		if (!isHoldingKoopas)
 		{
-			if (abs(ax) == MARIO_ACCEL_RUN_X)
+			if (vy < 0)
 			{
-				if (nx >= 0)
-					aniId = ID_ANI_MARIO_JUMP_RUN_RIGHT;
+				if (abs(ax) == MARIO_ACCEL_RUN_X)
+				{
+					if (nx >= 0)
+						aniId = ID_ANI_MARIO_JUMP_RUN_RIGHT;
+					else
+						aniId = ID_ANI_MARIO_JUMP_RUN_LEFT;
+				}
 				else
-					aniId = ID_ANI_MARIO_JUMP_RUN_LEFT;
+				{
+					if (nx >= 0)
+						aniId = ID_ANI_MARIO_JUMP_WALK_RIGHT;
+					else
+						aniId = ID_ANI_MARIO_JUMP_WALK_LEFT;
+				}
 			}
-			else
-			{
+			else {
 				if (nx >= 0)
-					aniId = ID_ANI_MARIO_JUMP_WALK_RIGHT;
+					aniId = ID_ANI_MARIO_FALLING_RIGHT;
 				else
-					aniId = ID_ANI_MARIO_JUMP_WALK_LEFT;
+					aniId = ID_ANI_MARIO_FALLING_LEFT;
 			}
 		}
 		else {
@@ -785,8 +796,7 @@ void CMario::Render()
 void CMario::SetState(int state)
 {
 	// DIE is the end state, cannot be changed! 
-	if (this->state == MARIO_STATE_DIE) return; 
-
+	if (this->state == MARIO_STATE_DIE) return;
 	switch (state)
 	{
 	case MARIO_STATE_RUNNING_RIGHT:
@@ -914,9 +924,11 @@ void CMario::SetState(int state)
 		break;
 	case MARIO_STATE_GO_IN_HIDDEN_MAP:
 		goInHidden = true;
+		SetPosition(pipeX, y);
 		break;
 	case MARIO_STATE_GO_OUT_HIDDEN_MAP:
 		goOutHidden = true;
+		SetPosition(pipeX, y);
 		break;
 	}
 
@@ -1122,11 +1134,16 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 		}
 		else
 		{
-			if(nx>0)
-				left = x - MARIO_BIG_BBOX_WIDTH / 2+1;
-			else 
-				left = x - MARIO_BIG_BBOX_WIDTH / 2 + 2;
-			right = left + MARIO_BIG_BBOX_WIDTH-2;
+			if (nx > 0)
+			{
+				left = x - RACOON_BIG_BBOX_WIDTH / 2 + 6;
+				right = left + RACOON_BIG_BBOX_WIDTH - 11;
+			}
+			else
+			{
+				left = x - RACOON_BIG_BBOX_WIDTH / 2 + 6;
+				right = left + RACOON_BIG_BBOX_WIDTH - 11;
+			}
 			top = y - MARIO_BIG_BBOX_HEIGHT / 2;
 			bottom = top + MARIO_BIG_BBOX_HEIGHT;
 		}

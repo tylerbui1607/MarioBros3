@@ -17,8 +17,9 @@
 class Pipe :
     public CGameObject
 {
-	int AllowRender;
+	
 	public:
+		int AllowRender;
 		int PipeType;
 		int Width, Height, TileSize;
 		Pipe(float x, float y, int width, int height, int allowRender, int type) : CGameObject(x, y) {
@@ -28,8 +29,6 @@ class Pipe :
 			PipeType = type;
 		}
 		void Render() { 
-			if (AllowRender != 0)
-			{
 				if (PipeType != HIDDEN_MAP_PIPE && PipeType != SPECIAL_PIPE_HIDDEN_MAP_PIPE)
 				{
 					CSprites* sprite = CSprites::GetInstance();
@@ -56,7 +55,6 @@ class Pipe :
 						SpriteY += SPRITE_TILE_SIZE;
 					}
 				}
-			}
 		};
 		void Update(DWORD dt) {
 		}

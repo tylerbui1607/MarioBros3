@@ -3,6 +3,7 @@
 #include "QuestionBrick.h"
 #include "Koopas.h"
 #include "BreakableBrick.h"
+#include "FirePiranhaPlant.h"
 void MarioTail::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	if (IsActive)
@@ -28,6 +29,8 @@ void MarioTail::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				OnCollisionWithKoopas(coObjects->at(i));
 			else if (coObjects->at(i)->objType == OBJECT_TYPE_BREAKABLE_BRICK)
 				OnCollisionWithBreakableBrick(coObjects->at(i));
+			else if (dynamic_cast<FirePiranhaPlant*>(coObjects->at(i)))
+				coObjects->at(i)->Delete();
 		}
 	}
 }

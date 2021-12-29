@@ -179,7 +179,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int allowRender = atoi(tokens[5].c_str());
 		int type = atoi(tokens[6].c_str());
 		obj = new Pipe(x, y, width, height, allowRender, type);
-		Pipes.push_back(obj);
+		if(allowRender == 0)
+			Pipes.push_back(obj);
+		else
+			Pipes2.push_back(obj);
 		break;
 	}
 	case OBJECT_TYPE_BREAKBLEBRICK: {
@@ -245,7 +248,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	// General object setup
 		obj->SetPosition(x, y);
 
-		//DebugOut(L"ObjectSize%d\n", objects.size());
 		objects.push_back(obj);
 }
 
@@ -374,10 +376,14 @@ void CPlayScene::Render()
 		if(!dynamic_cast<Pipe*>(objects[i]))
 			objects[i]->Render();
 	}
-	objects[0]->Render();
 	for (int i = 0; i < Pipes.size(); i++)
 	{
-		Pipes[i]->Render();
+			Pipes[i]->Render();
+	}
+	objects[0]->Render();
+	for (int i = 0; i < Pipes2.size(); i++)
+	{
+			Pipes2[i]->Render();
 	}
 	HUD::GetInstance()->Draw();
 }

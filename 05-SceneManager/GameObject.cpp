@@ -14,7 +14,8 @@ CGameObject::CGameObject()
 	vx = vy = 0;
 	nx = 1;	
 	state = -1;
-	isitem = isDeleted = false;
+	IsAllowRender = IsAllowRender = isitem = isDeleted = false;
+
 }
 
 void CGameObject::RenderBoundingBox()

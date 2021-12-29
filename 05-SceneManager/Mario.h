@@ -109,6 +109,9 @@
 #define ID_ANI_MARIO_HOLDKOOPAS_JUMP_RIGHT	1706
 #define ID_ANI_MARIO_HOLDKOOPAS_JUMP_LEFT	1707
 
+#define ID_ANI_MARIO_FALLING_RIGHT	1708
+#define ID_ANI_MARIO_FALLING_LEFT	1709
+
 // SMALL MARIO
 #define ID_ANI_MARIO_SMALL_IDLE_RIGHT 1100
 #define ID_ANI_MARIO_SMALL_IDLE_LEFT 1102
@@ -200,6 +203,8 @@
 #define	MARIO_LEVEL_BIG		2
 #define	MARIO_LEVEL_RACOON		3
 
+#define RACOON_BIG_BBOX_WIDTH  20
+
 #define MARIO_BIG_BBOX_WIDTH  14
 #define MARIO_BIG_BBOX_HEIGHT 24
 #define MARIO_BIG_SITTING_BBOX_WIDTH  14
@@ -218,8 +223,8 @@ class CMario : public CGameObject
 	BOOLEAN isSitting;
 	float maxVx;
 	float ax;				// acceleration on x 
-	float ay;				// acceleration on y 
-
+	float ay;// acceleration on y 
+	float pipeX;
 	bool IsSlowFalling, IsFalling;
 	DWORD SlowFallingTime, FallingTime;
 	bool isFly,isHoldingKoopas;

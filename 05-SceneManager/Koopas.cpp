@@ -3,6 +3,7 @@
 #include "QuestionBrick.h"
 #include "Goomba.h"
 #include "BreakableBrick.h"
+#include "FirePiranhaPlant.h"
 void Koopas::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	if (!isHold)
@@ -99,7 +100,8 @@ void Koopas::OnCollisionWith(LPCOLLISIONEVENT e, DWORD dt)
 		OnCollisionWithKoopas(e);
 	else if (e->obj->objType == OBJECT_TYPE_BREAKABLE_BRICK)
 		OnCollisionWithBreakableBrick(e);
-
+	else if (dynamic_cast<FirePiranhaPlant*>(e->obj))
+		e->obj->Delete();
 }
 
 void Koopas::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
