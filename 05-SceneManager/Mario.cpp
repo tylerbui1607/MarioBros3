@@ -88,7 +88,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e,DWORD dt)
 	if (e->ny != 0 && e->obj->IsBlocking())
 	{
 		vy = 0;
-		if (e->ny < 0) isOnPlatform = true;
+		if (e->ny < 0) { isOnPlatform = true; CGame::GetInstance()->pipeX = e->obj->x; }
 	}
 	else 
 	if (e->nx != 0 && e->obj->IsBlocking())

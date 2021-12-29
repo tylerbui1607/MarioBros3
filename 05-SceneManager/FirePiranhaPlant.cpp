@@ -11,7 +11,6 @@ void FirePiranhaPlant::GetBoundingBox(float& left, float& top, float& right, flo
 
 void FirePiranhaPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	y += vy * dt;
 	if (vy < 0) {
 		if (y <= minY) {
 			vy = 0;
@@ -28,18 +27,22 @@ void FirePiranhaPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		CalcAtatckEnemy();
 	}
 	if (state == FIRE_PIRANHAPLANT_STATE_UP) {
-		if (GetTickCount64() - CalcAtkTime >= 3000) {
+		if (x == CGame::GetInstance()->pipeX)
+			vy = 0;
+		else if (GetTickCount64() - CalcAtkTime >= 3000) {
 			SetState(FIRE_PIRANHAPLANT_STATE_DOWN);
 		}
 	}
 	else {
-		if (GetTickCount64() - CalcAtkTime >= 2000) {
+		if (GetTickCount64() - CalcAtkTime >= 2000 && x != CGame::GetInstance()->pipeX) {
 			SetState(FIRE_PIRANHAPLANT_STATE_UP);
 		}
 	}
+	
 
 	if (fireBullet->isActivate)
 		fireBullet->Update(dt,coObjects);
+	y += vy * dt;
 }
 
 void FirePiranhaPlant::Render()

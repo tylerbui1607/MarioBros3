@@ -61,6 +61,7 @@ class CGame
 public:
 	int next_scene = -1;
 	int current_scene;
+	float pipeX;
 	bool buttonIsPushed;
 
 
