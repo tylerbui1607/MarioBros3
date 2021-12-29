@@ -17,6 +17,7 @@
 #include "BreakableBrick.h"
 #include "PortalOfPipe.h"
 #include "PiranhaPlant.h"
+#include "LastItemObject.h"
 
 #include "SampleKeyEventHandler.h"
 #include "HUD.h"
@@ -231,10 +232,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CPortal(x, y, r, b, scene_id);
 		break;
 	}
-	case OBJECT_TYPE_PORTAL_OF_PIPE:
+	case OBJECT_TYPE_LAST_ITEM:
 	{
-		int gate = atoi(tokens[3].c_str());
-		obj = new PortalOfPipe(x, y,gate);
+		obj = new LastItemObject(x, y);
 		break;
 	}
 
