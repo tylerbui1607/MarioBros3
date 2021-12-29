@@ -92,8 +92,8 @@ brick.txt
 6	2200	344	48	144
 
 #FirePiranhaPlant
-21	368	392
-21	1872	392
+21	368	392	1
+21	1872	392	2
 
 #PiranhaPlant
 22	1808	400

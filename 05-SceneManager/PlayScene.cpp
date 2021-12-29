@@ -166,7 +166,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		//Items.push_back(item);
 		break;
 	}
-	case OBJECT_TYPE_FIREPIRANHAPLANT: {obj = new FirePiranhaPlant(x, y); break; }
+	case OBJECT_TYPE_FIREPIRANHAPLANT: {
+		int type = atoi(tokens[3].c_str());
+		obj = new FirePiranhaPlant(x, y, type); 
+		break; }
 	case OBJECT_TYPE_PIRANHAPLANT: {obj = new PiranhaPlant(x, y); break; }
 	case OBJECT_TYPE_COIN: {
 		int type = atoi(tokens[3].c_str());

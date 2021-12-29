@@ -8,6 +8,8 @@
 #define FIRE_PIRANHAPLANT_BBOX_WIDTH 16
 #define FIRE_PIRANHAPLANT_BBOX_HEIGHT 34
 
+#define GREEN_PIRANHAPLANT_BBOX_HEIGHT 26
+
 #define MAX_ATTACK_ZONE	150
 #define MIN_ATTACK_ZONE	100
 
@@ -24,6 +26,20 @@
 #define ID_ANI_FIREPLANT_ATTACK_LEFT_UP			210006
 #define ID_ANI_FIREPLANT_ATTACK_RIGHT_UP		210007
 
+#define ID_ANI_GREEN_FIREPLANT_LEFT_DOWN		230000
+#define ID_ANI_GREEN_FIREPLANT_RIGHT_DOWN		230001
+#define ID_ANI_GREEN_FIREPLANT_LEFT_UP		230002
+#define ID_ANI_GREEN_FIREPLANT_RIGHT_UP		230003
+
+#define ID_ANI_GREEN_FIREPLANT_ATTACK_LEFT_DOWN		230004
+#define ID_ANI_GREEN_FIREPLANT_ATTACK_RIGHT_DOWN		230005
+#define ID_ANI_GREEN_FIREPLANT_ATTACK_LEFT_UP			230006
+#define ID_ANI_GREEN_FIREPLANT_ATTACK_RIGHT_UP		230007
+
+#define FIREPLANT				1
+#define GREEN_FIRE_PLANT		2
+
+
 class FirePiranhaPlant :
     public CGameObject
 {
@@ -31,6 +47,8 @@ public:
 	float ax;
 	float ay;
 	int aniId;
+
+	int PlantType;
 
 	float minY, maxY;
 
@@ -91,17 +109,27 @@ public:
 	}
 
 	void GetAniFirePlant();
+	void GetAniGreenFirePlant();
 public:
 	void GetEnemyPos(float EnemyX, float EnemyY) {
 		enemyX = EnemyX;
 		enemyY = EnemyY;
+		
 	}
-	FirePiranhaPlant(float x, float y) :CGameObject(x, y) {
-		minY = y- FIRE_PIRANHAPLANT_UP_HEIGHT*2-8;
-		maxY = y + FIRE_PIRANHAPLANT_UP_HEIGHT-8;
+	FirePiranhaPlant(float x, float y, int type) :CGameObject(x, y) {
 		SetState(FIRE_PIRANHAPLANT_STATE_UP);
 		fireBullet = new FireBullet(x, y);
 		enemyX = enemyY = 0;
+		PlantType = type;
+		if (PlantType == FIREPLANT)
+		{
+			minY = y - FIRE_PIRANHAPLANT_UP_HEIGHT * 2 - 8;
+			maxY = y + FIRE_PIRANHAPLANT_UP_HEIGHT - 8;
+		}
+		else {
+			minY = y - FIRE_PIRANHAPLANT_UP_HEIGHT * 2 - 4;
+			maxY = y + FIRE_PIRANHAPLANT_UP_HEIGHT - 8;
+		}
 	};
 	virtual void SetState(int state);
 };
