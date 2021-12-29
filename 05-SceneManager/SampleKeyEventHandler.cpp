@@ -62,6 +62,9 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 			case DIK_R:
 				mario->Reset();
 				break;
+			case DIK_L:
+				CGame::GetInstance()->resetLastItem = true;
+				break;
 			}
 		}
 	}

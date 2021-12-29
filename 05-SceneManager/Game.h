@@ -63,7 +63,7 @@ public:
 	int current_scene;
 	float pipeX;
 	bool buttonIsPushed;
-
+	bool resetLastItem;
 
 	// Init DirectX, Sprite Handler
 	void Init(HWND hWnd, HINSTANCE hInstance);

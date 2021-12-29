@@ -16,6 +16,8 @@
 #include "Collision.h"
 #include "PortalOfPipe.h"
 #include "Pipe.h"
+
+#include "LastItemObject.h"
 #include "HUD.h"
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
@@ -118,6 +120,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e,DWORD dt)
 		OnCollisionWithBreakableBrick(e);
 	else if (e->obj->objType == OBJTYPE_BUTTON_P)
 		OnCollisionWithButtonP(e);
+	else if (dynamic_cast<LastItemObject*>(e->obj))
+		OnCollisionWithLastItemObject(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -303,6 +307,13 @@ void CMario::OnCollisionWithSpecialPipe(LPCOLLISIONEVENT e)
 		StartY = pipe->y;
 		canGotoHiddenMap = true;
 	}
+}
+
+void CMario::OnCollisionWithLastItemObject(LPCOLLISIONEVENT e)
+{
+	LastItemObject* LastItem = dynamic_cast<LastItemObject*>(e->obj);
+	if (!LastItem->IsChosen)
+		LastItem->IsChosen = true;
 }
 
 
