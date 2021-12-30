@@ -871,7 +871,6 @@ void CMario::SetState(int state)
 		if (vx != 0) {
 			ax = -nx * (float)MARIO_ACCEL_SLOWING_DOWN_X; // TODO: To constant - the slowing down speed
 		}
-
 		break;
 
 	case MARIO_STATE_DIE:

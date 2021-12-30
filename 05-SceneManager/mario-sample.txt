@@ -1,5 +1,5 @@
 [SETTINGS]
-start	2
+start	1
 width	320
 height	240
 
@@ -27,5 +27,6 @@ height	240
 51	textures\HUD2.png
 52	textures\HiddenMapPipe.png
 60	textures\end_scene_text.png
+700	textures\IntroMap.png
 9000	map\Map1.png
 7000	map\HiddenMap.png

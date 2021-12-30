@@ -177,6 +177,9 @@
     <ClCompile Include="BreakableBrick.cpp">
       <Filter>Brick</Filter>
     </ClCompile>
+    <ClCompile Include="ObjectForRender.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -307,6 +310,9 @@
     </ClInclude>
     <ClInclude Include="BreakableBrick.h">
       <Filter>Brick</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectForRender.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

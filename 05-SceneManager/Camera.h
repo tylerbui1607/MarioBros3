@@ -9,7 +9,6 @@ public:
 	float Mariovx, Mariovy=0, MarioX, MarioY;
 	float cam_x, cam_y, cam_vx, cam_vy =0;
 	int AutoMove = 0;
-	bool IsFollowingMario;
 	bool MarioIsOnPlatForm, MarioIsFlying, MarioIsInHiddenMap;
 public:
 

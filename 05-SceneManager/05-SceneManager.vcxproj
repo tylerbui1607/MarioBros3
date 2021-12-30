@@ -172,6 +172,7 @@
     <ClCompile Include="MarioTail.cpp" />
     <ClCompile Include="Mushroom.cpp" />
     <ClCompile Include="NavigationBox.cpp" />
+    <ClCompile Include="ObjectForRender.cpp" />
     <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="PiranhaPlant.cpp" />
     <ClCompile Include="Platform.cpp" />
@@ -215,6 +216,7 @@
     <ClInclude Include="MarioTail.h" />
     <ClInclude Include="Mushroom.h" />
     <ClInclude Include="NavigationBox.h" />
+    <ClInclude Include="ObjectForRender.h" />
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="PiranhaPlant.h" />
     <ClInclude Include="Platform.h" />

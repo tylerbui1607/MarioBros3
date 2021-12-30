@@ -10,3 +10,4 @@ item.txt
 plants.txt
 pipe.txt
 brick.txt
+introSprite.txt

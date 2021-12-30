@@ -157,18 +157,22 @@ void IntroScene::Load()
 	}
 
 	f.close();
-	redMario =  new CMario(8, 402);
-	greenMario = new CMario(242, 402);
+	redMario =  new CMario(8, 182);
+	greenMario = new CMario(242, 182);
+	goomba->SetSpeed(0, 0);
 	redMario->SetLevel(MARIO_LEVEL_BIG);
 	greenMario->SetLevel(MARIO_LEVEL_BIG);
 	redMario->isOnPlatform = true;
 	greenMario->isOnPlatform = true;
-	platform = new CPlatform(8, 424, 16, 16, 39, 51000, 52000, 53000);
+	leaf->SetState(LEAF_STATE_FALLING);
+	platform = new CPlatform(8, 204, 16, 16, 39, 51000, 52000, 53000);
 	platform->IsAllowRender = true;
 	objects.push_back(redMario);
 	objects.push_back(greenMario);
+	objects.push_back(leaf);
 	objects.push_back(platform);
-	Camera::GetInstance()->SetCamPos(0, 240);
+	objects.push_back(goomba);
+	Camera::GetInstance()->SetCamPos(0, 0);
 	DebugOut(L"[INFO] Done loading Introscene  %s\n", sceneFilePath);
 	CGame::GetInstance()->IsSwitchScene = false;
 }
@@ -177,22 +181,32 @@ void IntroScene::Update(DWORD dt)
 {
 	vector<LPGAMEOBJECT> coObjects;
 
-		coObjects.push_back(objects[2]);
+	if(!leaf->IsDeleted())
+	coObjects.push_back(objects[2]);
+	coObjects.push_back(objects[3]);
+	coObjects.push_back(objects[4]);
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-		if(objects[i]->IsAllowUpdate)
+		if (objects[i]->IsAllowUpdate && !objects[i]->IsDeleted())
+		{
 			objects[i]->Update(dt, &coObjects);
+		}
 	}
 	ScriptIntro();
+	curtain->Update(dt);
+	BlackMariobros3->Update(dt);
 }
 
 void IntroScene::Render()
 {
+	background->Render();
+	BlackMariobros3->Render();
 	for (int i = 0; i < objects.size(); i++)
 	{
-		if(objects[i]->IsAllowRender)
+		if(objects[i]->IsAllowRender && !objects[i]->IsDeleted())
 			objects[i]->Render();
 	}
+	curtain->Render();
 }
 
 /*

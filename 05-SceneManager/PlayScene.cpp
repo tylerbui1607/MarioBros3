@@ -324,6 +324,7 @@ void CPlayScene::Load()
 
 	f.close();
 	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
+	Camera::GetInstance()->SetCamPos(0, 240);
 	CGame::GetInstance()->buttonIsPushed = false;
 }
 

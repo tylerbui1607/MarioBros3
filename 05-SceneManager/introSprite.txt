@@ -1,0 +1,10 @@
+# id	left	top	right	bottom	texture_id
+[SPRITES]
+#BackGround
+180720	258	0	514	224	700
+#Curtain
+180721	0	0	256	187	700
+#MarioBros3_Black
+180722	516	0	772	188	700
+# ani_id	sprite1_id	time1	sprite2_id	time2	...
+[ANIMATIONS]

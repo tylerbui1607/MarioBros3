@@ -69,8 +69,8 @@ void Map::Draw()
 		{
 			for (UINT j = firstcol; j < lastcol; j++)
 			{
-				float x = Tile_Width * j+8;
-				float y = Tile_Height * i+8;
+				float x = Tile_Width * (float)j+8;
+				float y = Tile_Height * (float)i+8;
 				if (tilemap[i][j])
 				sprites->Get(tilemap[i][j] + Id)->Draw(x, y);
 			}
