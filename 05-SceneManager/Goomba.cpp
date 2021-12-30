@@ -6,6 +6,7 @@ CGoomba::CGoomba(float x, float y, int Level):CGameObject(x, y)
 	this->ax = 0;
 	this->ay = GOOMBA_GRAVITY;
 	die_start = -1;
+	nx = -1;
 	SetState(GOOMBA_STATE_WALKING);
 	level = Level;
 	if (level == PARA_GOOMBA)ParaGoomba = true;
@@ -114,7 +115,7 @@ void CGoomba::SetState(int state)
 			ay = GOOMBA_GRAVITY;
 			break;
 		case GOOMBA_STATE_WALKING: 
-			vx = GOOMBA_WALKING_SPEED;
+			vx = nx*GOOMBA_WALKING_SPEED;
 			break;
 	}
 }
