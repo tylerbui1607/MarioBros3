@@ -17,6 +17,10 @@ using namespace std;
 IntroScene::IntroScene(int id, LPCWSTR filePath) :CScene(id, filePath)
 {
 	key_handler = new CSampleKeyHandler(this);
+	redMario = greenMario = new CMario(0,0);
+	platform = new CPlatform(0, 0, 0, 0, 0, 0, 0, 0);
+	isDoneSeq1 = isDoneSeq2 = isFirstJump = false;
+	SequenceTime = 0;
 }
 
 
@@ -80,7 +84,8 @@ void IntroScene::_ParseSection_ANIMATIONS(string line)
 	for (int i = 1; i < tokens.size(); i += 2)	// why i+=2 ?  sprite_id | frame_time  
 	{
 		int sprite_id = atoi(tokens[i].c_str());
-		int frame_time = atoi(tokens[i + 1].c_str());
+		int j = i + 1;
+		int frame_time = atoi(tokens[j].c_str());
 		ani->Add(sprite_id, frame_time);
 	}
 
@@ -159,6 +164,7 @@ void IntroScene::Load()
 	redMario->isOnPlatform = true;
 	greenMario->isOnPlatform = true;
 	platform = new CPlatform(8, 424, 16, 16, 39, 51000, 52000, 53000);
+	platform->IsAllowRender = true;
 	objects.push_back(redMario);
 	objects.push_back(greenMario);
 	objects.push_back(platform);
@@ -170,11 +176,8 @@ void IntroScene::Load()
 void IntroScene::Update(DWORD dt)
 {
 	vector<LPGAMEOBJECT> coObjects;
-	for (size_t i = 0; i < objects.size(); i++)
-	{
 
-		coObjects.push_back(objects[i]);
-	}
+		coObjects.push_back(objects[2]);
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		if(objects[i]->IsAllowUpdate)

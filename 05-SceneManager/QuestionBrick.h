@@ -23,19 +23,20 @@
 #define COIN_UP_VY	0.1f
 class QuestionBrick : public CGameObject {
 public:
-	int startY;
+	float startY;
 	bool readyInnitItem;
 	bool innitItemSuccess;
 	int Item;
 	CCoin* coin;
 	bool InitCoin;
-	DWORD coinUpTime;
+	ULONGLONG coinUpTime;
 
-	QuestionBrick(float x, float y, int item ) : CGameObject(x, y) {
+	QuestionBrick(float x, float y, int item) : CGameObject(x, y) {
 		startY = y;
 		InitCoin = readyInnitItem = innitItemSuccess = false;
 		Item = item;
 		coinUpTime = 0;
+		coin = new CCoin(0,0,1);
 	}
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL) {

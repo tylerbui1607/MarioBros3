@@ -23,8 +23,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	if (!goInHidden && !goOutHidden)
 	{
-		vy += ay * dt;
-		vx += ax * dt;
+		vy += (float)ay * (float)dt;
+		vx += (float)ax * (float)dt;
 
 		HandleMarioStateIdle();
 
@@ -100,7 +100,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e,DWORD dt)
 
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
-	else if (dynamic_cast<CCoin*>(e->obj) || e->obj->objType == OBJECT_TYPE_COIN)
+	else if (dynamic_cast<CCoin*>(e->obj) /*|| e->obj->objType == OBJECT_TYPE_COIN*/)
 		OnCollisionWithCoin(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
@@ -114,9 +114,9 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e,DWORD dt)
 		OnCollisionWithPlant(e);
 	else if (dynamic_cast<PiranhaPlant*>(e->obj))
 		OnCollisionWithPlant(e);
-	else if (e->obj->isitem)
+	else if (dynamic_cast<Mushroom*>(e->obj)|| dynamic_cast<Leaf*>(e->obj))
 		OnCollisionWithItem(e);
-	else if (e->obj->objType == OBJECT_TYPE_BREAKABLE_BRICK)
+	else if (dynamic_cast<BreakableBrick*>(e->obj))
 		OnCollisionWithBreakableBrick(e);
 	else if (e->obj->objType == OBJTYPE_BUTTON_P)
 		OnCollisionWithButtonP(e);
@@ -197,6 +197,7 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 					vy = -MARIO_JUMP_DEFLECT_SPEED;
 					break;
 				case KOOPAS_STATE_INSHELL:
+					koopas->nx = nx;
 					koopas->SetState(KOOPAS_STATE_INSHELL_ATTACK);
 					vy = -MARIO_JUMP_DEFLECT_SPEED;
 					break;
@@ -272,24 +273,30 @@ void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e)
 {
-	if (e->ny > 0)
+	BreakableBrick* breakableBrick = dynamic_cast<BreakableBrick*>(e->obj);
+	if (breakableBrick->objType != OBJECT_TYPE_COIN)
 	{
-		BreakableBrick* breakableBrick = dynamic_cast<BreakableBrick*>(e->obj);
-		if (level == MARIO_LEVEL_SMALL)
+		if (e->ny > 0)
 		{
-			if(breakableBrick->y == breakableBrick->startY)
-				e->obj->SetState(BREAKABLE_BRICK_STATE_IS_UP);
-		}
-		else {
-			if (breakableBrick->haveButton && !breakableBrick->buttonCreated)
+			if (level == MARIO_LEVEL_SMALL)
 			{
-				breakableBrick->SetState(BREAKABLE_BRICK_STATE_CREATE_BUTTON);
+				if (breakableBrick->y == breakableBrick->startY)
+					e->obj->SetState(BREAKABLE_BRICK_STATE_IS_UP);
 			}
-			else if (!breakableBrick->haveButton) {
-				e->obj->SetState(BREAKABLE_BRICK_STATE_BREAK_DOWN);
+			else {
+				if (breakableBrick->haveButton && !breakableBrick->buttonCreated)
+				{
+					breakableBrick->SetState(BREAKABLE_BRICK_STATE_CREATE_BUTTON);
+				}
+				else if (!breakableBrick->haveButton) {
+					e->obj->SetState(BREAKABLE_BRICK_STATE_BREAK_DOWN);
+				}
 			}
 		}
 	}
+		else {
+			OnCollisionWithCoin(e);
+		}
 }
 
 void CMario::OnCollisionWithButtonP(LPCOLLISIONEVENT e)
@@ -862,7 +869,7 @@ void CMario::SetState(int state)
 	case MARIO_STATE_IDLE:
 		
 		if (vx != 0) {
-			ax = -nx * MARIO_ACCEL_SLOWING_DOWN_X; // TODO: To constant - the slowing down speed
+			ax = -nx * (float)MARIO_ACCEL_SLOWING_DOWN_X; // TODO: To constant - the slowing down speed
 		}
 
 		break;
@@ -1156,7 +1163,7 @@ void CMario::HandleMarioGoInHiddenMap(DWORD dt)
 	{
 		vy = MARIO_GO_HIDDEN_MAP_SPEED;
 		vx = 0;
-		if (y - StartY >= MARIO_BIG_BBOX_HEIGHT/2-2)
+		if (y - StartY >= MARIO_BIG_BBOX_HEIGHT/2)
 		{
 			SetPosition(HIDDEN_MAP_START_POS_X, HIDDEN_MAP_START_POS_Y);
 			StartY = 1000;
@@ -1170,7 +1177,7 @@ void CMario::HandleMarioGoInHiddenMap(DWORD dt)
 	}
 	else if(goOutHidden)
 	{
-		vy = -MARIO_GO_HIDDEN_MAP_SPEED;
+		vy = -(float)MARIO_GO_HIDDEN_MAP_SPEED;
 		vx = 0;
 		if (StartY - y >= MARIO_BIG_BBOX_HEIGHT)
 		{

@@ -40,7 +40,12 @@
 
 #define KOOPAS_JUMP_SPEED 0.25
 
+#define KOOPAS_DROP_OUT_Y	450
+#define KOOPAS_DROP_OUT_COMPLETE	1000
+
 #define KOOPAS_WAITING_REBORN_TIME	4000
+
+#define KOOPAS_REBORN_TIME	3000	
 class Koopas : public CGameObject
 {
 protected:
@@ -48,9 +53,9 @@ protected:
 	bool ParaKoopas;
 
 	bool InShell, IsAttackedByTail;
-	DWORD phaseTime;
+	ULONGLONG phaseTime;
 
-	DWORD ReborningTime, WaitingRebornTime;
+	ULONGLONG ReborningTime, WaitingRebornTime;
 	ULONGLONG die_start;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
@@ -78,7 +83,7 @@ protected:
 		}
 		else if (state == KOOPAS_STATE_REBORN)
 		{
-			if (GetTickCount64() - ReborningTime >= 3000)
+			if (GetTickCount64() - ReborningTime >= KOOPAS_REBORN_TIME)
 			{
 				SetState(KOOPAS_STATE_WALKING);
 			}
@@ -93,7 +98,7 @@ public:
 	Koopas(float x, float y, int Level);
 	virtual void SetState(int state);
 	void HandleKoopasDropOut() {
-		if (y > 500)
-			y = 1000;
+		if (y > KOOPAS_DROP_OUT_Y)
+			y = KOOPAS_DROP_OUT_COMPLETE;
 	};
 };

@@ -1,5 +1,5 @@
 #pragma once
-#define NAVIGATION_BBOX_WIDTH	16
+#define NAVIGATION_BBOX_WIDTH	8
 #define NAVIGATION_BBOX_HEIGHT	28
 
 #define NAVIGATION_BOX_GRAVITY	0.0007f
@@ -11,7 +11,7 @@ class NavigationBox :
 {
 
 public:
-	bool IsOnPlatform;
+	bool IsOnPlatform = false;
 	NavigationBox(float x, float y) :CGameObject(x, y) {};
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);

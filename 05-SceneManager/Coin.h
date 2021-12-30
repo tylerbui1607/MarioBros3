@@ -15,10 +15,10 @@
 #define BIG_COIN	2
 
 class CCoin : public CGameObject {
-	int coinType;
+	int coinType = 1;
 public:
 	CCoin(float x, float y) : CGameObject(x, y) {
-		coinType == SMALL_COIN;
+		coinType = SMALL_COIN;
 	}
 	CCoin(float X, float Y, int type)
 	{

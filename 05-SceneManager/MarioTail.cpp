@@ -30,7 +30,10 @@ void MarioTail::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			else if (coObjects->at(i)->objType == OBJECT_TYPE_BREAKABLE_BRICK)
 				OnCollisionWithBreakableBrick(coObjects->at(i));
 			else if (dynamic_cast<FirePiranhaPlant*>(coObjects->at(i)))
-				coObjects->at(i)->Delete();
+			{
+				if (y >= coObjects->at(i)->y - TAIL_BBOX_WIDTH / 2)
+					coObjects->at(i)->Delete();
+			}
 		}
 	}
 }
@@ -43,7 +46,8 @@ void MarioTail::Render()
 void MarioTail::OnCollisionWithGoomba(LPGAMEOBJECT& obj)
 {
 	CGoomba* goomba = dynamic_cast<CGoomba*>(obj);
-	goomba->SetState(GOOMBA_STATE_DIEBYSHELL);
+	if(goomba->GetState()!= GOOMBA_STATE_DIEBYSHELL)
+		goomba->SetState(GOOMBA_STATE_DIEBYSHELL);
 	IsActive = false;
 }
 

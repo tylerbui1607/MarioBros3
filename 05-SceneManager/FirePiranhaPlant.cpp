@@ -119,11 +119,11 @@ void FirePiranhaPlant::SetState(int state)
 	switch (state)
 	{
 	case FIRE_PIRANHAPLANT_STATE_UP:
-		vy = -0.05;
+		vy = -0.05f;
 		CalcAtkTime = GetTickCount64();
 		break;
 	case FIRE_PIRANHAPLANT_STATE_DOWN:
-		vy = 0.05;
+		vy = 0.05f;
 		CalcAtkTime = GetTickCount64();
 		break;
 	default:

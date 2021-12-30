@@ -10,7 +10,6 @@
 #define LEAF_STATE_INNIT 1
 #define LEAF_STATE_FALLING 2
 
-#define ID_ANI_LEAF_FALLING_RIGHT
 #define ID_ANI_LEAF_FALLING_RIGHT   80001
 #define ID_ANI_LEAF_FALLING_LEFT   80002
 class Leaf :
@@ -20,7 +19,7 @@ protected:
     bool isInnited;
     float startY;
     int ItemType;
-    DWORD MovingTime;
+    ULONGLONG MovingTime;
 public:
     Leaf(float x, float y) :CGameObject(x, y) {
         isInnited = false;
@@ -65,7 +64,7 @@ public:
             break;
         case LEAF_STATE_FALLING:
             vy = 0;
-            vx = 0.05;
+            vx = (float)0.05;
             isInnited = true;
             MovingTime = GetTickCount64();
             break;

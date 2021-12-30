@@ -39,7 +39,7 @@ public:
 	CMario* redMario;
 	CMario* greenMario;
 	CPlatform* platform;
-	DWORD SequenceTime;
+	ULONGLONG SequenceTime;
 	IntroScene(int id, LPCWSTR filePath);
 	bool isDoneSeq1,isDoneSeq2, isFirstJump;
 	virtual void Load();
@@ -58,9 +58,13 @@ public:
 		}
 		if (isDoneSeq1 && !isDoneSeq2)
 		{
-			
-			redMario->SetState(MARIO_STATE_WALKING_RIGHT);
-			greenMario->SetState(MARIO_STATE_WALKING_LEFT);
+			float vx, vy;
+			redMario->GetSpeed(vx, vy);
+			if (vx == 0)
+			{
+				redMario->SetState(MARIO_STATE_WALKING_RIGHT);
+				greenMario->SetState(MARIO_STATE_WALKING_LEFT);
+			}
 			if (GetTickCount64() - SequenceTime >= Sequence1MaxTime + 2000 && !isFirstJump)
 			{
 				redMario->SetState(MARIO_STATE_JUMP);
@@ -73,11 +77,23 @@ public:
 				redMario->IsAllowUpdate = true;
 				greenMario->IsAllowUpdate = true;
 			}
+			if (greenMario->x <= CGame::GetInstance()->GetBackBufferWidth() / 2)
+			{
+				if(!greenMario->CheckIsSitting())
+				greenMario->SetState(MARIO_STATE_SIT);
+			}
+			if (redMario->x >= CGame::GetInstance()->GetBackBufferWidth() / 2 - 10) {
+				if (redMario->y >= 402 - 30)
+				{
+					redMario->SetMaxVx(0.15f);
+					redMario->SetSpeed(0.15f, -0.5f);
+				}
+			}
 			if (GetTickCount64() - SequenceTime >= Sequence1MaxTime + 3500)
 				isDoneSeq2 = true;
 		}
-		if (isDoneSeq2)
-			CGame::GetInstance()->InitiateSwitchScene(2);
+		//if (isDoneSeq2)
+		//	CGame::GetInstance()->InitiateSwitchScene(2);
 	}
 	void Clear();
 	void PurgeDeletedObjects();

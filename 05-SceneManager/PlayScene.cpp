@@ -92,7 +92,8 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 	for (int i = 1; i < tokens.size(); i += 2)	// why i+=2 ?  sprite_id | frame_time  
 	{
 		int sprite_id = atoi(tokens[i].c_str());
-		int frame_time = atoi(tokens[i+1].c_str());
+		int j = i + 1;
+		int frame_time = atoi(tokens[j].c_str());
 		ani->Add(sprite_id, frame_time);
 	}
 
@@ -171,7 +172,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new FirePiranhaPlant(x, y, type); 
 		break; }
 	case OBJECT_TYPE_PIRANHAPLANT: {obj = new PiranhaPlant(x, y); break; }
-	case OBJECT_TYPE_COIN: {
+	case OBJECT_TYPE_INNIT_COIN: {
 		int type = atoi(tokens[3].c_str());
 		obj = new CCoin(x, y, type);
 		break;
@@ -333,7 +334,7 @@ void CPlayScene::Update(DWORD dt)
 
 	vector<LPGAMEOBJECT> coObjects;
 	vector<LPGAMEOBJECT> Mario;
-		for (size_t i = 1; i < objects.size(); i++)
+		for (int i = 1; i < objects.size(); i++)
 		{
 			if (objects[i] != NULL)
 			{
@@ -350,7 +351,7 @@ void CPlayScene::Update(DWORD dt)
 		Mario.push_back(objects[0]);
 
 
-		for (size_t i = 0; i < objects.size(); i++)
+		for (int i = 0; i < objects.size(); i++)
 		{
 			if (dynamic_cast<FirePiranhaPlant*>(objects[i]))
 			{
@@ -359,6 +360,7 @@ void CPlayScene::Update(DWORD dt)
 				objects[i]->Update(dt, &Mario);
 			}
 			else {
+				if(Camera::GetInstance()->IsInCam(objects[i]->x,objects[i]->y) || dynamic_cast<CMario*>(objects[i]))
 				objects[i]->Update(dt, &coObjects);
 			}
 		}

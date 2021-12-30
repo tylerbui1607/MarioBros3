@@ -26,7 +26,7 @@ public:
 		return __instance;
 	}
 public:
-	float x, y;
+	float x = 0, y = 0;
 	bool MarioIsFlying;
 	int speedStack;
 	HUD() {

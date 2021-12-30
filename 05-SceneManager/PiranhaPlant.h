@@ -26,7 +26,7 @@ public:
 	float minY, maxY;
 
 	bool isAttack;
-	DWORD CalcAtkTime;
+	ULONGLONG CalcAtkTime;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

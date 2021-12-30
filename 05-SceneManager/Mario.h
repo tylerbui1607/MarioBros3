@@ -10,7 +10,7 @@
 
 #include "debug.h"
 
-#define MARIO_GO_HIDDEN_MAP_SPEED 0.05
+#define MARIO_GO_HIDDEN_MAP_SPEED 0.05f
 
 #define HIDDEN_MAP_START_POS_X	2116
 #define HIDDEN_MAP_START_POS_Y	480
@@ -18,7 +18,7 @@
 #define HIDDEN_MAP_OUT_POS_X	2336
 #define HIDDEN_MAP_OUT_POS_Y	400
 
-#define MARIO_WALKING_SPEED		0.15f
+#define MARIO_WALKING_SPEED		0.1f
 #define MARIO_RUNNING_SPEED		0.35f
 
 #define MARIO_ACCEL_WALK_X	0.0005f
@@ -226,14 +226,14 @@ class CMario : public CGameObject
 	float ay;// acceleration on y 
 	float pipeX;
 	bool IsSlowFalling, IsFalling;
-	DWORD SlowFallingTime, FallingTime;
+	ULONGLONG SlowFallingTime, FallingTime;
 	bool isFly,isHoldingKoopas;
 	int speedStack;
 	MarioTail* tail;
 	Koopas* koopasHold;
 
-	DWORD effectTime;
-	DWORD SpeedStackTime;
+	ULONGLONG effectTime;
+	ULONGLONG SpeedStackTime;
 
 	int level; 
 	ULONGLONG untouchable_start;
@@ -251,15 +251,15 @@ class CMario : public CGameObject
 	void OnCollisionWithLastItemObject(LPCOLLISIONEVENT e);
 
 	bool IsAttack;
-	DWORD AttackTime;
+	ULONGLONG AttackTime = 0;
 
 	bool IsKickKoopas;
-	DWORD KickKoopasTime;
+	ULONGLONG KickKoopasTime = 0;
 	int GetAniIdBig();
 	int GetAniIdSmall();
 	int GetAniIdRacoon();
 
-	DWORD FlyingTime;
+	ULONGLONG FlyingTime = 0;
 
 
 public:
@@ -271,8 +271,8 @@ public:
 		level = MARIO_LEVEL_BIG;
 		state = MARIO_STATE_IDLE;
 	}
-	bool isFlying;
-	bool canGotoHiddenMap,goInHidden, goOutHidden, IsInHiddenMap;
+	bool isFlying = false;
+	bool canGotoHiddenMap = false,goInHidden = false, goOutHidden = false, IsInHiddenMap = false;
 	int untouchable;
 	bool CheckMarioIsOnPlatform() { return isOnPlatform; };
 	float StartY;
@@ -282,20 +282,25 @@ public:
 		maxVx = 0.0f;
 		ax = 0.0f;
 		ay = MARIO_GRAVITY; 
-		isFlying =IsAttack = IsKickKoopas = false;
+		isFly = isFlying =IsAttack = IsKickKoopas = false;
 		level = MARIO_LEVEL_SMALL;
 		untouchable = 0;
 		untouchable_start = -1;
-		canGotoHiddenMap = goInHidden = goOutHidden = isOnPlatform = false;
+		IsSlowFalling = isHoldingKoopas = IsFalling = canGotoHiddenMap = goInHidden = goOutHidden = isOnPlatform = false;
 		coin = 0;
 		speedStack = 0;
 		AttackTime = SpeedStackTime = 0;
 		tail = new MarioTail();
 		level = MARIO_LEVEL_RACOON;
 		StartY = 0;
+		FallingTime = effectTime = 0;
+		koopasHold = new Koopas(-10, -10, 1);
+		pipeX = 0;
+		SlowFallingTime = 0;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
+	void SetMaxVx(float maxVx) { this->maxVx = maxVx; };
 	void SetState(int state);
 
 	int IsCollidable()

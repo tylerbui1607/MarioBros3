@@ -9,8 +9,7 @@ class PortalOfPipe :
 {	// target scene to switch to 
 
 
-	float width;
-	float height;
+
 public:
 	int typeGate;
 	PortalOfPipe(float X, float Y, int Gate) {

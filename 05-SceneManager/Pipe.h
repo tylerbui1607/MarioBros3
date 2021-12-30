@@ -21,7 +21,7 @@ class Pipe :
 	public:
 		int AllowRender;
 		int PipeType;
-		int Width, Height, TileSize;
+		int Width, Height, TileSize = 16;
 		Pipe(float x, float y, int width, int height, int allowRender, int type) : CGameObject(x, y) {
 			Width = width;
 			Height = height;
@@ -32,7 +32,7 @@ class Pipe :
 				if (PipeType != HIDDEN_MAP_PIPE && PipeType != SPECIAL_PIPE_HIDDEN_MAP_PIPE)
 				{
 					CSprites* sprite = CSprites::GetInstance();
-					int SpriteY = y - Height / 2 + SPRITE_TILE_SIZE / 2;
+					float SpriteY = y - Height / 2 + SPRITE_TILE_SIZE / 2;
 					for (int i = 0; i < Height / SPRITE_TILE_SIZE; i++)
 					{
 						if (i < 1)
@@ -45,7 +45,7 @@ class Pipe :
 				else 
 				{
 					CSprites* sprite = CSprites::GetInstance();
-					int SpriteY = y - Height / 2 + SPRITE_TILE_SIZE / 2;
+					float SpriteY = y - Height / 2 + SPRITE_TILE_SIZE / 2;
 					for (int i = 0; i < Height / SPRITE_TILE_SIZE; i++)
 					{
 						if (i == Height / SPRITE_TILE_SIZE-1)

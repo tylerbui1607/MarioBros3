@@ -8,14 +8,11 @@ class MarioTail :
     public CGameObject
 {
 public:
-	float ax;
-	float ay;
 
-	bool IsActive;
+	bool IsActive = false;
 
-	DWORD attackTime;
+	ULONGLONG attackTime = 0;
 
-	ULONGLONG die_start;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -29,7 +26,6 @@ public:
 	void OnCollisionWithBreakableBrick(LPGAMEOBJECT& obj);
 
 public:
-	int level, goombaPhase;
 	MarioTail() {};
 	virtual void SetState(int state) {};
 };

@@ -16,9 +16,9 @@ public:
 	}
 	void Update(DWORD dt)
 	{
-		vy += 0.001*dt;
-		x += vx * dt;
-		y += vy * dt;
+		vy += 0.001f *dt;
+		x += vx * (float)dt;
+		y += vy * (float)dt;
 	}
 	void Render() {
 		CAnimations* animations = CAnimations::GetInstance();

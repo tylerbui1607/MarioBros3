@@ -55,7 +55,7 @@ public:
 	bool isAttack;
 	FireBullet* fireBullet;
 	float enemyX, enemyY;
-	DWORD CalcAtkTime;
+	ULONGLONG CalcAtkTime;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -76,30 +76,31 @@ public:
 		if (abs(x - enemyX) <= MIN_ATTACK_ZONE)
 		{
 			if (enemyY < y)
-				VyBullet = -0.05;
+				VyBullet = -0.05f;
 			else
-				VyBullet = 0.05;
+				VyBullet = 0.05f;
 		}
 		else
 		{
 			if (enemyY < y)
-				VyBullet = -0.03;
+				VyBullet = -0.03f;
 			else
-				VyBullet = 0.03;
+				VyBullet = 0.03f;
 		}
 		if (enemyX > x)
 		{
-			VxBullet = 0.05;
+			VxBullet = 0.05f;
 			nx = 1;
-			BulletX = x + FIRE_PIRANHAPLANT_BBOX_WIDTH / 2;
+			float bulletX = x + FIRE_PIRANHAPLANT_BBOX_WIDTH / 2;
+			BulletX = bulletX;
 		}
 		else
 		{
-			VxBullet = -0.05;
+			VxBullet = -0.05f;
 			nx = -1;
-			BulletX = x - FIRE_PIRANHAPLANT_BBOX_WIDTH / 2;
+			BulletX = x - (float)FIRE_PIRANHAPLANT_BBOX_WIDTH / 2;
 		}
-		BulletY = minY - 8;
+		BulletY = (float)minY - 8;
 		if (!fireBullet->isActivate)
 		{
 			fireBullet->isActivate = true;

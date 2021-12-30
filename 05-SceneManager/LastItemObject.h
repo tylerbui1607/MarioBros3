@@ -18,7 +18,7 @@ class LastItemObject :
 public:
 	int LastItemType;
 	bool IsChosen;
-	DWORD ChangeItemTime;
+	ULONGLONG ChangeItemTime;
 	int IsBlocking() { return 0; };
 	LastItemObject(float x, float y) : CGameObject(x, y) {
 		LastItemType = 0;
