@@ -61,14 +61,20 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
-
-	if ( (state==GOOMBA_STATE_DIE) && (GetTickCount64() - die_start > GOOMBA_DIE_TIMEOUT) )
+	if (state != GOOMBA_STATE_DIEBYSHELL)
 	{
-		isDeleted = true;
-		return;
+		if ((state == GOOMBA_STATE_DIE) && (GetTickCount64() - die_start > GOOMBA_DIE_TIMEOUT))
+		{
+			isDeleted = true;
+			return;
+		}
+		if (level == PARA_GOOMBA)CalcGoombaMove();
+		CCollision::GetInstance()->Process(this, dt, coObjects);
 	}
-	if (level == PARA_GOOMBA)CalcGoombaMove();
-	CCollision::GetInstance()->Process(this, dt, coObjects);
+	else {
+		y += vy * dt;
+		x += vx * dt;
+	}
 }
 
 
@@ -105,6 +111,7 @@ void CGoomba::SetState(int state)
 			die_start = GetTickCount64();
 			vx = nx* GOOMBA_DIEBYSHELL_VX;
 			vy =  -GOOMBA_DIEBYSHELL_VY;
+			ay = GOOMBA_GRAVITY;
 			break;
 		case GOOMBA_STATE_WALKING: 
 			vx = GOOMBA_WALKING_SPEED;

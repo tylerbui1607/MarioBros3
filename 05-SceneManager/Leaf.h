@@ -12,6 +12,8 @@
 
 #define ID_ANI_LEAF_FALLING_RIGHT   80001
 #define ID_ANI_LEAF_FALLING_LEFT   80002
+
+#define LEAF_VX_SPEED 0.05f
 class Leaf :
     public CGameObject
 {
@@ -36,7 +38,7 @@ public:
         }
         else if (vy != 0)
         {
-            if (startY - y > 30)
+            if (startY - y > LEAF_HEIGHT*2)
                 SetState(LEAF_STATE_FALLING);
         }
         x += vx * dt;
@@ -64,7 +66,7 @@ public:
             break;
         case LEAF_STATE_FALLING:
             vy = 0;
-            vx = (float)0.05;
+            vx = -LEAF_VX_SPEED;
             isInnited = true;
             MovingTime = GetTickCount64();
             break;

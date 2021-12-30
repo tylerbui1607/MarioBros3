@@ -35,7 +35,7 @@ public:
         else if (vy != 0)
         {
             float mushroominitY = startY - y;
-            if (mushroominitY  > MUSHROOM_HEIGHT+0.5)
+            if (mushroominitY  > MUSHROOM_HEIGHT+1)
                 SetState(MUSHROOOM_STATE_INNITED);
         }
         CCollision::GetInstance()->Process(this, dt, coObjects);

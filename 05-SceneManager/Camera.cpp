@@ -26,7 +26,7 @@ void Camera::Update(DWORD dt)
 	if (CGame::GetInstance()->current_scene != 1)
 	{
 		if (cx < 0) cx = 0;
-		if (cx + game->GetBackBufferWidth() >= 2816)cx = 2816 - game->GetBackBufferWidth();
+		if (cx + game->GetBackBufferWidth() >= 2816.0f)cx = 2816.0f - game->GetBackBufferWidth();
 		if (!MarioIsInHiddenMap)
 		{
 			if (MarioIsFlying)

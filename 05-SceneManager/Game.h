@@ -62,8 +62,10 @@ public:
 	int next_scene = -1;
 	int current_scene;
 	float pipeX;
-	bool buttonIsPushed;
-	bool resetLastItem;
+	bool buttonIsPushed = false;
+	bool resetLastItem = false;
+	bool SkipIntro = false;
+	int playernumber = 1;
 
 	// Init DirectX, Sprite Handler
 	void Init(HWND hWnd, HINSTANCE hInstance);

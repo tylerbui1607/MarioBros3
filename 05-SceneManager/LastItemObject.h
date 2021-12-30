@@ -12,6 +12,8 @@
 #define ID_ANI_END_WORLD_TEXT_MUSHROOM	17072003
 #define ID_ANI_END_WORLD_TEXT_FLOWER	17072004
 #define ID_ANI_END_WORLD_TEXT_STAR	17072005
+
+#define END_TEXT_Y	52
 class LastItemObject :
     public CGameObject
 {
@@ -38,7 +40,7 @@ public:
 			int aniId = ID_ANI_LAST_ITEM + LastItemType;
 			CAnimations* animations = CAnimations::GetInstance();
 			if (animations->Get(aniId))
-				animations->Get(aniId)->Render(x, y - 52);
+				animations->Get(aniId)->Render(x, y - END_TEXT_Y);
 		}
 	};
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects = NULL) {

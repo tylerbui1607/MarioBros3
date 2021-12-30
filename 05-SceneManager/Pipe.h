@@ -21,7 +21,7 @@ class Pipe :
 	public:
 		int AllowRender;
 		int PipeType;
-		int Width, Height, TileSize = 16;
+		int Width, Height, TileSize = SPRITE_TILE_SIZE;
 		Pipe(float x, float y, int width, int height, int allowRender, int type) : CGameObject(x, y) {
 			Width = width;
 			Height = height;

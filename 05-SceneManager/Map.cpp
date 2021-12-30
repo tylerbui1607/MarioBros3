@@ -43,9 +43,9 @@ void Map::LoadMap()
 	CTextures* texture = CTextures::GetInstance();
 	LPTEXTURE texMap = texture->Get(Id);
 	int id_sprite = 1;
-	for (UINT i = 0; i < num_row_read; i++)
+	for (int i = 0; i < num_row_read; i++)
 	{
-		for (UINT j = 0; j < num_col_read; j++)
+		for (int j = 0; j < num_col_read; j++)
 		{
 			int id_Sprite = Id + id_sprite;
 			sprites->Add(id_Sprite, Tile_Width * j, Tile_Height * i, Tile_Width * (j + 1), Tile_Height * (i + 1), texMap);
@@ -59,18 +59,18 @@ void Map::Draw()
 {
 	if (!IsWorldMap)
 	{
-		int firstcol = (int)Camera::GetInstance()->GetCamPosX() / 16;
+		int firstcol = (int)Camera::GetInstance()->GetCamPosX() / Tile_Width;
 		if (firstcol < 0) { firstcol = 0; }
-		int lastcol = ((int)Camera::GetInstance()->GetCamPosX()+CGame::GetInstance()->GetBackBufferWidth()) / 16+1;
+		int lastcol = ((int)Camera::GetInstance()->GetCamPosX()+CGame::GetInstance()->GetBackBufferWidth()) / Tile_Width+1;
 
-		int firstrow = (int)Camera::GetInstance()->GetCamPosY() / 16;
-		int lastrow = ((int)Camera::GetInstance()->GetCamPosY() + CGame::GetInstance()->GetBackBufferWidth()) / 16 + 1;
+		int firstrow = (int)Camera::GetInstance()->GetCamPosY() / Tile_Width;
+		int lastrow = ((int)Camera::GetInstance()->GetCamPosY() + CGame::GetInstance()->GetBackBufferWidth()) / Tile_Width + 1;
 		for (UINT i = firstrow; i < lastrow; i++)
 		{
 			for (UINT j = firstcol; j < lastcol; j++)
 			{
-				float x = Tile_Width * (float)j+8;
-				float y = Tile_Height * (float)i+8;
+				float x = Tile_Width * (float)j+ Tile_Width/2;
+				float y = Tile_Height * (float)i+ Tile_Width/2;
 				if (tilemap[i][j])
 				sprites->Get(tilemap[i][j] + Id)->Draw(x, y);
 			}

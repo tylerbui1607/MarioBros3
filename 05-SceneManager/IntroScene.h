@@ -19,6 +19,12 @@
 #include "Goomba.h"
 #define Sequence1MaxTime	1400
 
+#define START_RENDER_X 128
+#define START_RENDER_Y 94
+#define START_RENDER_Y_CHOOSEPLAYER 154
+#define START_RENDER_Y_NUMBER 124
+#define START_RENDER_Y_BACKGROUND 120
+
 class IntroScene :
     public CScene
 {
@@ -41,12 +47,14 @@ protected:
 public:
 	CMario* redMario;
 	CMario* greenMario;
-	Leaf* leaf = new Leaf(256 / 2, -100);
-	CGoomba* goomba = new CGoomba(256/2-52,-500,1);
+	Leaf* leaf = new Leaf(START_RENDER_X, -START_RENDER_Y*2);
 	CPlatform* platform;
-	ObjectForRender* background = new ObjectForRender(0,0,1);
-	ObjectForRender* curtain = new ObjectForRender(0, 0, 2);
-	ObjectForRender* BlackMariobros3 = new ObjectForRender(0, -188, 3);
+	ObjectForRender* background = new ObjectForRender(START_RENDER_X, START_RENDER_Y_BACKGROUND,1);
+	ObjectForRender* curtain = new ObjectForRender(START_RENDER_X, START_RENDER_Y , 2);
+	ObjectForRender* BlackMariobros3 = new ObjectForRender(START_RENDER_X, -START_RENDER_Y , 3);
+	ObjectForRender* MainMariobros3 = new ObjectForRender(START_RENDER_X, START_RENDER_Y , 4);
+	ObjectForRender* NumberMariobros3 = new ObjectForRender(START_RENDER_X, START_RENDER_Y_NUMBER, 5);
+	ObjectForRender* ChoosePlayerMariobros3 = new ObjectForRender(START_RENDER_X, START_RENDER_Y_CHOOSEPLAYER, 6);
 	ULONGLONG SequenceTime;
 	IntroScene(int id, LPCWSTR filePath);
 	bool isDoneSeq1,isDoneSeq2, isFirstJump;
@@ -65,6 +73,7 @@ public:
 			if(GetTickCount64()-SequenceTime >= Sequence1MaxTime )
 			isDoneSeq1 = true;
 			curtain->setSpeed(0, -0.07f);
+			curtain->isAllowRender = true;
 		}
 		if (isDoneSeq1 && !isDoneSeq2)
 		{
@@ -97,17 +106,12 @@ public:
 				BlackMariobros3->setSpeed(0, 0.25f);
 				leaf->IsAllowUpdate = true;
 				leaf->IsAllowRender = true;
-				goomba->IsAllowRender = true;
-				goomba->IsAllowUpdate = true;
 			}
-			if (leaf->y > 96 && i == 1)
+			if (leaf->y > START_RENDER_Y && leaf->x < CGame::GetInstance()->GetBackBufferWidth()+10 && i == 1)
 			{
-				if (greenMario->y > 170)
-				{
-					greenMario->SetState(MARIO_STATE_SIT_RELEASE);
-					greenMario->SetState(MARIO_STATE_IDLE);
-					greenMario->SetSpeed(0, -0.40f);
-				}
+				greenMario->SetState(MARIO_STATE_SIT_RELEASE);
+				greenMario->SetState(MARIO_STATE_IDLE);
+				greenMario->SetSpeed(0, -0.50f);
 				i = 2;
 			}
 			if (redMario->x >= CGame::GetInstance()->GetBackBufferWidth() / 2 - 10) {
@@ -124,7 +128,7 @@ public:
 					greenMario->SetSpeed(-0.02f, 0);
 					i++;
 				}
-				if (greenMario->y >= 168)
+				if (greenMario->y >= 180)
 				{
 					i++;
 					greenMario->SetState(MARIO_STATE_WALKING_RIGHT);
@@ -136,9 +140,24 @@ public:
 			{
 				isDoneSeq2 = true;
 			}
+			if (BlackMariobros3->y >= START_RENDER_Y) {
+				MainMariobros3->isAllowRender = true;
+				NumberMariobros3->isAllowRender = true;
+			}
+		}
+		if (CGame::GetInstance()->SkipIntro)
+		{
+			isDoneSeq2 = true;
+			curtain->isAllowRender = leaf->IsAllowRender = greenMario->IsAllowRender = redMario->IsAllowRender = false;
+			NumberMariobros3->isAllowRender = MainMariobros3->isAllowRender = true;
+			isDoneSeq2 = true;
+			ChoosePlayerMariobros3->isAllowRender = true;
 		}
 		if (isDoneSeq2)
-			CGame::GetInstance()->InitiateSwitchScene(2);
+		{
+			CGame::GetInstance()->SkipIntro = true;
+			ChoosePlayerMariobros3->isAllowRender = true;
+		}
 	}
 	void Clear();
 	void PurgeDeletedObjects();

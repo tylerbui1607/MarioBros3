@@ -157,7 +157,7 @@ void Koopas::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 void Koopas::OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e)
 {
 	BreakableBrick* breakBrick = dynamic_cast<BreakableBrick*>(e->obj);
-	if (e->nx != 0 && state == KOOPAS_STATE_INSHELL_ATTACK && !breakBrick->haveButton)
+	if (e->nx != 0 && state == KOOPAS_STATE_INSHELL_ATTACK && !breakBrick->haveButton && breakBrick->objType != OBJECT_TYPE_COIN)
 	{
 		breakBrick->SetState(BREAKABLE_BRICK_STATE_BREAK_DOWN);
 	}

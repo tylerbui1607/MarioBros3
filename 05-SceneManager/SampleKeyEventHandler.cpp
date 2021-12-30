@@ -68,6 +68,26 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 			}
 		}
 	}
+	else {
+		switch (KeyCode)
+		{
+		case DIK_S:
+			CGame::GetInstance()->SkipIntro = true;
+			break;
+		case DIK_UP:
+			if (CGame::GetInstance()->playernumber == 2)
+				CGame::GetInstance()->playernumber = 1;
+			break;
+		case DIK_DOWN:
+			if (CGame::GetInstance()->playernumber == 1)
+				CGame::GetInstance()->playernumber = 2;
+			break;
+		case DIK_W:
+			if (CGame::GetInstance()->SkipIntro)
+				CGame::GetInstance()->InitiateSwitchScene(2);
+			break;
+		}
+	}
 }
 
 void CSampleKeyHandler::OnKeyUp(int KeyCode)

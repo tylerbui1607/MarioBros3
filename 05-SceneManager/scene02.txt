@@ -17,7 +17,7 @@ brick.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
-0	2000	300
+0	500	300
 #COIN
 #31	1000	300	2
 #GOOMBA (1=NORMAL,2=SMART)

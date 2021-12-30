@@ -31,7 +31,7 @@ public:
 	float startY;
 	bool InitCoin;
 	ULONGLONG ChangeBackToBrickTime;
-	bool haveButton;
+	bool haveButton = false;
 	ButtonP* buttonP;
 	bool buttonCreated, isBreakDown;
 	BreakableBrickEffect* piece1;
