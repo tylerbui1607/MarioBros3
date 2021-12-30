@@ -148,9 +148,11 @@ void Koopas::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 void Koopas::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 {
 	Koopas* koopas = dynamic_cast<Koopas*>(e->obj);
-	if (koopas->state == KOOPAS_STATE_INSHELL_ATTACK) {
+	if (state == KOOPAS_STATE_INSHELL_ATTACK) {
 		if (e->nx || e->ny)
-		SetState(KOOPAS_STATE_DIE_BY_SHELL);
+		{
+			koopas->SetState(KOOPAS_STATE_DIE_BY_SHELL);
+		}
 	}
 }
 
@@ -235,6 +237,8 @@ void Koopas::SetState(int state)
 		vy = -GOOMBA_DIEBYSHELL_VY;
 		InShell = true;
 		IsAttack = false;
+		if (level == PARA_KOOPAS)
+			level = NORMAL_KOOPAS;
 		break;
 	case KOOPAS_STATE_ATTACKED_BY_TAIL:
 		vx = nx * GOOMBA_DIEBYSHELL_VX;
