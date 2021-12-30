@@ -65,7 +65,7 @@ void Map::Draw()
 
 		int firstrow = (int)Camera::GetInstance()->GetCamPosY() / Tile_Width;
 		int lastrow = ((int)Camera::GetInstance()->GetCamPosY() + CGame::GetInstance()->GetBackBufferWidth()) / Tile_Width + 1;
-		for (UINT i = firstrow; i < lastrow; i++)
+		for (int i = firstrow; i < lastrow; i++)
 		{
 			for (int j = firstcol; j < lastcol; j++)
 			{
