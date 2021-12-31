@@ -628,7 +628,7 @@ int CMario::GetAniIdRacoon()
 						aniId = ID_ANI_RACOON_HOLDINGKOOPAS_WALKING_LEFT;
 				}
 			}
-	if (IsSlowFalling && !isHoldingKoopas)
+	if (IsSlowFalling && !isHoldingKoopas && !isSitting)
 	{
 		if (nx > 0)
 			aniId = ID_ANI_MARIO_SLOWFALLING_RIGHT;
