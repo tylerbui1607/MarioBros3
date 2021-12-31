@@ -18,12 +18,28 @@
 #include "Leaf.h"
 #include "Goomba.h"
 #define Sequence1MaxTime	1400
+#define SequencePlusTime	1500
 
 #define START_RENDER_X 128
 #define START_RENDER_Y 94
 #define START_RENDER_Y_CHOOSEPLAYER 154
 #define START_RENDER_Y_NUMBER 124
 #define START_RENDER_Y_BACKGROUND 120
+
+#define CURTAIN_SPEED 0.07f
+#define MARIO_BROS_3_BLACK_SPEED 0.25f
+#define GREENMARIO_JUMP_SPEED	0.5f
+#define GREENMARIO_SPEED_VX_RUN_OUT_SCENE	0.02f
+#define REDMARIO_MAXVX	0.15f
+
+#define POINT_TO_JUMP_REDMARIO	150
+#define REDMARIO_JUMP_SPEED	0.5f
+
+#define GREENMARIO_OUT_SCENE_X	24
+#define GREENMARIO_OUT_SCENE_Y	180
+
+#define SECTION_2	2
+#define SECTION_4	4
 
 class IntroScene :
     public CScene
@@ -49,12 +65,12 @@ public:
 	CMario* greenMario;
 	Leaf* leaf = new Leaf(START_RENDER_X, -START_RENDER_Y*2);
 	CPlatform* platform;
-	ObjectForRender* background = new ObjectForRender(START_RENDER_X, START_RENDER_Y_BACKGROUND,1);
-	ObjectForRender* curtain = new ObjectForRender(START_RENDER_X, START_RENDER_Y , 2);
-	ObjectForRender* BlackMariobros3 = new ObjectForRender(START_RENDER_X, -START_RENDER_Y , 3);
-	ObjectForRender* MainMariobros3 = new ObjectForRender(START_RENDER_X, START_RENDER_Y , 4);
-	ObjectForRender* NumberMariobros3 = new ObjectForRender(START_RENDER_X, START_RENDER_Y_NUMBER, 5);
-	ObjectForRender* ChoosePlayerMariobros3 = new ObjectForRender(START_RENDER_X, START_RENDER_Y_CHOOSEPLAYER, 6);
+	ObjectForRender* background = new ObjectForRender(START_RENDER_X, START_RENDER_Y_BACKGROUND, BACKGROUND_TYPE);
+	ObjectForRender* curtain = new ObjectForRender(START_RENDER_X, START_RENDER_Y , CURTAIN_TYPE);
+	ObjectForRender* BlackMariobros3 = new ObjectForRender(START_RENDER_X, -START_RENDER_Y , MARIO_BROS3_BLACK_TYPE);
+	ObjectForRender* MainMariobros3 = new ObjectForRender(START_RENDER_X, START_RENDER_Y, MARIO_BROS3_MAIN_TYPE);
+	ObjectForRender* NumberMariobros3 = new ObjectForRender(START_RENDER_X, START_RENDER_Y_NUMBER, MARIO_BROS3_NUMBER_TYPE);
+	ObjectForRender* ChoosePlayerMariobros3 = new ObjectForRender(START_RENDER_X, START_RENDER_Y_CHOOSEPLAYER, MARIO_BROS3_CHOOSE_PLAYER_TYPE);
 	ULONGLONG SequenceTime;
 	IntroScene(int id, LPCWSTR filePath);
 	bool isDoneSeq1,isDoneSeq2, isFirstJump;
@@ -72,7 +88,7 @@ public:
 		{
 			if(GetTickCount64()-SequenceTime >= Sequence1MaxTime )
 			isDoneSeq1 = true;
-			curtain->setSpeed(0, -0.07f);
+			curtain->setSpeed(0, -CURTAIN_SPEED);
 			curtain->isAllowRender = true;
 		}
 		if (isDoneSeq1 && !isDoneSeq2)
@@ -84,7 +100,7 @@ public:
 				redMario->SetState(MARIO_STATE_WALKING_RIGHT);
 				greenMario->SetState(MARIO_STATE_WALKING_LEFT);
 			}
-			if (GetTickCount64() - SequenceTime >= Sequence1MaxTime + 1500 && !isFirstJump)
+			if (GetTickCount64() - SequenceTime >= Sequence1MaxTime + SequencePlusTime && !isFirstJump)
 			{
 				redMario->SetState(MARIO_STATE_JUMP);
 				isFirstJump = true;
@@ -101,34 +117,35 @@ public:
 				if(!greenMario->CheckIsSitting() && i== 1)
 				greenMario->SetState(MARIO_STATE_SIT);
 			}
+			//set black mario bros 3 fall down
 			if (redMario->x >= CGame::GetInstance()->GetBackBufferWidth() / 2 && vy >= 0)
 			{
-				BlackMariobros3->setSpeed(0, 0.25f);
+				BlackMariobros3->setSpeed(0, MARIO_BROS_3_BLACK_SPEED);
 				leaf->IsAllowUpdate = true;
 				leaf->IsAllowRender = true;
 			}
-			if (leaf->y > START_RENDER_Y && leaf->x < CGame::GetInstance()->GetBackBufferWidth()+10 && i == 1)
+			if (leaf->y > START_RENDER_Y && leaf->x < CGame::GetInstance()->GetBackBufferWidth() && i == 1)
 			{
 				greenMario->SetState(MARIO_STATE_SIT_RELEASE);
 				greenMario->SetState(MARIO_STATE_IDLE);
-				greenMario->SetSpeed(0, -0.50f);
+				greenMario->SetSpeed(0, -GREENMARIO_JUMP_SPEED);
 				i = 2;
 			}
-			if (redMario->x >= CGame::GetInstance()->GetBackBufferWidth() / 2 - 10) {
-				if (redMario->y >= 180 - 30)
+			if (redMario->x >= CGame::GetInstance()->GetBackBufferWidth() / 2) {
+				if (redMario->y >= POINT_TO_JUMP_REDMARIO)
 				{
-					redMario->SetMaxVx(0.15f);
-					redMario->SetSpeed(0.15f, -0.5f);
+					redMario->SetMaxVx(REDMARIO_MAXVX);
+					redMario->SetSpeed(REDMARIO_MAXVX, -REDMARIO_JUMP_SPEED);
 				}
 			}
-			if (greenMario->GetMarioLevel() == MARIO_LEVEL_RACOON && !greenMario->CheckMarioIsOnPlatform() && i < 4)
+			if (greenMario->GetMarioLevel() == MARIO_LEVEL_RACOON && !greenMario->CheckMarioIsOnPlatform() && i < SECTION_4)
 			{
-				if (i == 2)
+				if (i == SECTION_2)
 				{
-					greenMario->SetSpeed(-0.02f, 0);
+					greenMario->SetSpeed(-GREENMARIO_SPEED_VX_RUN_OUT_SCENE, 0);
 					i++;
 				}
-				if (greenMario->y >= 180)
+				if (greenMario->y >= GREENMARIO_OUT_SCENE_Y)
 				{
 					i++;
 					greenMario->SetState(MARIO_STATE_WALKING_RIGHT);
@@ -136,7 +153,7 @@ public:
 				else 
 					greenMario->SetState(MARIO_STATE_SLOW_FALLING);
 			}
-			if (greenMario->x > CGame::GetInstance()->GetBackBufferWidth() + 24)
+			if (greenMario->x > CGame::GetInstance()->GetBackBufferWidth() + GREENMARIO_OUT_SCENE_X)
 			{
 				isDoneSeq2 = true;
 			}

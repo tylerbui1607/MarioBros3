@@ -4,6 +4,7 @@
 #include "Koopas.h"
 #include "BreakableBrick.h"
 #include "FirePiranhaPlant.h"
+#include "PiranhaPlant.h"
 void MarioTail::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 	if (IsActive)
@@ -35,6 +36,12 @@ void MarioTail::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				if (!fireplant->isInPipe)
 					fireplant->Delete();
 			}
+			else if (dynamic_cast<PiranhaPlant*>(coObjects->at(i)))
+			{
+				PiranhaPlant* plant = dynamic_cast<PiranhaPlant*>(coObjects->at(i));
+				if (!plant->isInPipe)
+					plant->Delete();
+			}
 		}
 	}
 }
@@ -47,8 +54,11 @@ void MarioTail::Render()
 void MarioTail::OnCollisionWithGoomba(LPGAMEOBJECT& obj)
 {
 	CGoomba* goomba = dynamic_cast<CGoomba*>(obj);
-	if(goomba->GetState()!= GOOMBA_STATE_DIEBYSHELL)
+	if (goomba->GetState() != GOOMBA_STATE_DIEBYSHELL)
+	{
+		goomba->nx = nx;
 		goomba->SetState(GOOMBA_STATE_DIEBYSHELL);
+	}
 	IsActive = false;
 }
 

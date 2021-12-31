@@ -118,7 +118,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e,DWORD dt)
 		OnCollisionWithItem(e);
 	else if (dynamic_cast<BreakableBrick*>(e->obj))
 		OnCollisionWithBreakableBrick(e);
-	else if (e->obj->objType == OBJTYPE_BUTTON_P)
+	else if (dynamic_cast<ButtonP*>(e->obj))
 		OnCollisionWithButtonP(e);
 	else if (dynamic_cast<LastItemObject*>(e->obj))
 		OnCollisionWithLastItemObject(e);
@@ -280,8 +280,9 @@ void CMario::OnCollisionWithBreakableBrick(LPCOLLISIONEVENT e)
 		{
 			if (level == MARIO_LEVEL_SMALL)
 			{
-				if (breakableBrick->y == breakableBrick->startY)
-					e->obj->SetState(BREAKABLE_BRICK_STATE_IS_UP);
+				if (breakableBrick->y == breakableBrick->startY )
+					if(!breakableBrick->buttonCreated)
+						e->obj->SetState(BREAKABLE_BRICK_STATE_IS_UP);
 			}
 			else {
 				if (breakableBrick->haveButton && !breakableBrick->buttonCreated)

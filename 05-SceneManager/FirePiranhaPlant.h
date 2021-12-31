@@ -39,6 +39,9 @@
 #define FIREPLANT				1
 #define GREEN_FIRE_PLANT		2
 
+#define VX_BULLET	0.05f
+#define VY_BULLET_MARIO_CLOSE	0.03f
+#define VY_BULLET_MARIO_FAR	0.05f
 
 class FirePiranhaPlant :
     public CGameObject
@@ -78,27 +81,27 @@ public:
 		if (abs(x - enemyX) <= MIN_ATTACK_ZONE)
 		{
 			if (enemyY < y)
-				VyBullet = -0.05f;
+				VyBullet = -VY_BULLET_MARIO_FAR;
 			else
-				VyBullet = 0.05f;
+				VyBullet = VY_BULLET_MARIO_FAR;
 		}
 		else
 		{
 			if (enemyY < y)
-				VyBullet = -0.03f;
+				VyBullet = -VY_BULLET_MARIO_CLOSE;
 			else
-				VyBullet = 0.03f;
+				VyBullet = VY_BULLET_MARIO_CLOSE;
 		}
 		if (enemyX > x)
 		{
-			VxBullet = 0.05f;
+			VxBullet = VX_BULLET;
 			nx = 1;
 			float bulletX = x + FIRE_PIRANHAPLANT_BBOX_WIDTH / 2;
 			BulletX = bulletX;
 		}
 		else
 		{
-			VxBullet = -0.05f;
+			VxBullet = -VX_BULLET;
 			nx = -1;
 			BulletX = x - (float)FIRE_PIRANHAPLANT_BBOX_WIDTH / 2;
 		}
@@ -126,12 +129,12 @@ public:
 		PlantType = type;
 		if (PlantType == FIREPLANT)
 		{
-			minY = y - FIRE_PIRANHAPLANT_UP_HEIGHT * 2 - 8;
-			maxY = y + FIRE_PIRANHAPLANT_UP_HEIGHT - 8;
+			minY = y - FIRE_PIRANHAPLANT_UP_HEIGHT * 2 - FIRE_PIRANHAPLANT_UP_HEIGHT/2;
+			maxY = y + FIRE_PIRANHAPLANT_UP_HEIGHT - FIRE_PIRANHAPLANT_UP_HEIGHT / 2;
 		}
 		else {
-			minY = y - FIRE_PIRANHAPLANT_UP_HEIGHT * 2 - 4;
-			maxY = y + FIRE_PIRANHAPLANT_UP_HEIGHT - 8;
+			minY = y - FIRE_PIRANHAPLANT_UP_HEIGHT * 2 - FIRE_PIRANHAPLANT_UP_HEIGHT / 4;
+			maxY = y + FIRE_PIRANHAPLANT_UP_HEIGHT - FIRE_PIRANHAPLANT_UP_HEIGHT / 2;
 		}
 		isInPipe = true;
 	};
