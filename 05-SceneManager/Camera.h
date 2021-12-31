@@ -3,6 +3,8 @@
 #include "Utils.h"
 #define SCREEN_CAMERA_WIDTH 320
 #define SCREEN_CAMERA_HEIGHT 240
+#define CAM_Y_SCENE_1_1	240.0f
+#define CAM_Y_HIDDEN_SCENE	468.0f
 class Camera
 {
 public:

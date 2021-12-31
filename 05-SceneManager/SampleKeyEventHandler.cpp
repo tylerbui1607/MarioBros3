@@ -57,7 +57,9 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 				mario->SetState(MARIO_STATE_ATTACK);
 				break;
 			case DIK_H:
-				mario->SetState(MARIO_STATE_GO_IN_HIDDEN_MAP);
+				mario->SetPosition(2272, 92);
+				Camera::GetInstance()->SetCamPos(2272.0f - (float)CGame::GetInstance()->GetBackBufferWidth()/2, 0);
+				mario->IsInHiddenMap = false;
 				break;
 			case DIK_R:
 				mario->Reset();

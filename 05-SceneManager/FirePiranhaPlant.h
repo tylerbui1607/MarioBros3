@@ -48,6 +48,8 @@ public:
 	float ay;
 	int aniId;
 
+	bool isInPipe;
+
 	int PlantType;
 
 	float minY, maxY;
@@ -131,6 +133,7 @@ public:
 			minY = y - FIRE_PIRANHAPLANT_UP_HEIGHT * 2 - 4;
 			maxY = y + FIRE_PIRANHAPLANT_UP_HEIGHT - 8;
 		}
+		isInPipe = true;
 	};
 	virtual void SetState(int state);
 };

@@ -197,6 +197,8 @@
 
 #define GROUND_Y 160.0f
 
+#define MAP_MAX	2816
+
 
 
 
@@ -369,4 +371,5 @@ public:
 	void HandleMarioUntouchable();
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void HandleMarioGoInHiddenMap(DWORD dt);
+	void HandleMarioCannotGoOutMap();
 };

@@ -35,18 +35,25 @@ void FirePiranhaPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		CalcAtatckEnemy();
 	}
 	if (state == FIRE_PIRANHAPLANT_STATE_UP) {
-		if (x == CGame::GetInstance()->pipeX)
+		if (x == CGame::GetInstance()->pipeX && isInPipe)
 			vy = 0;
 		else if (GetTickCount64() - CalcAtkTime >= 3000) {
 			SetState(FIRE_PIRANHAPLANT_STATE_DOWN);
 		}
 	}
 	else {
-		if (GetTickCount64() - CalcAtkTime >= 2000 && x != CGame::GetInstance()->pipeX) {
+		if (GetTickCount64() - CalcAtkTime >= 2000) {
 			SetState(FIRE_PIRANHAPLANT_STATE_UP);
 		}
 	}
 	
+	if (y > minY + FIRE_PIRANHAPLANT_UP_HEIGHT)
+	{
+		isInPipe = true;
+	}
+	else {
+		isInPipe = false;
+	}
 
 	if (fireBullet->isActivate)
 		fireBullet->Update(dt,coObjects);

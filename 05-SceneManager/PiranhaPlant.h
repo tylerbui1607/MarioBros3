@@ -24,9 +24,9 @@ public:
 	int aniId;
 
 	float minY, maxY;
-
+	bool isInPipe;
 	bool isAttack;
-	ULONGLONG CalcAtkTime;
+	ULONGLONG CalcAtkTime = 0;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -39,7 +39,9 @@ public:
 public:
 
 	PiranhaPlant(float x, float y) :CGameObject(x, y) {
-		minY = y - FIRE_PIRANHAPLANT_UP_HEIGHT - 8;
+		isInPipe = true;
+		isAttack = false;
+		minY = y - FIRE_PIRANHAPLANT_UP_HEIGHT - FIRE_PIRANHAPLANT_UP_HEIGHT/2;
 		maxY = y + FIRE_PIRANHAPLANT_UP_HEIGHT - 12;
 		SetState(PIRANHAPLANT_STATE_UP);
 	};

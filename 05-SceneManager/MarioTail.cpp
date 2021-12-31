@@ -31,8 +31,9 @@ void MarioTail::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				OnCollisionWithBreakableBrick(coObjects->at(i));
 			else if (dynamic_cast<FirePiranhaPlant*>(coObjects->at(i)))
 			{
-				if (y >= coObjects->at(i)->y - TAIL_BBOX_WIDTH / 2)
-					coObjects->at(i)->Delete();
+				FirePiranhaPlant* fireplant = dynamic_cast<FirePiranhaPlant*>(coObjects->at(i));
+				if (!fireplant->isInPipe)
+					fireplant->Delete();
 			}
 		}
 	}

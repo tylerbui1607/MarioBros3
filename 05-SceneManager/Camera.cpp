@@ -5,7 +5,7 @@
 Camera* Camera::__instance = NULL;
 Camera::Camera()
 {
-	cam_y = 240;
+	cam_y = CAM_Y_SCENE_1_1;
 	cam_vy = 0.0;
 	MarioIsOnPlatForm = MarioIsFlying = MarioIsInHiddenMap = false;
 	MarioX = MarioY = Mariovx = Mariovy = cam_x = cam_vx = 0;
@@ -31,7 +31,7 @@ void Camera::Update(DWORD dt)
 		{
 			if (MarioIsFlying)
 			{
-				if (MarioY - CGame::GetInstance()->GetBackBufferHeight() / 2 < 240)
+				if (MarioY - CGame::GetInstance()->GetBackBufferHeight() / 2 < CAM_Y_SCENE_1_1)
 				{
 					if (MarioY - CGame::GetInstance()->GetBackBufferHeight() / 2 < 50)
 					{
@@ -46,7 +46,7 @@ void Camera::Update(DWORD dt)
 						cam_vy = 0;
 					}
 				}
-				else { Camera::GetInstance()->cam_y = 240; cam_vy = 0; }
+				else { Camera::GetInstance()->cam_y = CAM_Y_SCENE_1_1; cam_vy = 0; }
 				Camera::GetInstance()->SetCamPosX(cx);
 			}
 			else
@@ -69,13 +69,13 @@ void Camera::Update(DWORD dt)
 					Camera::GetInstance()->SetCamPosX(cx);
 				}
 				else {
-					Camera::GetInstance()->SetCamPos(cx, 240.0);
+					Camera::GetInstance()->SetCamPos(cx, CAM_Y_SCENE_1_1);
 					cam_vy = 0;
 				}
 			}
 		}
 		else {
-			Camera::GetInstance()->SetCamPos(cx, 468);
+			Camera::GetInstance()->SetCamPos(cx, CAM_Y_HIDDEN_SCENE);
 		}
 	}
 	else

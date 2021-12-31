@@ -43,7 +43,7 @@ void PiranhaPlant::SetState(int state)
 		}
 		
 		if (state == PIRANHAPLANT_STATE_UP) {
-			if (x == CGame::GetInstance()->pipeX && y > (minY + FIRE_PIRANHAPLANT_UP_HEIGHT + 8))
+			if (x == CGame::GetInstance()->pipeX && isInPipe)
 				vy = 0;
 			else if (GetTickCount64() - CalcAtkTime >= 2000) {
 				SetState(PIRANHAPLANT_STATE_DOWN);
@@ -53,6 +53,13 @@ void PiranhaPlant::SetState(int state)
 			if (GetTickCount64() - CalcAtkTime >= 1000) {
 				SetState(PIRANHAPLANT_STATE_UP);
 			}
+		}
+		if (y > minY + FIRE_PIRANHAPLANT_UP_HEIGHT)
+		{
+			isInPipe = true;
+		}
+		else {
+			isInPipe = false;
 		}
 	}
 
