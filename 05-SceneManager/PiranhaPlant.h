@@ -42,7 +42,7 @@ public:
 		isInPipe = true;
 		isAttack = false;
 		minY = y - FIRE_PIRANHAPLANT_UP_HEIGHT - FIRE_PIRANHAPLANT_UP_HEIGHT/2;
-		maxY = y + FIRE_PIRANHAPLANT_UP_HEIGHT - 12;
+		maxY = y + FIRE_PIRANHAPLANT_UP_HEIGHT - PIRANHAPLANT_BBOX_HEIGHT/2;
 		SetState(PIRANHAPLANT_STATE_UP);
 	};
 	virtual void SetState(int state);
